@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satish Samala — Backend Systems Engineer</title>
+<meta name="description" content="Satish Samala — Staff Software Engineer specializing in distributed backend systems, zero-downtime migrations, and production reliability across healthcare, travel-tech, and payments.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper: #EDEAE2;
+    --paper-lift: #FAF8F3;
+    --ink: #1C1D1A;
+    --ink-soft: #4A4A45;
+    --taupe: #A39A8B;
+    --rule: #C9C2B3;
+    --rust: #8B3A2B;
+    --structural-green: #39493D;
+    --max: 1180px;
+    --margin: clamp(20px, 5vw, 64px);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  ::selection{ background:var(--rust); color:var(--paper-lift); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .container{
+    max-width:var(--max);
+    margin:0 auto;
+    padding-left:var(--margin);
+    padding-right:var(--margin);
+  }
+
+  /* faint paper grain + cross-hatch corner marks, ambient, not decorative noise */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.5; mix-blend-mode:multiply;
+  }
+
+  /* ===================== TOP MARK / REGISTRATION ===================== */
+  .reg-marks span{
+    position:fixed; width:14px; height:14px; z-index:50; pointer-events:none;
+  }
+  .reg-marks span::before,.reg-marks span::after{
+    content:''; position:absolute; background:var(--ink); opacity:.35;
+  }
+  .reg-marks span::before{ width:14px; height:1px; top:50%; left:0; }
+  .reg-marks span::after{ width:1px; height:14px; left:50%; top:0; }
+  .reg-tl{ top:18px; left:18px; }
+  .reg-tr{ top:18px; right:18px; }
+  .reg-bl{ bottom:18px; left:18px; }
+  .reg-br{ bottom:18px; right:18px; }
+  @media (max-width:700px){ .reg-marks{ display:none; } }
+
+  /* ===================== NAV ===================== */
+  header.site-nav{
+    position:fixed; top:0; left:0; right:0; z-index:40;
+    background:linear-gradient(to bottom, var(--paper) 70%, transparent);
+    padding-top:34px; padding-bottom:18px;
+  }
+  .nav-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .nav-mark{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; letter-spacing:.08em;
+    color:var(--ink);
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .nav-mark .dot{ width:6px; height:6px; border-radius:50%; background:var(--rust); display:inline-block; transform:translateY(-1px); }
+  .nav-links{
+    display:flex; gap:28px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.06em; text-transform:uppercase;
+  }
+  .nav-links a{ position:relative; color:var(--ink-soft); transition:color .25s; }
+  .nav-links a:hover{ color:var(--rust); }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:var(--rust);
+    transition:width .25s;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  @media (max-width:640px){ .nav-links{ display:none; } }
+
+  /* ===================== SPEC RAIL (left margin running scale) ===================== */
+  .spec-rail{
+    position:fixed; left:var(--margin); top:0; bottom:0; width:1px;
+    z-index:2; pointer-events:none;
+  }
+  .spec-rail::before{
+    content:''; position:absolute; top:120px; bottom:60px; left:0; width:1px; background:var(--rule);
+  }
+  @media (max-width:900px){ .spec-rail{ display:none; } }
+
+  /* ===================== SECTION SCAFFOLDING ===================== */
+  section{ position:relative; padding-top:96px; padding-bottom:96px; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--rust);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--rust); display:inline-block; }
+
+  .fig-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.08em; color:var(--taupe);
+    text-transform:uppercase;
+  }
+
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-.01em; }
+
+  /* ===================== HERO ===================== */
+  .hero{
+    min-height:88vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:140px; padding-bottom:60px;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.15fr .85fr; gap:48px; align-items:end;
+  }
+  .hero-name{
+    font-size:clamp(58px, 9.6vw, 132px);
+    line-height:.94;
+    font-variation-settings:'opsz' 144,'SOFT' 22,'WONK' 1;
+    margin-bottom:6px;
+  }
+  .hero-name em{ font-style:italic; color:var(--rust); font-variation-settings:'opsz' 144,'SOFT' 38,'WONK' 1; }
+  .hero-role{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(13px,1.6vw,16px);
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    margin-top:18px;
+    max-width:46ch;
+    line-height:1.7;
+  }
+  .hero-role .y14{ color:var(--rust); font-weight:600; }
+  .hero-aside{
+    border-left:1px solid var(--rule);
+    padding-left:28px;
+    align-self:end;
+  }
+  .hero-aside p{
+    font-size:14.5px; color:var(--ink-soft); line-height:1.75; max-width:34ch;
+  }
+  .hero-aside .loc{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--taupe); margin-top:18px; display:block;
+  }
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; gap:32px; }
+    .hero-aside{ border-left:none; padding-left:0; border-top:1px solid var(--rule); padding-top:24px; }
+  }
+
+  .scroll-cue{
+    margin-top:64px;
+    display:flex; align-items:center; gap:12px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.1em;
+    color:var(--taupe); text-transform:uppercase;
+  }
+  .scroll-cue .line{ width:64px; height:1px; background:var(--rule); position:relative; overflow:hidden; }
+  .scroll-cue .line::after{
+    content:''; position:absolute; left:0; top:0; height:100%; width:30%; background:var(--rust);
+    animation:travel 2.6s ease-in-out infinite;
+  }
+  @keyframes travel{ 0%{ left:-30%; } 100%{ left:100%; } }
+
+  /* ===================== THESIS / SUMMARY ===================== */
+  .thesis{
+    display:grid; grid-template-columns: 280px 1fr; gap:56px;
+  }
+  .thesis-label h2{ font-size:28px; line-height:1.15; max-width:9ch; }
+  .thesis-body p{
+    font-size:clamp(19px,2.1vw,24px);
+    line-height:1.5;
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-variation-settings:'opsz' 40,'SOFT' 30;
+    color:var(--ink);
+    max-width:46ch;
+  }
+  .thesis-body p + p{ margin-top:22px; color:var(--ink-soft); font-size:16px; font-family:'Inter',sans-serif; max-width:54ch; line-height:1.75; font-variation-settings:normal; }
+  .thesis-body .tag-row{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:32px;
+  }
+  .tag{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.04em;
+    border:1px solid var(--rule); padding:7px 12px; color:var(--ink-soft); border-radius:2px;
+  }
+  @media (max-width:780px){ .thesis{ grid-template-columns:1fr; gap:24px; } }
+
+  /* ===================== LOAD LINE (signature element) ===================== */
+  .loadline-section{ padding-top:60px; }
+  .loadline-head{ margin-bottom:8px; }
+  .loadline-head h2{ font-size:clamp(32px,4vw,48px); }
+  .loadline-sub{ color:var(--ink-soft); max-width:56ch; margin-top:14px; font-size:15.5px; line-height:1.7; }
+
+  .loadline-wrap{ position:relative; margin-top:70px; }
+  .loadline-svg{ width:100%; display:block; overflow:visible; }
+  .ll-path{ fill:none; stroke:var(--ink); stroke-width:1.6; }
+  .ll-path-fill{ fill:url(#paperFade); opacity:.5; }
+  .ll-tick{ stroke:var(--rule); stroke-width:1; }
+  .ll-node circle{ fill:var(--paper); stroke:var(--ink); stroke-width:1.6; }
+  .ll-node.active circle{ stroke:var(--rust); }
+  .ll-annot{ font-family:'JetBrains Mono', monospace; }
+  .ll-year{ font-size:11px; fill:var(--taupe); letter-spacing:.04em; }
+  .ll-role{ font-family:'Fraunces',serif; font-weight:600; fill:var(--ink); }
+  .ll-co{ font-size:11.5px; fill:var(--ink-soft); }
+  .ll-stress{ fill:var(--rust); font-size:10.5px; font-style:italic; }
+
+  /* ===================== TIMELINE DETAIL CARDS ===================== */
+  .roles{ margin-top:30px; }
+  .role-row{
+    display:grid; grid-template-columns: 120px 1fr 1.4fr; gap:28px;
+    padding:34px 0; border-top:1px solid var(--rule);
+    align-items:start;
+  }
+  .role-row:last-child{ border-bottom:1px solid var(--rule); }
+  .role-period{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--taupe);
+    letter-spacing:.03em; line-height:1.6; padding-top:4px;
+  }
+  .role-id{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--rust);
+    letter-spacing:.08em; display:block; margin-bottom:8px;
+  }
+  .role-titles h3{ font-size:21px; line-height:1.3; margin-bottom:5px; }
+  .role-titles .co{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--ink-soft); }
+  .role-titles .loc-tag{ display:block; font-size:11.5px; color:var(--taupe); margin-top:6px; font-family:'JetBrains Mono', monospace; }
+  .role-detail ul{ list-style:none; }
+  .role-detail li{
+    position:relative; padding-left:18px; margin-bottom:10px;
+    font-size:14.8px; color:var(--ink-soft); line-height:1.6;
+  }
+  .role-detail li::before{
+    content:'—'; position:absolute; left:0; color:var(--rust);
+  }
+  .role-detail li strong{ color:var(--ink); font-weight:600; }
+  @media (max-width:880px){
+    .role-row{ grid-template-columns:1fr; gap:10px; }
+    .role-period{ padding-top:0; }
+  }
+
+  @media (max-width:760px){ .loadline-svg{ display:none; } }
+
+  /* mobile fallback: vertical settlement list */
+  .loadline-mobile{ display:none; margin-top:48px; }
+  @media (max-width:760px){ .loadline-mobile{ display:block; } }
+  .lm-item{
+    position:relative; padding-left:28px; padding-bottom:34px;
+    border-left:1px solid var(--rule);
+  }
+  .lm-item:last-child{ border-left:1px solid transparent; padding-bottom:0; }
+  .lm-item::before{
+    content:''; position:absolute; left:-5px; top:2px; width:9px; height:9px;
+    border-radius:50%; background:var(--paper); border:1.6px solid var(--ink);
+  }
+  .lm-item.active::before{ border-color:var(--rust); }
+  .lm-year{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--taupe); letter-spacing:.06em; }
+  .lm-role{ font-family:'Fraunces', serif; font-weight:600; font-size:17px; margin-top:4px; }
+  .lm-role.is-current{ color:var(--rust); }
+  .lm-co{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+  .lm-stress{ font-family:'JetBrains Mono', monospace; font-style:italic; font-size:11.5px; color:var(--rust); margin-top:6px; }
+
+
+  /* ===================== CASE STUDIES ===================== */
+  .case-grid{ margin-top:50px; display:flex; flex-direction:column; gap:0; }
+  .case{
+    display:grid; grid-template-columns: 1fr 1fr; gap:50px;
+    padding:56px 0; border-top:1px solid var(--rule);
+    position:relative; align-items:center;
+  }
+  .case:nth-child(even){ grid-template-columns: 1fr 1fr; }
+  .case:nth-child(even) .case-num{ order:1; }
+  .case:last-child{ border-bottom:1px solid var(--rule); }
+  .case-num{
+    font-family:'Fraunces', serif; font-variation-settings:'opsz' 144,'WONK' 1;
+    font-size:clamp(60px,9vw,120px); line-height:.8; color:var(--paper-lift);
+    -webkit-text-stroke:1.3px var(--rule); color:transparent;
+  }
+  .case-content .fig-label{ margin-bottom:14px; }
+  .case-content h3{ font-size:clamp(24px,3vw,32px); line-height:1.2; margin-bottom:16px; max-width:18ch; }
+  .case-content p{ color:var(--ink-soft); font-size:15.5px; line-height:1.75; max-width:52ch; margin-bottom:14px; }
+  .case-meta{
+    display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:22px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+  }
+  .case-meta span{ display:flex; align-items:center; gap:7px; }
+  .case-meta span::before{ content:''; width:5px; height:5px; background:var(--rust); border-radius:50%; }
+  .case-result{
+    margin-top:24px; padding:16px 20px; border-left:2px solid var(--structural-green);
+    background:var(--paper-lift);
+  }
+  .case-result .r-label{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.1em; color:var(--structural-green); text-transform:uppercase; display:block; margin-bottom:6px; }
+  .case-result p{ margin:0; color:var(--ink); font-size:14.5px; }
+  @media (max-width:860px){
+    .case, .case:nth-child(even){ grid-template-columns:1fr; gap:18px; }
+    .case:nth-child(even) .case-num{ order:0; }
+    .case-num{ font-size:64px; }
+  }
+
+  /* ===================== SKILLS / SPEC SHEET ===================== */
+  .specsheet{ margin-top:46px; }
+  .spec-table{ width:100%; border-collapse:collapse; }
+  .spec-table tr{ border-top:1px solid var(--rule); }
+  .spec-table tr:last-child{ border-bottom:1px solid var(--rule); }
+  .spec-table td{ padding:20px 0; vertical-align:top; }
+  .spec-table td.k{
+    width:230px; font-family:'JetBrains Mono', monospace; font-size:11.5px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--rust); padding-right:24px;
+  }
+  .spec-table td.v{ font-size:15px; color:var(--ink-soft); line-height:1.8; }
+  .spec-table td.v b{ color:var(--ink); font-weight:600; }
+  @media (max-width:700px){
+    .spec-table td.k{ width:auto; display:block; padding-bottom:6px; }
+    .spec-table tr{ display:block; padding:18px 0; }
+    .spec-table td{ display:block; padding:2px 0; }
+  }
+
+  /* ===================== CREDENTIALS / EDUCATION ===================== */
+  .creds{ display:grid; grid-template-columns: 1fr 1fr; gap:50px; margin-top:46px; }
+  .cred-col h4{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--taupe); margin-bottom:20px;
+  }
+  .cred-item{ padding:18px 0; border-top:1px solid var(--rule); }
+  .cred-item:last-child{ border-bottom:1px solid var(--rule); }
+  .cred-item .ct{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; margin-bottom:4px; }
+  .cred-item .cs{ font-size:13px; color:var(--ink-soft); font-family:'JetBrains Mono', monospace; }
+  .cred-item .cstatus{ display:inline-block; margin-left:8px; font-size:10px; padding:2px 7px; border:1px solid var(--rust); color:var(--rust); border-radius:20px; letter-spacing:.05em; text-transform:uppercase; }
+  @media (max-width:780px){ .creds{ grid-template-columns:1fr; gap:10px; } }
+
+  /* ===================== LANGUAGES STRIP ===================== */
+  .langs{ display:flex; flex-wrap:wrap; gap:0; margin-top:40px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+  .lang-item{ flex:1; min-width:150px; padding:22px 24px; border-right:1px solid var(--rule); }
+  .lang-item:last-child{ border-right:none; }
+  .lang-item .lname{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
+  .lang-item .lfluency{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--rust); text-transform:uppercase; letter-spacing:.08em; margin-top:4px; display:block; }
+  @media (max-width:700px){ .lang-item{ min-width:45%; border-bottom:1px solid var(--rule); } }
+
+  /* ===================== CONTACT / CLOSE ===================== */
+  .contact{ padding-top:110px; padding-bottom:140px; }
+  .contact-grid{ display:grid; grid-template-columns: 1.3fr .7fr; gap:48px; align-items:end; }
+  .contact h2{
+    font-size:clamp(42px,6.4vw,84px); line-height:1.02;
+    font-variation-settings:'opsz' 144,'SOFT' 22,'WONK' 1;
+  }
+  .contact h2 em{ font-style:italic; color:var(--rust); }
+  .contact-links{ margin-top:38px; display:flex; flex-direction:column; gap:14px; }
+  .contact-link{
+    display:flex; align-items:baseline; gap:14px; font-size:18px; padding-bottom:10px;
+    border-bottom:1px solid var(--rule); width:fit-content; transition:border-color .25s;
+  }
+  .contact-link:hover{ border-color:var(--rust); }
+  .contact-link .clabel{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--taupe); text-transform:uppercase; letter-spacing:.08em; min-width:70px; }
+  .contact-link:hover .clabel{ color: var(--rust); }
+  .contact-aside{ font-size:14px; color:var(--ink-soft); line-height:1.8; border-left:1px solid var(--rule); padding-left:24px; }
+  @media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; gap:30px; } .contact-aside{ border-left:none; padding-left:0; border-top:1px solid var(--rule); padding-top:20px; } }
+
+  footer{
+    padding:28px var(--margin) 36px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--taupe); letter-spacing:.04em;
+    border-top:1px solid var(--rule);
+  }
+  @media (max-width:600px){ footer{ flex-direction:column; gap:8px; text-align:center; } }
+
+  /* reveal-on-scroll, kept subtle */
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .scroll-cue .line::after{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  :focus-visible{ outline:2px solid var(--rust); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<svg class="grain" aria-hidden="true">
+  <filter id="noiseFilter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="noise"/>
+    <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.02 0"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+</svg>
+
+<div class="reg-marks">
+  <span class="reg-tl"></span><span class="reg-tr"></span><span class="reg-bl"></span><span class="reg-br"></span>
+</div>
+
+<div class="spec-rail" aria-hidden="true"></div>
+
+<header class="site-nav">
+  <div class="container nav-row">
+    <a href="#top" class="nav-mark"><span class="dot"></span>S. SAMALA — BACKEND / SYSTEMS</a>
+    <nav class="nav-links">
+      <a href="#history">History</a>
+      <a href="#case-studies">Case Studies</a>
+      <a href="#spec">Spec Sheet</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">FIG. 00 — INTRODUCTION</div>
+        <h1 class="hero-name">Satish<br><em>Samala</em></h1>
+        <p class="hero-role">Staff Software Engineer building backend systems that don't fall over — <span class="y14">14+ years</span> in healthcare claims, travel-tech, and PCI payment infrastructure across India and New Zealand.</p>
+      </div>
+      <div class="hero-aside">
+        <p>I design for the load nobody sees coming — migrations on live systems, traffic spikes, compliance audits — and I keep the lights on while doing it.</p>
+        <span class="loc">Hyderabad, India — Remote</span>
+      </div>
+    </div>
+    <div class="scroll-cue"><div class="line"></div>SCROLL TO READ THE PLANS</div>
+  </section>
+
+  <!-- ============ THESIS ============ -->
+  <section class="thesis container reveal">
+    <div class="thesis-label">
+      <div class="eyebrow">FIG. 01 — THESIS</div>
+      <h2>What I actually do</h2>
+    </div>
+    <div class="thesis-body">
+      <p>Most of my career has been spent on the part of the building nobody photographs — the load-bearing wall, not the lobby.</p>
+      <p>I'm a backend engineer who specializes in changing the foundations of a live system without anyone upstairs noticing — PHP 7→8 migrations on production codebases with zero downtime, PCI-compliant payment engines, HIPAA-governed claims platforms processing high transaction volumes. I work in distributed, multi-country teams, own architecture end-to-end, and I've spent the last two years pushing AI-assisted engineering (GitHub Copilot, Claude Code) into daily practice — not as a novelty, but as a way to ship more carefully, faster.</p>
+      <div class="tag-row">
+        <span class="tag">PHP 7 → 8 MIGRATIONS</span>
+        <span class="tag">DISTRIBUTED SYSTEMS</span>
+        <span class="tag">HIPAA / PCI COMPLIANCE</span>
+        <span class="tag">AWS · DOCKER · K8S</span>
+        <span class="tag">RABBITMQ · KAFKA</span>
+        <span class="tag">AI-ASSISTED ENGINEERING</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOAD LINE (signature visual) ============ -->
+  <section class="loadline-section container reveal" id="history">
+    <div class="eyebrow">FIG. 02 — SETTLEMENT RECORD</div>
+    <div class="loadline-head">
+      <h2>Fourteen years, six&nbsp;structures</h2>
+      <p class="loadline-sub">Read this the way a structural engineer reads a settlement curve: each deflection is a real transition — a new company, a new system, a new load. The line never breaks.</p>
+    </div>
+
+    <div class="loadline-wrap">
+      <svg class="loadline-svg" viewBox="0 0 1180 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Career timeline from 2010 to present, shown as a structural settlement curve across six roles.">
+        <defs>
+          <linearGradient id="paperFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1C1D1A" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#1C1D1A" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- baseline ticks -->
+        <g class="ll-tick">
+          <line x1="40" y1="400" x2="1140" y2="400"/>
+          <line x1="40" y1="396" x2="40" y2="404"/>
+          <line x1="225" y1="396" x2="225" y2="404"/>
+          <line x1="410" y1="396" x2="410" y2="404"/>
+          <line x1="595" y1="396" x2="595" y2="404"/>
+          <line x1="780" y1="396" x2="780" y2="404"/>
+          <line x1="965" y1="396" x2="965" y2="404"/>
+          <line x1="1140" y1="396" x2="1140" y2="404"/>
+        </g>
+        <g class="ll-annot ll-year" text-anchor="middle">
+          <text x="40" y="420">2010</text>
+          <text x="225" y="420">2012</text>
+          <text x="410" y="420">2014</text>
+          <text x="595" y="420">2018</text>
+          <text x="780" y="420">2021</text>
+          <text x="965" y="420">2023</text>
+          <text x="1140" y="420">NOW</text>
+        </g>
+
+        <!-- settlement curve -->
+        <path class="ll-path" d="M40,300
+                 C90,300 100,300 130,300
+                 C160,300 170,262 225,260
+                 C270,258 300,222 317,220
+                 C350,218 380,178 410,175
+                 C460,170 600,132 595,130
+                 C660,128 760,82 780,80
+                 C840,78 900,55 965,52
+                 C1020,50 1080,45 1140,42"/>
+
+        <!-- nodes -->
+        <g class="ll-node">
+          <circle cx="40" cy="300" r="5"/>
+          <text class="ll-annot ll-year" x="40" y="285" text-anchor="start">2010—12</text>
+          <text class="ll-annot ll-role" x="40" y="265" font-size="14" text-anchor="start">Web Developer</text>
+          <text class="ll-annot ll-co" x="40" y="248" text-anchor="start">eZee Technosys, Surat</text>
+        </g>
+
+        <g class="ll-node">
+          <circle cx="225" cy="260" r="5"/>
+          <text class="ll-annot ll-year" x="225" y="245" text-anchor="middle">2012—14</text>
+          <text class="ll-annot ll-role" x="225" y="225" font-size="14" text-anchor="middle">Web Developer</text>
+          <text class="ll-annot ll-co" x="225" y="208" text-anchor="middle">STAAH, Surat</text>
+        </g>
+
+        <g class="ll-node">
+          <circle cx="410" cy="220" r="5"/>
+          <text class="ll-annot ll-year" x="410" y="205" text-anchor="middle">2014—18</text>
+          <text class="ll-annot ll-role" x="410" y="185" font-size="14" text-anchor="middle">Senior Web Dev.</text>
+          <text class="ll-annot ll-co" x="410" y="168" text-anchor="middle">STAAH, Auckland</text>
+          <text class="ll-stress" x="410" y="155" text-anchor="middle">PCI-compliant booking engines</text>
+        </g>
+
+        <g class="ll-node">
+          <circle cx="595" cy="130" r="5"/>
+          <text class="ll-annot ll-year" x="595" y="115" text-anchor="middle">2018—21</text>
+          <text class="ll-annot ll-role" x="595" y="95" font-size="14" text-anchor="middle">Web Developer</text>
+          <text class="ll-annot ll-co" x="595" y="78" text-anchor="middle">Benefitz, Auckland</text>
+        </g>
+
+        <g class="ll-node">
+          <circle cx="780" cy="80" r="5"/>
+          <text class="ll-annot ll-year" x="780" y="65" text-anchor="middle">2021—23</text>
+          <text class="ll-annot ll-role" x="780" y="45" font-size="14" text-anchor="middle">Full Stack Eng.</text>
+          <text class="ll-annot ll-co" x="780" y="28" text-anchor="middle">ezyVet, Auckland</text>
+          <text class="ll-stress" x="780" y="15" text-anchor="middle">PHP 7→8, 100% uptime held</text>
+        </g>
+
+        <g class="ll-node active">
+          <circle cx="965" cy="52" r="6"/>
+          <text class="ll-annot ll-year" x="965" y="37" text-anchor="middle">2023—NOW</text>
+          <text class="ll-annot ll-role" x="965" y="115" font-size="15" text-anchor="middle" fill="var(--rust)">Staff Eng. L5</text>
+          <text class="ll-annot ll-co" x="965" y="132" text-anchor="middle">Inovalon, Hyderabad</text>
+          <text class="ll-stress" x="965" y="149" text-anchor="middle">CMP API lead · HIPAA-scope</text>
+        </g>
+      </svg>
+
+      <div class="loadline-mobile">
+        <div class="lm-item">
+          <span class="lm-year">2010—12</span>
+          <div class="lm-role">Web Developer</div>
+          <div class="lm-co">eZee Technosys, Surat</div>
+        </div>
+        <div class="lm-item">
+          <span class="lm-year">2012—14</span>
+          <div class="lm-role">Web Developer</div>
+          <div class="lm-co">STAAH, Surat</div>
+        </div>
+        <div class="lm-item">
+          <span class="lm-year">2014—18</span>
+          <div class="lm-role">Senior Web Developer</div>
+          <div class="lm-co">STAAH, Auckland</div>
+          <div class="lm-stress">PCI-compliant booking engines</div>
+        </div>
+        <div class="lm-item">
+          <span class="lm-year">2018—21</span>
+          <div class="lm-role">Web Developer</div>
+          <div class="lm-co">Benefitz, Auckland</div>
+        </div>
+        <div class="lm-item">
+          <span class="lm-year">2021—23</span>
+          <div class="lm-role">Full Stack Engineer</div>
+          <div class="lm-co">ezyVet, Auckland</div>
+          <div class="lm-stress">PHP 7→8, 100% uptime held</div>
+        </div>
+        <div class="lm-item active">
+          <span class="lm-year">2023—NOW</span>
+          <div class="lm-role is-current">Staff Engineer L5</div>
+          <div class="lm-co">Inovalon, Hyderabad</div>
+          <div class="lm-stress">CMP API lead · HIPAA-scope</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROLE DETAIL ============ -->
+  <section class="container reveal">
+    <div class="eyebrow">FIG. 03 — RECORD OF WORK</div>
+    <h2 style="font-size:clamp(28px,3.6vw,40px); max-width:14ch;">Itemized, in the order it happened</h2>
+
+    <div class="roles">
+      <div class="role-row">
+        <div class="role-period">JUN 2023<br>— PRESENT</div>
+        <div class="role-titles">
+          <span class="role-id">CURRENT</span>
+          <h3>Staff Software Engineer L5</h3>
+          <div class="co">Inovalon</div>
+          <span class="loc-tag">India — Remote</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Backend API lead on a <strong>SaaS Claims Management Platform</strong> processing high-volume healthcare claims, owning system design and delivery across React UI, QA, and backend teams.</li>
+            <li>Led a <strong>PHP 7 → 8 migration</strong> on a live, high-traffic production codebase with zero service disruption — typed properties, modern syntax, dependency compatibility, no downtime.</li>
+            <li>Own system design, performance, and reliability for services built on <strong>AWS, Docker, Kubernetes, RabbitMQ, and Elasticsearch</strong>, designing for graceful degradation under load.</li>
+            <li>Drive server fleet and infrastructure management through metrics-led automation.</li>
+            <li>Champion AI-assisted engineering org-wide — delivered internal sessions on where Copilot and Claude Code add real value vs. where human review is essential.</li>
+            <li>Maintain strict <strong>HIPAA</strong> compliance across all systems handling sensitive healthcare data.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-row">
+        <div class="role-period">NOV 2021<br>— APR 2023</div>
+        <div class="role-titles">
+          <span class="role-id">NEW ZEALAND</span>
+          <h3>Full Stack Engineer &amp; Scrum Master</h3>
+          <div class="co">ezyVet</div>
+          <span class="loc-tag">Auckland, New Zealand</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Contributed to a <strong>PHP 7 → 8 migration</strong> on a 24/7 cloud SaaS platform while preserving the company's 100% uptime commitment.</li>
+            <li>Designed and documented API integrations extending the platform through third-party systems.</li>
+            <li>Acted as liaison between product management and the development squad, keeping technical decisions aligned with business priorities.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-row">
+        <div class="role-period">SEP 2018<br>— OCT 2021</div>
+        <div class="role-titles">
+          <span class="role-id">NEW ZEALAND</span>
+          <h3>Web Developer</h3>
+          <div class="co">Benefitz</div>
+          <span class="loc-tag">Auckland, New Zealand</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Managed server infrastructure spanning on-premise and third-party virtual servers, with direct responsibility for uptime.</li>
+            <li>Designed custom APIs and connectors to automate data exchange between third-party services and in-house systems built on <strong>Symfony</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-row">
+        <div class="role-period">FEB 2014<br>— MAR 2018</div>
+        <div class="role-titles">
+          <span class="role-id">NEW ZEALAND</span>
+          <h3>Senior Web Developer</h3>
+          <div class="co">STAAH</div>
+          <span class="loc-tag">Auckland, New Zealand</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Built and maintained <strong>PCI-compliant hotel booking engines</strong> handling live payment transactions.</li>
+            <li>Developed and maintained REST APIs integrated with payment gateways.</li>
+            <li>Redesigned an existing platform for UX and SEO, increasing daily traffic by <strong>30%</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-row">
+        <div class="role-period">OCT 2012<br>— FEB 2014</div>
+        <div class="role-titles">
+          <span class="role-id">INDIA</span>
+          <h3>Web Developer</h3>
+          <div class="co">STAAH</div>
+          <span class="loc-tag">Surat, India</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Architected and prototyped new applications; built and tested APIs for system-to-system data exchange across multiple client platforms.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="role-row">
+        <div class="role-period">NOV 2010<br>— OCT 2012</div>
+        <div class="role-titles">
+          <span class="role-id">INDIA — FIRST ROLE</span>
+          <h3>Web Developer</h3>
+          <div class="co">eZee Technosys</div>
+          <span class="loc-tag">Surat, India</span>
+        </div>
+        <div class="role-detail">
+          <ul>
+            <li>Foundational years in production web development — the start of fourteen years on live systems.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CASE STUDIES ============ -->
+  <section class="container reveal" id="case-studies">
+    <div class="eyebrow">FIG. 04 — SELECTED STRUCTURAL WORK</div>
+    <h2 style="font-size:clamp(28px,3.6vw,40px); max-width:18ch;">Three jobs where the foundation moved while the building stayed open</h2>
+
+    <div class="case-grid">
+
+      <div class="case">
+        <div class="case-num">01</div>
+        <div class="case-content">
+          <div class="fig-label">INOVALON — 2023 TO PRESENT</div>
+          <h3>Migrating the load-bearing version of PHP, mid-tenancy</h3>
+          <p>The Claims Management Platform processes high-volume healthcare claims data under HIPAA, around the clock, for live customers. Moving its core PHP runtime from version 7 to 8 meant touching typed properties, modern syntax, and dependency compatibility across a codebase nobody gets to take offline.</p>
+          <p>As backend API lead, I owned the migration path end-to-end — sequencing the changes, coordinating with the React frontend and QA teams, and validating each step against production traffic patterns before it shipped.</p>
+          <div class="case-result">
+            <span class="r-label">Result</span>
+            <p>Full runtime migration completed with zero service disruption to a live healthcare SaaS platform under active compliance audit.</p>
+          </div>
+          <div class="case-meta">
+            <span>PHP 7 → 8</span><span>AWS / Docker / K8s</span><span>HIPAA-scope</span><span>RabbitMQ · Elasticsearch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-num">02</div>
+        <div class="case-content">
+          <div class="fig-label">EZYVET — 2021 TO 2023</div>
+          <h3>A second 7→8 migration, this time against a 100% uptime promise</h3>
+          <p>ezyVet's veterinary practice-management platform runs as a 24/7 cloud SaaS product with a contractual 100% uptime commitment to its customers. A second PHP major-version migration in my career, this one with even less room for error — any service interruption is visible to every clinic using the platform in real time.</p>
+          <p>I also designed and documented the API integrations that let the platform extend through third-party systems, and acted as the technical liaison between product management and the development squad, translating business priorities into engineering sequencing.</p>
+          <div class="case-result">
+            <span class="r-label">Result</span>
+            <p>Migration delivered without breaching the platform's 100% uptime SLA.</p>
+          </div>
+          <div class="case-meta">
+            <span>PHP 7 → 8</span><span>API Integration Design</span><span>Scrum Master</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-num">03</div>
+        <div class="case-content">
+          <div class="fig-label">STAAH — 2014 TO 2018</div>
+          <h3>Payment-grade booking engines, and a redesign that moved the traffic needle</h3>
+          <p>STAAH's hotel booking engines handle live payment transactions under PCI compliance — a domain where security and reliability aren't optional features, they're the entire product. I built and maintained these engines and the REST APIs connecting them to payment gateways.</p>
+          <p>Separately, I redesigned an existing platform for improved UX and SEO — a rare front-of-house project in an otherwise backend-heavy career, and one with a number attached to it.</p>
+          <div class="case-result">
+            <span class="r-label">Result</span>
+            <p>Platform redesign increased daily traffic by 30%.</p>
+          </div>
+          <div class="case-meta">
+            <span>PCI Compliance</span><span>Payment Gateway APIs</span><span>+30% Daily Traffic</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SPEC SHEET (skills) ============ -->
+  <section class="container reveal" id="spec">
+    <div class="eyebrow">FIG. 05 — MATERIALS SPECIFICATION</div>
+    <h2 style="font-size:clamp(28px,3.6vw,40px);">What it's built from</h2>
+
+    <div class="specsheet">
+      <table class="spec-table">
+        <tr>
+          <td class="k">Languages</td>
+          <td class="v"><b>PHP (7.x / 8.x)</b> — primary, 14 years. Working knowledge of Java, Perl, JSP, PL/SQL. Active investment in <b>Python</b> — shipped production tooling (trading automation: Python, SQLite, Docker). Picks up new languages on the problem, not the label.</td>
+        </tr>
+        <tr>
+          <td class="k">Distributed &amp; Messaging</td>
+          <td class="v">Apache Kafka, RabbitMQ, Elasticsearch — designing for scale and graceful degradation under load.</td>
+        </tr>
+        <tr>
+          <td class="k">Cloud &amp; Infrastructure</td>
+          <td class="v">AWS, Azure, Docker, Kubernetes (<b>CKAD certified</b>), Heroku, Nginx. Server fleet management through metrics-led automation.</td>
+        </tr>
+        <tr>
+          <td class="k">Frameworks</td>
+          <td class="v">Laravel, Symfony, CodeIgniter, Yii, PHPUnit, Selenium, TestNG.</td>
+        </tr>
+        <tr>
+          <td class="k">Data</td>
+          <td class="v">MySQL — schema design, indexing, query optimization at production scale.</td>
+        </tr>
+        <tr>
+          <td class="k">Frontend-adjacent</td>
+          <td class="v">ReactJS, HTML5, CSS, JavaScript, jQuery, Ajax, JSON, XML — fluent enough to coordinate directly with frontend teams, not just hand off tickets.</td>
+        </tr>
+        <tr>
+          <td class="k">AI-Assisted Engineering</td>
+          <td class="v">GitHub Copilot, Claude Code — daily use in production workflow. Internal speaker on where AI coding assistants add real value vs. where human review stays essential. Currently pursuing <b>CCA-F</b> (Claude Certified Architect: Foundations).</td>
+        </tr>
+        <tr>
+          <td class="k">Practice</td>
+          <td class="v">Agile/Scrum (<b>PSM I certified</b>), CI/CD, code review, cross-functional and cross-team leadership across distributed, multi-country teams.</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION + CERTS ============ -->
+  <section class="container reveal">
+    <div class="eyebrow">FIG. 06 — CREDENTIALS</div>
+    <div class="creds">
+      <div class="cred-col">
+        <h4>Education</h4>
+        <div class="cred-item">
+          <div class="ct">MSc, Computer Science (ICT) — Distinction</div>
+          <div class="cs">South Gujarat University · 2009–2011</div>
+        </div>
+        <div class="cred-item">
+          <div class="ct">Bachelor of Computer Applications</div>
+          <div class="cs">South Gujarat University · 2005–2008</div>
+        </div>
+      </div>
+      <div class="cred-col">
+        <h4>Certifications</h4>
+        <div class="cred-item">
+          <div class="ct">Certified Kubernetes Application Developer (CKAD)</div>
+          <div class="cs">cncf.io · Oct 2024</div>
+        </div>
+        <div class="cred-item">
+          <div class="ct">Professional Scrum Master I (PSM I)</div>
+          <div class="cs">scrum.org · Sep 2022</div>
+        </div>
+        <div class="cred-item">
+          <div class="ct">Claude Certified Architect: Foundations (CCA-F)<span class="cstatus">In Progress</span></div>
+          <div class="cs">Anthropic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="langs">
+      <div class="lang-item"><span class="lname">English</span><span class="lfluency">Professional</span></div>
+      <div class="lang-item"><span class="lname">Telugu</span><span class="lfluency">Native</span></div>
+      <div class="lang-item"><span class="lname">Hindi</span><span class="lfluency">Fluent</span></div>
+      <div class="lang-item"><span class="lname">Gujarati</span><span class="lfluency">Fluent</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="container contact reveal" id="contact">
+    <div class="contact-grid">
+      <div>
+        <div class="eyebrow">FIG. 07 — GET IN TOUCH</div>
+        <h2>Let's talk about<br>what needs<br><em>holding up.</em></h2>
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:satish.samala@gmail.com"><span class="clabel">Email</span>satish.samala@gmail.com</a>
+          <a class="contact-link" href="tel:+918341856298"><span class="clabel">Phone</span>+91 83418 56298</a>
+          <a class="contact-link" href="https://www.linkedin.com/" target="_blank" rel="noopener"><span class="clabel">LinkedIn</span>Sam (Satish Samala)</a>
+        </div>
+      </div>
+      <div class="contact-aside">
+        <p>Based in Hyderabad, India. Open to remote, backend-led roles across healthcare, fintech, and other systems where reliability is the actual product — not a footnote on the roadmap.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 SATISH SAMALA</span>
+  <span>BACKEND SYSTEMS / DISTRIBUTED ARCHITECTURE</span>
+  <span>BUILT WITH CARE — NOT A TEMPLATE</span>
+</footer>
+
+<script>
+  // scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
