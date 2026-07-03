@@ -16,5 +16,3 @@ git push
 ```
 
 The `main` branch is set to track `origin/main`.
-
-If you want a different README content, tell me what to include.
