@@ -374,6 +374,9 @@
   .contact-link:hover{ border-color:var(--rust); }
   .contact-link .clabel{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--taupe); text-transform:uppercase; letter-spacing:.08em; min-width:70px; }
   .contact-link:hover .clabel{ color: var(--rust); }
+  .contact-static{ cursor:default; user-select:none; -webkit-user-select:none; -moz-user-select:none; }
+  .contact-static:hover{ border-color:var(--rule); }
+  .contact-static:hover .clabel{ color:var(--taupe); }
   .contact-aside{ font-size:14px; color:var(--ink-soft); line-height:1.8; border-left:1px solid var(--rule); padding-left:24px; }
   @media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; gap:30px; } .contact-aside{ border-left:none; padding-left:0; border-top:1px solid var(--rule); padding-top:20px; } }
 
@@ -864,8 +867,7 @@
         <div class="eyebrow">FIG. 07 — GET IN TOUCH</div>
         <h2>Let's talk about<br>what needs<br><em>holding up.</em></h2>
         <div class="contact-links">
-          <a class="contact-link" href="mailto:satish.samala@gmail.com"><span class="clabel">Email</span>satish.samala@gmail.com</a>
-          <a class="contact-link" href="tel:+918341856298"><span class="clabel">Phone</span>+91 83418 56298</a>
+          <span class="contact-link contact-static"><span class="clabel">Email</span>satish.samala [at] gmail.com</span>
           <a class="contact-link" href="https://www.linkedin.com/in/satish-samala-web-expert/" target="_blank" rel="noopener"><span class="clabel">LinkedIn</span>Sam (Satish Samala)</a>
         </div>
       </div>
