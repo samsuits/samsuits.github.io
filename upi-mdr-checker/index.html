@@ -2280,6 +2280,9 @@
       function setLang(lang) {
         currentLang = lang;
         document.getElementById("langSelect").value = lang;
+        try {
+          localStorage.setItem("upiMdrLang", lang);
+        } catch (e) {}
         for (let key in translations[lang]) {
           const el = document.getElementById(`i18n-${key}`);
           if (el) {
@@ -2304,8 +2307,16 @@
         document.getElementById("disclaimerModal").classList.remove("show");
       }
 
-      // Auto-detect language
+      // Use saved language if available, otherwise auto-detect
       function detectLang() {
+        let savedLang = null;
+        try {
+          savedLang = localStorage.getItem("upiMdrLang");
+        } catch (e) {}
+        if (savedLang && translations[savedLang]) {
+          setLang(savedLang);
+          return;
+        }
         const navLang = navigator.language.split("-")[0];
         if (translations[navLang]) {
           setLang(navLang);
