@@ -164,6 +164,7 @@
         color: var(--text-muted);
       }
       input[type="number"],
+      input[type="text"],
       select {
         width: 100%;
         padding: 10px 12px;
@@ -172,6 +173,32 @@
         background: var(--bg);
         color: var(--text);
         font-size: 1rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .input-error {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+        animation: shake 0.3s ease-in-out;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-4px);
+        }
+        75% {
+          transform: translateX(4px);
+        }
+      }
+      .field-hint {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 5px;
+        line-height: 1.35;
       }
       .radio-group {
         display: flex;
@@ -325,7 +352,7 @@
         <select
           class="lang-select"
           id="langSelect"
-          onchange="setLang(this.value)"
+          onchange="changeLang(this.value)"
         >
           <option value="en">English</option>
           <option value="hi">हिन्दी (Hindi)</option>
@@ -374,9 +401,14 @@
         <div class="card">
           <div class="field">
             <label for="amount" id="i18n-label-amount"
-              >Transaction amount (₹)</label
+              >Transaction amount (₹) *</label
             >
-            <input type="number" id="amount" placeholder="e.g. 3500" min="0" />
+            <input
+              type="text"
+              inputmode="numeric"
+              id="amount"
+              placeholder="e.g. 3,500"
+            />
           </div>
 
           <div class="field">
@@ -411,18 +443,22 @@
 
           <div class="field" id="smallMerchantField" style="display: none">
             <label for="monthlyRecv" id="i18n-label-monthly"
-              >This merchant's total UPI QR receipts this month so far
-              (₹)</label
+              >This merchant's total UPI QR receipts this month so far (₹)
+              (Optional)</label
             >
             <input
-              type="number"
+              type="text"
+              inputmode="numeric"
               id="monthlyRecv"
-              placeholder="e.g. 45000"
-              min="0"
+              placeholder="e.g. 45,000"
             />
+            <div class="field-hint" id="i18n-monthly-hint">
+              Optional: Only enter if checking small-merchant exemption (≤
+              ₹1,00,000/month).
+            </div>
           </div>
 
-          <button class="primary" onclick="calcMDR()" id="i18n-btn-calc">
+          <button class="primary" onclick="calcMDR(true)" id="i18n-btn-calc">
             Check MDR
           </button>
 
@@ -449,10 +485,10 @@
               >Total received via UPI QR this calendar month (₹)</label
             >
             <input
-              type="number"
+              type="text"
+              inputmode="numeric"
               id="qrTotal"
-              placeholder="e.g. 62000"
-              min="0"
+              placeholder="e.g. 62,000"
             />
           </div>
           <div class="field">
@@ -627,6 +663,52 @@
       </div>
     </div>
 
+    <div
+      class="modal-overlay"
+      id="langPickerModal"
+      onclick="if (event.target === this) confirmLangPick();"
+    >
+      <div class="modal-box">
+        <h3>Choose your language</h3>
+        <p style="margin-bottom: 14px">
+          Select the language you'd like to use. You can change it anytime from
+          the dropdown at the top.
+        </p>
+        <select
+          class="lang-select"
+          id="langPickerSelect"
+          style="width: 100%; margin-bottom: 4px"
+        >
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="gu">ગુજરાતી (Gujarati)</option>
+          <option value="as">অসমীয়া (Assamese)</option>
+          <option value="bn">বাংলা (Bengali)</option>
+          <option value="brx">बड़ो (Bodo)</option>
+          <option value="doi">डोगरी (Dogri)</option>
+          <option value="kn">ಕನ್ನಡ (Kannada)</option>
+          <option value="ks">کٲشُر (Kashmiri)</option>
+          <option value="kok">कोंकणी (Konkani)</option>
+          <option value="mai">मैथिली (Maithili)</option>
+          <option value="ml">മലയാളം (Malayalam)</option>
+          <option value="mni">মৈতৈলোন (Manipuri)</option>
+          <option value="mr">मराठी (Marathi)</option>
+          <option value="ne">नेपाली (Nepali)</option>
+          <option value="or">ଓଡ଼ିଆ (Odia)</option>
+          <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+          <option value="sa">संस्कृतम् (Sanskrit)</option>
+          <option value="sat">संताली (Santali)</option>
+          <option value="sd">سنڌي (Sindhi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="ur">اردو (Urdu)</option>
+        </select>
+        <button type="button" class="primary" onclick="confirmLangPick()">
+          Continue
+        </button>
+      </div>
+    </div>
+
     <script>
       let currentLang = "en";
       const translations = {
@@ -637,7 +719,7 @@
           "tab-calc": "Per-payment calculator",
           "tab-elig": "Small-merchant check",
           "tab-about": "What is MDR?",
-          "label-amount": "Transaction amount (₹)",
+          "label-amount": "Transaction amount (₹) *",
           "label-ptype": "Payment type",
           "opt-p2p": "Person-to-person (sending to a friend/family)",
           "opt-standard": "Standard merchant (shop, restaurant, e-commerce)",
@@ -645,7 +727,12 @@
             "Railways / telecom / insurance / fuel / agri-inputs",
           "opt-capital": "Mutual funds / securities / broker",
           "label-monthly":
-            "This merchant's total UPI QR receipts this month so far (₹)",
+            "This merchant's total UPI QR receipts this month so far (₹) (Optional)",
+          "monthly-hint":
+            "Optional: Only enter if checking small-merchant exemption (≤ ₹1,00,000/month).",
+          "req-amount-headline": "⚠️ Transaction amount required",
+          "req-amount-detail":
+            "Please enter the transaction amount (₹) in the field above to calculate MDR.",
           "btn-calc": "Check MDR",
           "calc-note":
             "Customers never pay MDR directly, even on chargeable transactions. It's settled between the merchant's bank and the payment ecosystem. If a merchant asks you to pay extra or split a payment because of this, that goes against RBI/NPCI's rules. Banks have been told merchants must not pass MDR on to customers.",
@@ -708,14 +795,19 @@
           "tab-calc": "प्रति-भुगतान कैलकुलेटर",
           "tab-elig": "लघु व्यापारी जांच",
           "tab-about": "MDR क्या है?",
-          "label-amount": "लेन-देन की राशि (₹)",
+          "label-amount": "लेन-देन की राशि (₹) *",
           "label-ptype": "भुगतान का प्रकार",
           "opt-p2p": "व्यक्ति-से-व्यक्ति (दोस्त/परिवार)",
           "opt-standard": "मानक व्यापारी (दुकान, रेस्तरां, ई-कॉमर्स)",
           "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-इनपुट",
           "opt-capital": "म्यूचुअल फंड / प्रतिभूतियां / ब्रोकर",
           "label-monthly":
-            "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹)",
+            "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹) (वैकल्पिक)",
+          "monthly-hint":
+            "वैकल्पिक: केवल लघु-व्यापारी छूट (≤ ₹1,00,000/माह) की जांच के लिए दर्ज करें।",
+          "req-amount-headline": "⚠️ लेन-देन की राशि आवश्यक है",
+          "req-amount-detail":
+            "MDR की गणना के लिए कृपया ऊपर दिए गए फ़ील्ड में लेन-देन की राशि (₹) दर्ज करें।",
           "btn-calc": "MDR जांचें",
           "calc-note":
             "ग्राहक कभी भी सीधे MDR का भुगतान नहीं करते। यह व्यापारी के बैंक और भुगतान प्रणाली के बीच तय होता है। अगर कोई व्यापारी इस वजह से आपसे अतिरिक्त भुगतान मांगे, तो यह RBI/NPCI के नियमों का उल्लंघन है।",
@@ -780,14 +872,19 @@
           "tab-calc": "ప్రతి చెల్లింపు కాలిక్యులేటర్",
           "tab-elig": "చిన్న వ్యాపారి తనిఖీ",
           "tab-about": "MDR అంటే ఏమిటి?",
-          "label-amount": "లావాదేవీ మొత్తం (₹)",
+          "label-amount": "లావాదేవీ మొత్తం (₹) *",
           "label-ptype": "చెల్లింపు రకం",
           "opt-p2p": "వ్యక్తి నుండి వ్యక్తికి (స్నేహితుడు/కుటుంబం)",
           "opt-standard": "సాధారణ వ్యాపారి (దుకాణం, రెస్టారెంట్, ఇ-కామర్స్)",
           "opt-essential": "రైల్వేలు / టెలికాం / బీమా / ఇంధనం / వ్యవసాయం",
           "opt-capital": "మ్యూచువల్ ఫండ్‌లు / సెక్యూరిటీలు / బ్రోకర్",
           "label-monthly":
-            "ఈ నెలలో ఈ వ్యాపారి అందుకున్న మొత్తం UPI QR వసూళ్లు (₹)",
+            "ఈ నెలలో ఈ వ్యాపారి అందుకున్న మొత్తం UPI QR వసూళ్లు (₹) (ఐచ్ఛికం)",
+          "monthly-hint":
+            "ఐచ్ఛికం: చిన్న వ్యాపారి మినహాయింపు (నెలకి ≤ ₹1,00,000) తనిఖీ చేయాలనుకుంటే మాత్రమే నమోదు చేయండి.",
+          "req-amount-headline": "⚠️ లావాదేవీ మొత్తం అవసరం",
+          "req-amount-detail":
+            "MDRని లెక్కించడానికి దయచేసి పైన ఉన్న ఫీల్డ్‌లో లావాదేవీ మొత్తాన్ని (₹) నమోదు చేయండి.",
           "btn-calc": "MDR తనిఖీ చేయండి",
           "calc-note":
             "ఖాతాదారులు ఎప్పుడూ MDR నేరుగా చెల్లించరు. ఇది వ్యాపారి బ్యాంకు మరియు పేమెంట్ సిస్టమ్ మధ్య పరిష్కరించబడుతుంది. దీనివల్ల వ్యాపారి మిమ్మల్ని అదనంగా చెల్లించమని అడిగితే, అది RBI/NPCI నియమాలకు విరుద్ధం.",
@@ -2280,9 +2377,6 @@
       function setLang(lang) {
         currentLang = lang;
         document.getElementById("langSelect").value = lang;
-        try {
-          localStorage.setItem("upiMdrLang", lang);
-        } catch (e) {}
         for (let key in translations[lang]) {
           const el = document.getElementById(`i18n-${key}`);
           if (el) {
@@ -2307,16 +2401,16 @@
         document.getElementById("disclaimerModal").classList.remove("show");
       }
 
-      // Use saved language if available, otherwise auto-detect
-      function detectLang() {
-        let savedLang = null;
+      // Change language and remember the choice for next time
+      function changeLang(lang) {
+        setLang(lang);
         try {
-          savedLang = localStorage.getItem("upiMdrLang");
+          localStorage.setItem("upiMdrLang", lang);
         } catch (e) {}
-        if (savedLang && translations[savedLang]) {
-          setLang(savedLang);
-          return;
-        }
+      }
+
+      // Auto-detect language
+      function detectLang() {
         const navLang = navigator.language.split("-")[0];
         if (translations[navLang]) {
           setLang(navLang);
@@ -2325,9 +2419,86 @@
         }
       }
 
+      // First-run language picker
+      function showLangPicker() {
+        document.getElementById("langPickerSelect").value = currentLang;
+        document.getElementById("langPickerModal").classList.add("show");
+      }
+      function confirmLangPick() {
+        changeLang(document.getElementById("langPickerSelect").value);
+        document.getElementById("langPickerModal").classList.remove("show");
+      }
+
+      function formatIndianNumberStr(str) {
+        const cleaned = (str || "").replace(/[^0-9]/g, "");
+        if (!cleaned) return "";
+        const num = parseInt(cleaned, 10);
+        if (isNaN(num)) return "";
+        return num.toLocaleString("en-IN");
+      }
+
+      function getNumValue(id) {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        const val = el.value || "";
+        return parseFloat(val.replace(/,/g, "")) || 0;
+      }
+
+      function bindIndianNumberInput(id, callback) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", () => {
+          const raw = el.value;
+          const cursor = el.selectionStart || raw.length;
+          const digitsBefore = raw
+            .slice(0, cursor)
+            .replace(/[^0-9]/g, "").length;
+
+          const formatted = formatIndianNumberStr(raw);
+          el.value = formatted;
+
+          let newCursor = 0;
+          let digitCount = 0;
+          for (let i = 0; i < formatted.length; i++) {
+            if (/[0-9]/.test(formatted[i])) {
+              digitCount++;
+            }
+            if (digitCount === digitsBefore) {
+              newCursor = i + 1;
+              break;
+            }
+          }
+          if (digitsBefore === 0) newCursor = 0;
+          else if (digitCount < digitsBefore || newCursor === 0)
+            newCursor = formatted.length;
+
+          try {
+            el.setSelectionRange(newCursor, newCursor);
+          } catch (err) {}
+
+          if (callback) callback();
+        });
+      }
+
       // Initialize
       window.addEventListener("DOMContentLoaded", () => {
-        detectLang();
+        let saved = null;
+        try {
+          saved = localStorage.getItem("upiMdrLang");
+        } catch (e) {}
+        if (saved && translations[saved]) {
+          setLang(saved);
+        } else {
+          detectLang();
+          showLangPicker();
+        }
+
+        bindIndianNumberInput("amount", () => calcMDR(false));
+        bindIndianNumberInput("monthlyRecv", () => calcMDR(false));
+        bindIndianNumberInput("qrTotal", () => checkEligibility());
+        document
+          .getElementById("daysIn")
+          .addEventListener("input", checkEligibility);
       });
 
       // Tabs
@@ -2355,16 +2526,8 @@
           r.closest(".radio-option").classList.add("selected");
           const smField = document.getElementById("smallMerchantField");
           smField.style.display = r.value === "p2p" ? "none" : "block";
-          calcMDR(); // Instant update
+          calcMDR(false); // Instant update
         });
-      });
-
-      // Instant update listeners
-      ["amount", "monthlyRecv"].forEach((id) => {
-        document.getElementById(id).addEventListener("input", calcMDR);
-      });
-      ["qrTotal", "daysIn"].forEach((id) => {
-        document.getElementById(id).addEventListener("input", checkEligibility);
       });
 
       function fmt(n) {
@@ -2380,21 +2543,39 @@
         return text;
       }
 
-      function calcMDR() {
-        const amountInput = document.getElementById("amount").value;
+      function calcMDR(isManualClick = false) {
+        const rawAmount = document.getElementById("amount").value.trim();
+        const amount = getNumValue("amount");
         const resultBox = document.getElementById("calcResult");
         const headline = document.getElementById("calcHeadline");
         const detail = document.getElementById("calcDetail");
+        const amountEl = document.getElementById("amount");
 
-        if (amountInput.trim() === "") {
+        if (rawAmount === "") {
+          const rawMonthly = document
+            .getElementById("monthlyRecv")
+            .value.trim();
+          if (rawMonthly !== "" || isManualClick === true) {
+            resultBox.classList.remove("free", "charge");
+            resultBox.classList.add("show", "charge");
+            headline.textContent = t("req-amount-headline");
+            detail.textContent = t("req-amount-detail");
+
+            if (isManualClick === true) {
+              amountEl.focus();
+              amountEl.classList.add("input-error");
+              setTimeout(() => amountEl.classList.remove("input-error"), 2000);
+            }
+            return;
+          }
           resultBox.classList.remove("show", "free", "charge");
           return;
         }
 
-        const amount = parseFloat(amountInput) || 0;
+        amountEl.classList.remove("input-error");
+
         const type = document.querySelector("#typeGroup input:checked").value;
-        const monthlyRecv =
-          parseFloat(document.getElementById("monthlyRecv").value) || 0;
+        const monthlyRecv = getNumValue("monthlyRecv");
 
         let mdr = 0;
         let free = true;
@@ -2436,7 +2617,7 @@
       }
 
       function checkEligibility() {
-        const total = parseFloat(document.getElementById("qrTotal").value) || 0;
+        const total = getNumValue("qrTotal");
         const day = parseInt(document.getElementById("daysIn").value) || 0;
         const resultBox = document.getElementById("eligResult");
         const headline = document.getElementById("eligHeadline");
