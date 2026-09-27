@@ -13,6 +13,7 @@
         --border: #e2e0db;
         --accent: #0f6b4c;
         --accent-soft: #e6f4ee;
+        --on-accent: #ffffff;
         --warn: #8a5a00;
         --warn-soft: #fdf1de;
         --free: #0f6b4c;
@@ -30,6 +31,7 @@
           --border: #33363a;
           --accent: #3ecf8e;
           --accent-soft: #153328;
+          --on-accent: #052b1d;
           --warn: #e0b35c;
           --warn-soft: #332a12;
           --free: #3ecf8e;
@@ -47,6 +49,7 @@
         --border: #33363a;
         --accent: #3ecf8e;
         --accent-soft: #153328;
+        --on-accent: #052b1d;
         --warn: #e0b35c;
         --warn-soft: #332a12;
         --free: #3ecf8e;
@@ -118,9 +121,9 @@
       }
       .subtitle {
         color: var(--text-muted);
-        font-size: 0.92rem;
-        margin-bottom: 20px;
-        line-height: 1.4;
+        font-size: 0.8rem;
+        margin: 6px 0 16px;
+        line-height: 1.45;
       }
       .tabs {
         display: flex;
@@ -128,11 +131,11 @@
         background: var(--tab-inactive);
         padding: 4px;
         border-radius: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       .tab-btn {
         flex: 1;
-        padding: 9px 8px;
+        padding: 9px 6px;
         border: none;
         border-radius: 8px;
         background: transparent;
@@ -154,7 +157,7 @@
         box-shadow: var(--shadow);
       }
       .field {
-        margin-bottom: 16px;
+        margin-bottom: 18px;
       }
       label {
         display: block;
@@ -200,23 +203,56 @@
         margin-top: 5px;
         line-height: 1.35;
       }
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .optional-tag {
+        flex: 0 0 auto;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: var(--tab-inactive);
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
       .radio-group {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
       }
       .radio-option {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px 12px;
+        gap: 10px;
+        padding: 9px 12px;
+        margin: 0;
         border: 1px solid var(--border);
         border-radius: 8px;
         cursor: pointer;
-        font-size: 0.9rem;
       }
       .radio-option input {
         accent-color: var(--accent);
+        margin: 0;
+        flex: 0 0 auto;
+      }
+      .opt-text {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+      }
+      .opt-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .opt-sub {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--text-muted);
+        line-height: 1.35;
       }
       .radio-option.selected {
         border-color: var(--accent);
@@ -228,17 +264,11 @@
         border: none;
         border-radius: 9px;
         background: var(--accent);
-        color: #052b1d;
+        color: var(--on-accent);
         font-weight: 700;
         font-size: 0.95rem;
         cursor: pointer;
         margin-top: 4px;
-      }
-      :root[data-theme="dark"] button.primary,
-      @media (prefers-color-scheme: dark) {
-        button.primary {
-          color: #052b1d;
-        }
       }
       .result {
         margin-top: 18px;
@@ -275,11 +305,71 @@
       }
       .note {
         margin-top: 16px;
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         color: var(--text-muted);
-        line-height: 1.5;
         border-top: 1px solid var(--border);
         padding-top: 12px;
+      }
+      .note summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text);
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .note summary::-webkit-details-marker {
+        display: none;
+      }
+      .note summary::before {
+        content: "ⓘ";
+        color: var(--accent);
+        font-weight: 400;
+      }
+      .note summary::after {
+        content: "▾";
+        margin-left: auto;
+        color: var(--text-muted);
+        transition: transform 0.2s;
+      }
+      .note[open] summary::after {
+        transform: rotate(180deg);
+      }
+      .note p {
+        margin: 8px 0 0;
+        line-height: 1.55;
+      }
+      .about-card h3 {
+        font-size: 1.15rem;
+        margin: 0 0 10px;
+      }
+      .about-card h4 {
+        font-size: 0.95rem;
+        margin: 18px 0 6px;
+        color: var(--accent);
+      }
+      .about-card p {
+        font-size: 0.88rem;
+        line-height: 1.55;
+        margin: 0;
+      }
+      .about-card p.muted {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      .about-card ul {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: var(--text-muted);
+        padding-left: 18px;
+        margin: 0;
+      }
+      .about-card li {
+        margin-bottom: 8px;
+      }
+      .about-card li strong {
+        color: var(--text);
       }
       .panel {
         display: none;
@@ -291,14 +381,12 @@
         text-align: center;
         color: var(--text-muted);
         font-size: 0.72rem;
-        margin-top: 18px;
-        line-height: 1.5;
+        margin-top: 14px;
       }
       .disclaimer-link {
         background: none;
         border: none;
-        padding: 0;
-        margin-top: 4px;
+        padding: 6px;
         color: var(--accent);
         text-decoration: underline;
         font-size: 0.72rem;
@@ -415,36 +503,55 @@
             <label id="i18n-label-ptype">Payment type</label>
             <div class="radio-group" id="typeGroup">
               <label class="radio-option selected"
-                ><input type="radio" name="ptype" value="p2p" checked />
-                <span id="i18n-opt-p2p"
-                  >Person-to-person (sending to a friend/family)</span
+                ><input type="radio" name="ptype" value="p2p" checked /><span
+                  class="opt-text"
+                  ><span class="opt-title" id="i18n-opt-p2p"
+                    >Person-to-person</span
+                  ><span class="opt-sub" id="i18n-opt-p2p-sub"
+                    >Friends and family</span
+                  ></span
                 ></label
               >
               <label class="radio-option"
-                ><input type="radio" name="ptype" value="standard" />
-                <span id="i18n-opt-standard"
-                  >Standard merchant (shop, restaurant, e-commerce)</span
+                ><input type="radio" name="ptype" value="standard" /><span
+                  class="opt-text"
+                  ><span class="opt-title" id="i18n-opt-standard"
+                    >Standard merchant</span
+                  ><span class="opt-sub" id="i18n-opt-standard-sub"
+                    >Shops, restaurants, e-commerce</span
+                  ></span
                 ></label
               >
               <label class="radio-option"
-                ><input type="radio" name="ptype" value="essential" />
-                <span id="i18n-opt-essential"
-                  >Railways / telecom / insurance / fuel / agri-inputs</span
+                ><input type="radio" name="ptype" value="essential" /><span
+                  class="opt-text"
+                  ><span class="opt-title" id="i18n-opt-essential"
+                    >Essential services</span
+                  ><span class="opt-sub" id="i18n-opt-essential-sub"
+                    >Railways, telecom, insurance, fuel, agri-inputs</span
+                  ></span
                 ></label
               >
               <label class="radio-option"
-                ><input type="radio" name="ptype" value="capital" />
-                <span id="i18n-opt-capital"
-                  >Mutual funds / securities / broker</span
+                ><input type="radio" name="ptype" value="capital" /><span
+                  class="opt-text"
+                  ><span class="opt-title" id="i18n-opt-capital"
+                    >Investments</span
+                  ><span class="opt-sub" id="i18n-opt-capital-sub"
+                    >Mutual funds, securities, brokers</span
+                  ></span
                 ></label
               >
             </div>
           </div>
 
           <div class="field" id="smallMerchantField" style="display: none">
-            <label for="monthlyRecv" id="i18n-label-monthly"
-              >This merchant's total UPI QR receipts this month so far (₹)
-              (Optional)</label
+            <label for="monthlyRecv" class="label-row"
+              ><span id="i18n-label-monthly"
+                >Merchant's UPI QR receipts this month (₹)</span
+              ><span class="optional-tag" id="i18n-optional"
+                >Optional</span
+              ></label
             >
             <input
               type="text"
@@ -453,7 +560,7 @@
               placeholder="e.g. 45,000"
             />
             <div class="field-hint" id="i18n-monthly-hint">
-              Optional: Only enter if checking small-merchant exemption (≤
+              Only needed to check the small-merchant exemption (up to
               ₹1,00,000/month).
             </div>
           </div>
@@ -467,13 +574,18 @@
             <div class="detail" id="calcDetail"></div>
           </div>
 
-          <div class="note" id="i18n-calc-note">
-            Customers never pay MDR directly, even on chargeable transactions.
-            It's settled between the merchant's bank and the payment ecosystem.
-            If a merchant asks you to pay extra or split a payment because of
-            this, that goes against RBI/NPCI's rules. Banks have been told
-            merchants must not pass MDR on to customers.
-          </div>
+          <details class="note">
+            <summary id="i18n-calc-note-summary">
+              Customers never pay MDR
+            </summary>
+            <p id="i18n-calc-note">
+              Customers never pay MDR directly, even on chargeable transactions.
+              It's settled between the merchant's bank and the payment
+              ecosystem. If a merchant asks you to pay extra or split a payment
+              because of this, that goes against RBI/NPCI's rules. Banks have
+              been told merchants must not pass MDR on to customers.
+            </p>
+          </details>
         </div>
       </div>
 
@@ -493,7 +605,7 @@
           </div>
           <div class="field">
             <label for="daysIn" id="i18n-label-days"
-              >Day of the month it is today (for a quick pace check)</label
+              >Today's date (day of month)</label
             >
             <input
               type="number"
@@ -517,107 +629,61 @@
             <div class="detail" id="eligDetail"></div>
           </div>
 
-          <div class="note" id="i18n-elig-note">
-            Small P2PM merchants stay at zero MDR on every transaction, of any
-            size, as long as total UPI QR receipts stay at or under ₹1,00,000
-            for that calendar month. Crossing the limit mid-month means
-            transactions after that point (above ₹2,000 each) start attracting
-            the standard MDR. It isn't retroactive on what you already received.
-          </div>
+          <details class="note">
+            <summary id="i18n-elig-note-summary">
+              How the ₹1,00,000 limit works
+            </summary>
+            <p id="i18n-elig-note">
+              Small P2PM merchants stay at zero MDR on every transaction, of any
+              size, as long as total UPI QR receipts stay at or under ₹1,00,000
+              for that calendar month. Crossing the limit mid-month means
+              transactions after that point (above ₹2,000 each) start attracting
+              the standard MDR. It isn't retroactive on what you already
+              received.
+            </p>
+          </details>
         </div>
       </div>
 
       <!-- ABOUT MDR PANEL -->
       <div class="panel" id="panel-about">
-        <div class="card">
-          <h3
-            style="
-              font-size: 1.15rem;
-              margin-top: 0;
-              margin-bottom: 10px;
-              color: var(--text);
-            "
-            id="i18n-about-h1"
-          >
-            What is MDR?
-          </h3>
-          <p
-            style="
-              font-size: 0.88rem;
-              line-height: 1.5;
-              color: var(--text);
-              margin-bottom: 12px;
-            "
-            id="i18n-about-p1"
-          >
+        <div class="card about-card">
+          <h3 id="i18n-about-h1">What is MDR?</h3>
+          <p id="i18n-about-p1">
             <strong>Merchant Discount Rate (MDR)</strong> is the transaction fee
             or service charge that a business or merchant pays to their
             acquiring bank or payment service provider (PSP) for processing
             digital payments, such as UPI, debit cards, or credit cards.
           </p>
 
-          <h4
-            style="
-              font-size: 0.95rem;
-              margin-top: 14px;
-              margin-bottom: 6px;
-              color: var(--accent);
-            "
-            id="i18n-about-h2"
-          >
+          <h4 id="i18n-about-h2">
             How does it work under the new UPI circular?
           </h4>
-          <p
-            style="
-              font-size: 0.85rem;
-              line-height: 1.5;
-              color: var(--text-muted);
-              margin-bottom: 12px;
-            "
-            id="i18n-about-p2"
-          >
+          <p class="muted" id="i18n-about-p2">
             While standard customer-to-customer transfers and small transactions
             remain free, the newer framework introduces structured, tiered fee
             updates for high-value commerce to sustain and maintain the digital
             payments infrastructure.
           </p>
 
-          <h4
-            style="
-              font-size: 0.95rem;
-              margin-top: 14px;
-              margin-bottom: 6px;
-              color: var(--accent);
-            "
-            id="i18n-about-h3"
-          >
-            Important Rules & Frameworks:
-          </h4>
-          <ul
-            style="
-              font-size: 0.85rem;
-              line-height: 1.5;
-              color: var(--text-muted);
-              padding-left: 18px;
-              margin: 0 0 12px 0;
-            "
-          >
-            <li style="margin-bottom: 6px" id="i18n-about-li1">
+          <h4 id="i18n-about-h3">Important Rules & Frameworks:</h4>
+          <ul>
+            <li id="i18n-about-li1">
               <strong>Free for Consumers:</strong> Customers never pay any MDR
               directly. It is strictly settled on the business/merchant side.
               Passing it on to users is prohibited by the RBI.
             </li>
-            <li style="margin-bottom: 6px" id="i18n-about-li2">
+            <li id="i18n-about-li2">
               <strong>The Small Merchant Cap:</strong> Businesses receiving up
               to ₹1,00,000 per month via UPI QR are classified as small
               merchants and are completely exempt from MDR.
             </li>
-            <li style="margin-bottom: 6px" id="i18n-about-li3">
+            <li id="i18n-about-li3">
               <strong>Sub-₹2,000 Rule:</strong> Any payment of ₹2,000 or less to
               a merchant is automatically exempt from MDR, regardless of
               category.
             </li>
-            <li style="margin-bottom: 6px" id="i18n-about-li4">
+            <li id="i18n-about-li4">
               <strong>Commercial Categories:</strong> Transactions exceeding
               ₹2,000 attract a tier-based MDR (e.g., standard categories are
               0.4% capped at ₹300, while essentials are a flat ₹5 fee).
@@ -627,12 +693,6 @@
       </div>
 
       <div class="footer-note">
-        <span id="i18n-footer"
-          >Not official NPCI/bank tooling. Rules can be revised before or after
-          the Oct 15 rollout. Double-check with your PSP for your exact merchant
-          category.</span
-        >
-        <br />
         <button
           type="button"
           class="disclaimer-link"
@@ -716,31 +776,37 @@
           "app-title": "🧾 UPI MDR Checker",
           subtitle:
             "Based on NPCI's Sept 15, 2026 circular, effective Oct 15, 2026. Estimates only. Always confirm with your acquiring bank or PSP.",
-          "tab-calc": "Per-payment calculator",
-          "tab-elig": "Small-merchant check",
+          "tab-calc": "Calculator",
+          "tab-elig": "Small merchant",
           "tab-about": "What is MDR?",
           "label-amount": "Transaction amount (₹) *",
           "label-ptype": "Payment type",
-          "opt-p2p": "Person-to-person (sending to a friend/family)",
-          "opt-standard": "Standard merchant (shop, restaurant, e-commerce)",
-          "opt-essential":
-            "Railways / telecom / insurance / fuel / agri-inputs",
-          "opt-capital": "Mutual funds / securities / broker",
-          "label-monthly":
-            "This merchant's total UPI QR receipts this month so far (₹) (Optional)",
+          "opt-p2p": "Person-to-person",
+          "opt-p2p-sub": "Friends and family",
+          "opt-standard": "Standard merchant",
+          "opt-standard-sub": "Shops, restaurants, e-commerce",
+          "opt-essential": "Essential services",
+          "opt-essential-sub":
+            "Railways, telecom, insurance, fuel, agri-inputs",
+          "opt-capital": "Investments",
+          "opt-capital-sub": "Mutual funds, securities, brokers",
+          "label-monthly": "Merchant's UPI QR receipts this month (₹)",
+          optional: "Optional",
           "monthly-hint":
-            "Optional: Only enter if checking small-merchant exemption (≤ ₹1,00,000/month).",
+            "Only needed to check the small-merchant exemption (up to ₹1,00,000/month).",
           "req-amount-headline": "⚠️ Transaction amount required",
           "req-amount-detail":
             "Please enter the transaction amount (₹) in the field above to calculate MDR.",
           "btn-calc": "Check MDR",
           "calc-note":
             "Customers never pay MDR directly, even on chargeable transactions. It's settled between the merchant's bank and the payment ecosystem. If a merchant asks you to pay extra or split a payment because of this, that goes against RBI/NPCI's rules. Banks have been told merchants must not pass MDR on to customers.",
+          "calc-note-summary": "Customers never pay MDR",
           "label-qrtotal": "Total received via UPI QR this calendar month (₹)",
-          "label-days": "Day of the month it is today (for a quick pace check)",
+          "label-days": "Today's date (day of month)",
           "btn-elig": "Check eligibility",
           "elig-note":
             "Small P2PM merchants stay at zero MDR on every transaction, of any size, as long as total UPI QR receipts stay at or under ₹1,00,000 for that calendar month. Crossing the limit mid-month means transactions after that point (above ₹2,000 each) start attracting the standard MDR. It isn't retroactive on what you already received.",
+          "elig-note-summary": "How the ₹1,00,000 limit works",
           "about-h1": "What is MDR?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> is the transaction fee or service charge that a business or merchant pays to their acquiring bank or payment service provider (PSP) for processing digital payments, such as UPI, debit cards, or credit cards.",
@@ -756,8 +822,6 @@
             "<strong>Sub-₹2,000 Rule:</strong> Any payment of ₹2,000 or less to a merchant is automatically exempt from MDR, regardless of category.",
           "about-li4":
             "<strong>Commercial Categories:</strong> Transactions exceeding ₹2,000 attract a tier-based MDR (e.g., standard categories are 0.4% capped at ₹300, while essentials are a flat ₹5 fee).",
-          footer:
-            "Not official NPCI/bank tooling. Rules can be revised before or after the Oct 15 rollout. Double-check with your PSP for your exact merchant category.",
           "disclaimer-link": "View full disclaimer",
           "disclaimer-title": "Disclaimer",
           "disclaimer-body":
@@ -792,31 +856,38 @@
           "app-title": "🧾 UPI MDR चेकर",
           subtitle:
             "NPCI के 15 सितंबर, 2026 के सर्कुलर पर आधारित, जो 15 अक्टूबर, 2026 से प्रभावी होगा। ये केवल अनुमान हैं। हमेशा अपने बैंक/PSP से पुष्टि करें।",
-          "tab-calc": "प्रति-भुगतान कैलकुलेटर",
-          "tab-elig": "लघु व्यापारी जांच",
+          "tab-calc": "कैलकुलेटर",
+          "tab-elig": "लघु व्यापारी",
           "tab-about": "MDR क्या है?",
           "label-amount": "लेन-देन की राशि (₹) *",
           "label-ptype": "भुगतान का प्रकार",
-          "opt-p2p": "व्यक्ति-से-व्यक्ति (दोस्त/परिवार)",
-          "opt-standard": "मानक व्यापारी (दुकान, रेस्तरां, ई-कॉमर्स)",
-          "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-इनपुट",
-          "opt-capital": "म्यूचुअल फंड / प्रतिभूतियां / ब्रोकर",
+          "opt-p2p": "व्यक्ति-से-व्यक्ति",
+          "opt-p2p-sub": "दोस्त, परिवार",
+          "opt-standard": "मानक व्यापारी",
+          "opt-standard-sub": "दुकान, रेस्तरां, ई-कॉमर्स",
+          "opt-essential": "आवश्यक सेवाएं",
+          "opt-essential-sub": "रेलवे, टेलीकॉम, बीमा, ईंधन, कृषि-इनपुट",
+          "opt-capital": "निवेश",
+          "opt-capital-sub": "म्यूचुअल फंड, प्रतिभूतियां, ब्रोकर",
           "label-monthly":
-            "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹) (वैकल्पिक)",
+            "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹)",
+          optional: "वैकल्पिक",
           "monthly-hint":
-            "वैकल्पिक: केवल लघु-व्यापारी छूट (≤ ₹1,00,000/माह) की जांच के लिए दर्ज करें।",
-          "req-amount-headline": "⚠️ लेन-देन की राशि आवश्यक है",
+            "केवल लघु-व्यापारी छूट (₹1,00,000/माह तक) की जांच के लिए।",
+          "req-amount-headline": "⚠️ लेनदेन राशि आवश्यक",
           "req-amount-detail":
-            "MDR की गणना के लिए कृपया ऊपर दिए गए फ़ील्ड में लेन-देन की राशि (₹) दर्ज करें।",
+            "MDR की गणना के लिए ऊपर लेनदेन राशि (₹) दर्ज करें।",
           "btn-calc": "MDR जांचें",
           "calc-note":
             "ग्राहक कभी भी सीधे MDR का भुगतान नहीं करते। यह व्यापारी के बैंक और भुगतान प्रणाली के बीच तय होता है। अगर कोई व्यापारी इस वजह से आपसे अतिरिक्त भुगतान मांगे, तो यह RBI/NPCI के नियमों का उल्लंघन है।",
+          "calc-note-summary": "ग्राहक कभी MDR नहीं देते",
           "label-qrtotal":
             "इस कैलेंडर महीने में UPI QR के माध्यम से प्राप्त कुल राशि (₹)",
-          "label-days": "आज महीने का कौन सा दिन है (त्वरित गति जांच के लिए)",
+          "label-days": "आज की तारीख",
           "btn-elig": "पात्रता जांचें",
           "elig-note":
             "छोटे व्यापारियों की कुल UPI QR प्राप्तियां महीने में ₹1,00,000 तक रहने पर हर लेन-देन पर शून्य MDR रहता है। सीमा पार होने के बाद, ₹2,000 से अधिक के लेन-देन पर MDR लागू होता है।",
+          "elig-note-summary": "₹1,00,000 की सीमा कैसे काम करती है",
           "about-h1": "MDR क्या है?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> वह लेन-देन शुल्क है जो कोई व्यापारी UPI, डेबिट कार्ड या क्रेडिट कार्ड जैसे डिजिटल भुगतान संसाधित करने के लिए अपने बैंक या भुगतान सेवा प्रदाता (PSP) को देता है।",
@@ -832,8 +903,6 @@
             "<strong>₹2,000 से कम का नियम:</strong> व्यापारी को किए गए ₹2,000 या उससे कम के किसी भी भुगतान पर, श्रेणी चाहे जो भी हो, शून्य MDR रहता है।",
           "about-li4":
             "<strong>वाणिज्यिक श्रेणियां:</strong> ₹2,000 से अधिक के लेन-देन पर श्रेणी के अनुसार MDR लागू होता है (जैसे मानक 0.4%, आवश्यक सेवाओं पर फ्लैट ₹5)।",
-          footer:
-            "यह आधिकारिक NPCI/बैंक टूल नहीं है। 15 अक्टूबर से पहले या बाद में नियम बदल सकते हैं। सटीक जानकारी के लिए अपने PSP से संपर्क करें।",
           "disclaimer-link": "पूरा डिस्क्लेमर देखें",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -869,31 +938,38 @@
           "app-title": "🧾 UPI MDR చెకర్",
           subtitle:
             "NPCI యొక్క సెప్టెంబర్ 15, 2026 నాటి సర్క్యులర్ ఆధారంగా, అక్టోబర్ 15, 2026 నుండి అమలులోకి వస్తుంది. ఇవి అంచనాలు మాత్రమే. ఎల్లప్పుడూ మీ బ్యాంక్ / PSP తో నిర్ధారించుకోండి.",
-          "tab-calc": "ప్రతి చెల్లింపు కాలిక్యులేటర్",
-          "tab-elig": "చిన్న వ్యాపారి తనిఖీ",
+          "tab-calc": "కాలిక్యులేటర్",
+          "tab-elig": "చిన్న వ్యాపారి",
           "tab-about": "MDR అంటే ఏమిటి?",
           "label-amount": "లావాదేవీ మొత్తం (₹) *",
           "label-ptype": "చెల్లింపు రకం",
-          "opt-p2p": "వ్యక్తి నుండి వ్యక్తికి (స్నేహితుడు/కుటుంబం)",
-          "opt-standard": "సాధారణ వ్యాపారి (దుకాణం, రెస్టారెంట్, ఇ-కామర్స్)",
-          "opt-essential": "రైల్వేలు / టెలికాం / బీమా / ఇంధనం / వ్యవసాయం",
-          "opt-capital": "మ్యూచువల్ ఫండ్‌లు / సెక్యూరిటీలు / బ్రోకర్",
+          "opt-p2p": "వ్యక్తి నుండి వ్యక్తికి",
+          "opt-p2p-sub": "స్నేహితుడు, కుటుంబం",
+          "opt-standard": "సాధారణ వ్యాపారి",
+          "opt-standard-sub": "దుకాణం, రెస్టారెంట్, ఇ-కామర్స్",
+          "opt-essential": "అవసరమైన సేవలు",
+          "opt-essential-sub": "రైల్వేలు, టెలికాం, బీమా, ఇంధనం, వ్యవసాయం",
+          "opt-capital": "పెట్టుబడులు",
+          "opt-capital-sub": "మ్యూచువల్ ఫండ్‌లు, సెక్యూరిటీలు, బ్రోకర్",
           "label-monthly":
-            "ఈ నెలలో ఈ వ్యాపారి అందుకున్న మొత్తం UPI QR వసూళ్లు (₹) (ఐచ్ఛికం)",
+            "ఈ నెలలో ఈ వ్యాపారి అందుకున్న మొత్తం UPI QR వసూళ్లు (₹)",
+          optional: "ఐచ్ఛికం",
           "monthly-hint":
-            "ఐచ్ఛికం: చిన్న వ్యాపారి మినహాయింపు (నెలకి ≤ ₹1,00,000) తనిఖీ చేయాలనుకుంటే మాత్రమే నమోదు చేయండి.",
+            "చిన్న వ్యాపారి మినహాయింపు (నెలకు ₹1,00,000 వరకు) తనిఖీ కోసం మాత్రమే.",
           "req-amount-headline": "⚠️ లావాదేవీ మొత్తం అవసరం",
           "req-amount-detail":
             "MDRని లెక్కించడానికి దయచేసి పైన ఉన్న ఫీల్డ్‌లో లావాదేవీ మొత్తాన్ని (₹) నమోదు చేయండి.",
           "btn-calc": "MDR తనిఖీ చేయండి",
           "calc-note":
             "ఖాతాదారులు ఎప్పుడూ MDR నేరుగా చెల్లించరు. ఇది వ్యాపారి బ్యాంకు మరియు పేమెంట్ సిస్టమ్ మధ్య పరిష్కరించబడుతుంది. దీనివల్ల వ్యాపారి మిమ్మల్ని అదనంగా చెల్లించమని అడిగితే, అది RBI/NPCI నియమాలకు విరుద్ధం.",
+          "calc-note-summary": "కస్టమర్లు ఎప్పుడూ MDR చెల్లించరు",
           "label-qrtotal":
             "ఈ క్యాలెండర్ నెలలో UPI QR ద్వారా అందుకున్న మొత్తం (₹)",
-          "label-days": "ఈరోజు నెలలోని ఎన్నో రోజు (వేగవంతమైన తనిఖీ కోసం)",
+          "label-days": "ఈరోజు తేదీ",
           "btn-elig": "అర్హతను తనిఖీ చేయండి",
           "elig-note":
             "చిన్న వ్యాపారుల మొత్తం UPI QR వసూళ్లు నెలలో ₹1,00,000 లోపు ఉంటే, ప్రతి లావాదేవీపై జీరో MDR ఉంటుంది. పరిమితి దాటిన తర్వాత, ₹2,000 కంటే ఎక్కువ ఉన్న లావాదేవీలపై MDR వర్తిస్తుంది.",
+          "elig-note-summary": "₹1,00,000 పరిమితి ఎలా పనిచేస్తుంది",
           "about-h1": "MDR అంటే ఏమిటి?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> అనేది డిజిటల్ చెల్లింపులను ప్రాసెస్ చేసినందుకు వ్యాపారి వారి బ్యాంకు లేదా పేమెంట్ సర్వీస్ ప్రొవైడర్ (PSP) కి చెల్లించే లావాదేవీ రుసుము.",
@@ -909,8 +985,6 @@
             "<strong>₹2,000 లోపు నియమం:</strong> వ్యాపారికి చేసే ₹2,000 లేదా అంతకంటే తక్కువ చెల్లింపులకు, కేటగిరీతో సంబంధం లేకుండా జీరో MDR ఉంటుంది.",
           "about-li4":
             "<strong>వాణిజ్య కేటగిరీలు:</strong> ₹2,000 దాటిన లావాదేవీలకు కేటగిరీని బట్టి MDR వర్తిస్తుంది (ఉదా: సాధారణం 0.4%, ఎసెన్షియల్స్ ఫ్లాట్ ₹5).",
-          footer:
-            "ఇది అధికారిక NPCI/బ్యాంక్ యాప్ కాదు. అక్టోబర్ 15 కంటే ముందు లేదా తర్వాత నిబంధనలు మారవచ్చు. ఖచ్చితమైన వివరాల కోసం మీ PSPని సంప్రదించండి.",
           "disclaimer-link": "డిస్‌క్లెయిమర్ చూడండి",
           "disclaimer-title": "డిస్‌క్లెయిమర్",
           "disclaimer-body":
@@ -946,25 +1020,36 @@
           "app-title": "🧾 UPI MDR ચેકર",
           subtitle:
             "NPCI ના 15 સપ્ટેમ્બર, 2026 ના પરિપત્ર પર આધારિત, જે 15 ઓક્ટોબર, 2026 થી અમલમાં આવશે. આ ફક્ત અંદાજો છે. હંમેશા તમારી બેંક/PSP સાથે ખાતરી કરો.",
-          "tab-calc": "પ્રતિ-ચુકવણી કેલ્ક્યુલેટર",
-          "tab-elig": "નાના વેપારી તપાસ",
+          "tab-calc": "કેલ્ક્યુલેટર",
+          "tab-elig": "નાના વેપારી",
           "tab-about": "MDR શું છે?",
           "label-amount": "વ્યવહારની રકમ (₹)",
           "label-ptype": "ચુકવણીનો પ્રકાર",
-          "opt-p2p": "વ્યક્તિ-થી-વ્યક્તિ (મિત્ર/પરિવાર)",
-          "opt-standard": "સામાન્ય વેપારી (દુકાન, રેસ્ટોરન્ટ, ઈ-કોમર્સ)",
-          "opt-essential": "રેલવે / ટેલિકોમ / વીમો / ઇંધણ / કૃષિ-ઇનપુટ",
-          "opt-capital": "મ્યુચ્યુઅલ ફંડ / સિક્યોરિટીઝ / બ્રોકર",
+          "req-amount-headline": "⚠️ વ્યવહારની રકમ જરૂરી છે",
+          "req-amount-detail": "MDR ગણવા માટે ઉપર વ્યવહારની રકમ (₹) દાખલ કરો.",
+          "opt-p2p": "વ્યક્તિ-થી-વ્યક્તિ",
+          "opt-p2p-sub": "મિત્ર, પરિવાર",
+          "opt-standard": "સામાન્ય વેપારી",
+          "opt-standard-sub": "દુકાન, રેસ્ટોરન્ટ, ઈ-કોમર્સ",
+          "opt-essential": "આવશ્યક સેવાઓ",
+          "opt-essential-sub": "રેલવે, ટેલિકોમ, વીમો, ઇંધણ, કૃષિ-ઇનપુટ",
+          "opt-capital": "રોકાણ",
+          "opt-capital-sub": "મ્યુચ્યુઅલ ફંડ, સિક્યોરિટીઝ, બ્રોકર",
           "label-monthly": "આ મહિને અત્યાર સુધી આ વેપારીની કુલ UPI QR આવક (₹)",
+          optional: "વૈકલ્પિક",
+          "monthly-hint":
+            "ફક્ત નાના વેપારી મુક્તિ (મહિને ₹1,00,000 સુધી) તપાસવા માટે.",
           "btn-calc": "MDR તપાસો",
           "calc-note":
             "ગ્રાહકો ક્યારેય સીધું MDR ચૂકવતા નથી. તે વેપારીની બેંક અને ચુકવણી સિસ્ટમ વચ્ચે નક્કી થાય છે. જો કોઈ વેપારી આ કારણસર તમારી પાસેથી વધારાની ચુકવણી માંગે, તો તે RBI/NPCI ના નિયમોનું ઉલ્લંઘન છે.",
+          "calc-note-summary": "ગ્રાહકો ક્યારેય MDR ચૂકવતા નથી",
           "label-qrtotal":
             "આ કેલેન્ડર મહિનામાં UPI QR દ્વારા મળેલી કુલ રકમ (₹)",
-          "label-days": "આજે મહિનાનો કયો દિવસ છે (ઝડપી ગતિ તપાસ માટે)",
+          "label-days": "આજની તારીખ",
           "btn-elig": "પાત્રતા તપાસો",
           "elig-note":
             "નાના વેપારીઓની કુલ UPI QR આવક મહિનામાં ₹1,00,000 સુધી રહે ત્યાં સુધી દરેક વ્યવહાર પર શૂન્ય MDR રહે છે. મર્યાદા વટાવ્યા પછી, ₹2,000 થી વધુના વ્યવહારો પર MDR લાગુ પડે છે.",
+          "elig-note-summary": "₹1,00,000 ની મર્યાદા કેવી રીતે કામ કરે છે",
           "about-h1": "MDR શું છે?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> એ વ્યવહાર શુલ્ક છે જે વેપારી UPI, ડેબિટ કાર્ડ અથવા ક્રેડિટ કાર્ડ જેવી ડિજિટલ ચુકવણી પ્રક્રિયા માટે તેમની બેંક અથવા પેમેન્ટ સર્વિસ પ્રોવાઈડર (PSP) ને ચૂકવે છે.",
@@ -980,8 +1065,6 @@
             "<strong>₹2,000 થી ઓછાનો નિયમ:</strong> વેપારીને કરેલી ₹2,000 અથવા તેનાથી ઓછી કોઈપણ ચુકવણી પર, શ્રેણી ગમે તે હોય, શૂન્ય MDR રહે છે.",
           "about-li4":
             "<strong>વ્યાપારી શ્રેણીઓ:</strong> ₹2,000 થી વધુના વ્યવહારો પર શ્રેણી મુજબ MDR લાગુ પડે છે (દા.ત. સામાન્ય 0.4%, આવશ્યક સેવાઓ પર ફ્લેટ ₹5).",
-          footer:
-            "આ સત્તાવાર NPCI/બેંક ટૂલ નથી. 15 ઓક્ટોબર પહેલા કે પછી નિયમો બદલાઈ શકે છે. ચોક્કસ વિગતો માટે તમારા PSP નો સંપર્ક કરો.",
           "disclaimer-link": "ડિસ્ક્લેમર જુઓ",
           "disclaimer-title": "ડિસ્ક્લેમર",
           "disclaimer-body":
@@ -1017,25 +1100,36 @@
           "app-title": "🧾 ইউপিআই এমডিআৰ চেকাৰ",
           subtitle:
             "NPCIৰ 15 ছেপ্টেম্বৰ, 2026ৰ চাৰ্কুলাৰৰ ওপৰত ভিত্তি কৰি, যি 15 অক্টোবৰ, 2026ৰ পৰা কাৰ্যকৰী হ'ব। এইবোৰ কেৱল অনুমান। সদায় আপোনাৰ বেংক/PSPৰ সৈতে নিশ্চিত কৰক।",
-          "tab-calc": "প্ৰতি-পৰিশোধ কেলকুলেটৰ",
-          "tab-elig": "ক্ষুদ্ৰ ব্যৱসায়ী পৰীক্ষা",
+          "tab-calc": "কেলকুলেটৰ",
+          "tab-elig": "ক্ষুদ্ৰ ব্যৱসায়ী",
           "tab-about": "এমডিআৰ কি?",
           "label-amount": "লেনদেনৰ পৰিমাণ (₹)",
           "label-ptype": "পৰিশোধৰ ধৰণ",
-          "opt-p2p": "ব্যক্তি-পৰা-ব্যক্তি (বন্ধু/পৰিয়াল)",
-          "opt-standard": "সাধাৰণ ব্যৱসায়ী (দোকান, ৰেষ্টুৰেণ্ট, ই-কমাৰ্চ)",
-          "opt-essential": "ৰেলৱে / টেলিকম / বীমা / ইন্ধন / কৃষি-উপকৰণ",
-          "opt-capital": "মিউচুৱেল ফাণ্ড / চিকিউৰিটিজ / ব্ৰ'কাৰ",
+          "req-amount-headline": "⚠️ লেনদেনৰ পৰিমাণ প্ৰয়োজন",
+          "req-amount-detail": "MDR গণনা কৰিবলৈ ওপৰত লেনদেনৰ পৰিমাণ (₹) লিখক।",
+          "opt-p2p": "ব্যক্তি-পৰা-ব্যক্তি",
+          "opt-p2p-sub": "বন্ধু, পৰিয়াল",
+          "opt-standard": "সাধাৰণ ব্যৱসায়ী",
+          "opt-standard-sub": "দোকান, ৰেষ্টুৰেণ্ট, ই-কমাৰ্চ",
+          "opt-essential": "অত্যাৱশ্যকীয় সেৱা",
+          "opt-essential-sub": "ৰেলৱে, টেলিকম, বীমা, ইন্ধন, কৃষি-উপকৰণ",
+          "opt-capital": "বিনিয়োগ",
+          "opt-capital-sub": "মিউচুৱেল ফাণ্ড, চিকিউৰিটিজ, ব্ৰ'কাৰ",
           "label-monthly":
             "এই মাহত এতিয়ালৈকে এই ব্যৱসায়ীৰ মুঠ UPI QR প্ৰাপ্তি (₹)",
+          optional: "ঐচ্ছিক",
+          "monthly-hint":
+            "কেৱল ক্ষুদ্ৰ ব্যৱসায়ী ৰেহাই (মাহে ₹1,00,000 লৈকে) পৰীক্ষাৰ বাবে।",
           "btn-calc": "এমডিআৰ পৰীক্ষা কৰক",
           "calc-note":
             "গ্ৰাহকে কেতিয়াও পোনপটীয়াকৈ এমডিআৰ নিদিয়ে। ই ব্যৱসায়ীৰ বেংক আৰু পেমেণ্ট ছিষ্টেমৰ মাজত নিষ্পত্তি কৰা হয়। যদি কোনো ব্যৱসায়ীয়ে এই কাৰণত আপোনাৰ পৰা অতিৰিক্ত পৰিশোধ বিচাৰে, তেন্তে সেয়া RBI/NPCIৰ নিয়মৰ বিৰুদ্ধ।",
+          "calc-note-summary": "গ্ৰাহকে কেতিয়াও MDR নিদিয়ে",
           "label-qrtotal": "এই কেলেণ্ডাৰ মাহত UPI QRৰ জৰিয়তে পোৱা মুঠ (₹)",
-          "label-days": "আজি মাহৰ কোনটো দিন (দ্ৰুত গতি পৰীক্ষাৰ বাবে)",
+          "label-days": "আজিৰ তাৰিখ",
           "btn-elig": "যোগ্যতা পৰীক্ষা কৰক",
           "elig-note":
             "ক্ষুদ্ৰ ব্যৱসায়ীৰ মুঠ UPI QR প্ৰাপ্তি মাহত ₹1,00,000ৰ ভিতৰত থাকিলে, প্ৰতিটো লেনদেনত শূন্য এমডিআৰ থাকে। সীমা অতিক্ৰম কৰাৰ পিছত, ₹2,000তকৈ অধিক লেনদেনত এমডিআৰ প্ৰযোজ্য হয়।",
+          "elig-note-summary": "₹1,00,000 সীমাটো কেনেকৈ কাম কৰে",
           "about-h1": "এমডিআৰ কি?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> হ'ল সেই লেনদেন মাচুল যি এজন ব্যৱসায়ীয়ে UPI, ডেবিট কাৰ্ড বা ক্ৰেডিট কাৰ্ডৰ দৰে ডিজিটেল পৰিশোধ প্ৰক্ৰিয়া কৰাৰ বাবে তেওঁলোকৰ বেংক বা পেমেণ্ট সাৰ্ভিচ প্ৰ'ভাইদাৰ (PSP)ক প্ৰদান কৰে।",
@@ -1051,8 +1145,6 @@
             "<strong>₹2,000তকৈ কমৰ নিয়ম:</strong> ব্যৱসায়ীলৈ কৰা ₹2,000 বা তাতকৈ কম যিকোনো পৰিশোধত, শ্ৰেণী যিয়েই নহওক, শূন্য এমডিআৰ থাকে।",
           "about-li4":
             "<strong>বাণিজ্যিক শ্ৰেণী:</strong> ₹2,000তকৈ অধিক লেনদেনত শ্ৰেণী অনুসৰি এমডিআৰ প্ৰযোজ্য হয় (যেনে সাধাৰণ 0.4%, আৱশ্যকীয় সেৱাত ফ্লেট ₹5)।",
-          footer:
-            "ই চৰকাৰী NPCI/বেংক টুল নহয়। 15 অক্টোবৰৰ আগতে বা পিছত নিয়ম সলনি হ'ব পাৰে। সঠিক তথ্যৰ বাবে আপোনাৰ PSPৰ সৈতে যোগাযোগ কৰক।",
           "disclaimer-link": "ডিস্ক্লেমাৰ চাওক",
           "disclaimer-title": "ডিস্ক্লেমাৰ",
           "disclaimer-body":
@@ -1088,26 +1180,37 @@
           "app-title": "🧾 ইউপিআই এমডিআর চেকার",
           subtitle:
             "NPCI-এর 15 সেপ্টেম্বর, 2026-এর সার্কুলারের ভিত্তিতে, যা 15 অক্টোবর, 2026 থেকে কার্যকর হবে। এগুলো শুধুমাত্র অনুমান। সবসময় আপনার ব্যাংক/PSP-এর সাথে নিশ্চিত করুন।",
-          "tab-calc": "প্রতি-পেমেন্ট ক্যালকুলেটর",
-          "tab-elig": "ক্ষুদ্র ব্যবসায়ী যাচাই",
+          "tab-calc": "ক্যালকুলেটর",
+          "tab-elig": "ক্ষুদ্র ব্যবসায়ী",
           "tab-about": "এমডিআর কি?",
           "label-amount": "লেনদেনের পরিমাণ (₹)",
           "label-ptype": "পেমেন্টের ধরন",
-          "opt-p2p": "ব্যক্তি-থেকে-ব্যক্তি (বন্ধু/পরিবার)",
-          "opt-standard": "সাধারণ ব্যবসায়ী (দোকান, রেস্তোরাঁ, ই-কমার্স)",
-          "opt-essential": "রেলওয়ে / টেলিকম / বীমা / জ্বালানি / কৃষি-উপকরণ",
-          "opt-capital": "মিউচুয়াল ফান্ড / সিকিউরিটিজ / ব্রোকার",
+          "req-amount-headline": "⚠️ লেনদেনের পরিমাণ প্রয়োজন",
+          "req-amount-detail": "MDR হিসাব করতে উপরে লেনদেনের পরিমাণ (₹) লিখুন।",
+          "opt-p2p": "ব্যক্তি-থেকে-ব্যক্তি",
+          "opt-p2p-sub": "বন্ধু, পরিবার",
+          "opt-standard": "সাধারণ ব্যবসায়ী",
+          "opt-standard-sub": "দোকান, রেস্তোরাঁ, ই-কমার্স",
+          "opt-essential": "অত্যাবশ্যক পরিষেবা",
+          "opt-essential-sub": "রেলওয়ে, টেলিকম, বীমা, জ্বালানি, কৃষি-উপকরণ",
+          "opt-capital": "বিনিয়োগ",
+          "opt-capital-sub": "মিউচুয়াল ফান্ড, সিকিউরিটিজ, ব্রোকার",
           "label-monthly":
             "এই মাসে এখন পর্যন্ত এই ব্যবসায়ীর মোট UPI QR প্রাপ্তি (₹)",
+          optional: "ঐচ্ছিক",
+          "monthly-hint":
+            "শুধুমাত্র ক্ষুদ্র ব্যবসায়ী ছাড় (মাসে ₹1,00,000 পর্যন্ত) যাচাইয়ের জন্য।",
           "btn-calc": "এমডিআর পরীক্ষা করুন",
           "calc-note":
             "গ্রাহকরা কখনো সরাসরি এমডিআর দেন না। এটি ব্যবসায়ীর ব্যাংক এবং পেমেন্ট সিস্টেমের মধ্যে নিষ্পত্তি হয়। যদি কোনো ব্যবসায়ী এই কারণে আপনার কাছ থেকে অতিরিক্ত অর্থ চান, তাহলে তা RBI/NPCI-এর নিয়মের বিরুদ্ধে।",
+          "calc-note-summary": "গ্রাহকরা কখনও MDR দেন না",
           "label-qrtotal":
             "এই ক্যালেন্ডার মাসে UPI QR-এর মাধ্যমে প্রাপ্ত মোট (₹)",
-          "label-days": "আজ মাসের কোন দিন (দ্রুত গতি যাচাইয়ের জন্য)",
+          "label-days": "আজকের তারিখ",
           "btn-elig": "যোগ্যতা যাচাই করুন",
           "elig-note":
             "ক্ষুদ্র ব্যবসায়ীদের মোট UPI QR প্রাপ্তি মাসে ₹1,00,000-এর মধ্যে থাকলে প্রতিটি লেনদেনে শূন্য এমডিআর থাকে। সীমা অতিক্রম করার পর, ₹2,000-এর বেশি লেনদেনে এমডিআর প্রযোজ্য হয়।",
+          "elig-note-summary": "₹1,00,000 সীমা কীভাবে কাজ করে",
           "about-h1": "এমডিআর কি?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> হলো সেই লেনদেন ফি যা একজন ব্যবসায়ী UPI, ডেবিট কার্ড বা ক্রেডিট কার্ডের মতো ডিজিটাল পেমেন্ট প্রক্রিয়াকরণের জন্য তাদের ব্যাংক বা পেমেন্ট সার্ভিস প্রোভাইডার (PSP)-কে প্রদান করেন।",
@@ -1123,8 +1226,6 @@
             "<strong>₹2,000-এর কম নিয়ম:</strong> ব্যবসায়ীকে করা ₹2,000 বা তার কম যেকোনো পেমেন্টে, বিভাগ যাই হোক না কেন, শূন্য এমডিআর থাকে।",
           "about-li4":
             "<strong>বাণিজ্যিক বিভাগ:</strong> ₹2,000-এর বেশি লেনদেনে বিভাগ অনুযায়ী এমডিআর প্রযোজ্য হয় (যেমন সাধারণ 0.4%, জরুরি সেবায় ফ্ল্যাট ₹5)।",
-          footer:
-            "এটি অফিসিয়াল NPCI/ব্যাংক টুল নয়। 15 অক্টোবরের আগে বা পরে নিয়ম পরিবর্তিত হতে পারে। সঠিক তথ্যের জন্য আপনার PSP-এর সাথে যোগাযোগ করুন।",
           "disclaimer-link": "ডিসক্লেমার দেখুন",
           "disclaimer-title": "ডিসক্লেমার",
           "disclaimer-body":
@@ -1160,26 +1261,38 @@
           "app-title": "🧾 यू पी आई एम डी आर चेकर",
           subtitle:
             "NPCI के 15 सितंबर, 2026 के सर्कुलर पर आधारित, जो 15 अक्टूबर, 2026 से प्रभावी होगा। ये केवल अनुमान हैं। हमेशा अपने बैंक/PSP से पुष्टि करें।",
-          "tab-calc": "प्रति-भुगतान कैलकुलेटर",
-          "tab-elig": "लघु व्यापारी जांच",
+          "tab-calc": "कैलकुलेटर",
+          "tab-elig": "लघु व्यापारी",
           "tab-about": "MDR आ मा?",
           "label-amount": "लेन-देन की राशि (₹)",
           "label-ptype": "भुगतान का प्रकार",
-          "opt-p2p": "ब्यक्तिगत (P2P) (दोस्त/परिवार)",
-          "opt-standard": "मानक व्यापारी (दुकान, रेस्तरां, ई-कॉमर्स)",
-          "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-इनपुट",
-          "opt-capital": "म्यूचुअल फंड / प्रतिभूतियां / ब्रोकर",
+          "req-amount-headline": "⚠️ लेनदेन राशि आवश्यक",
+          "req-amount-detail":
+            "MDR की गणना के लिए ऊपर लेनदेन राशि (₹) दर्ज करें।",
+          "opt-p2p": "ब्यक्तिगत (P2P)",
+          "opt-p2p-sub": "दोस्त, परिवार",
+          "opt-standard": "मानक व्यापारी",
+          "opt-standard-sub": "दुकान, रेस्तरां, ई-कॉमर्स",
+          "opt-essential": "आवश्यक सेवाएं",
+          "opt-essential-sub": "रेलवे, टेलीकॉम, बीमा, ईंधन, कृषि-इनपुट",
+          "opt-capital": "निवेश",
+          "opt-capital-sub": "म्यूचुअल फंड, प्रतिभूतियां, ब्रोकर",
           "label-monthly":
             "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹)",
+          optional: "वैकल्पिक",
+          "monthly-hint":
+            "केवल लघु-व्यापारी छूट (₹1,00,000/माह तक) की जांच के लिए।",
           "btn-calc": "MDR जांचें",
           "calc-note":
             "ग्राहक कभी भी सीधे MDR का भुगतान नहीं करते। यह व्यापारी के बैंक और भुगतान प्रणाली के बीच तय होता है। अगर कोई व्यापारी इस वजह से आपसे अतिरिक्त भुगतान मांगे, तो यह RBI/NPCI के नियमों का उल्लंघन है।",
+          "calc-note-summary": "ग्राहक कभी MDR नहीं देते",
           "label-qrtotal":
             "इस कैलेंडर महीने में UPI QR के माध्यम से प्राप्त कुल राशि (₹)",
-          "label-days": "आज महीने का कौन सा दिन है (त्वरित गति जांच के लिए)",
+          "label-days": "आज की तारीख",
           "btn-elig": "पात्रता जांचें",
           "elig-note":
             "छोटे व्यापारियों की कुल UPI QR प्राप्तियां महीने में ₹1,00,000 तक रहने पर हर लेन-देन पर शून्य MDR रहता है। सीमा पार होने के बाद, ₹2,000 से अधिक के लेन-देन पर MDR लागू होता है।",
+          "elig-note-summary": "₹1,00,000 की सीमा कैसे काम करती है",
           "about-h1": "MDR आ मा?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> वह लेन-देन शुल्क है जो कोई व्यापारी UPI, डेबिट कार्ड या क्रेडिट कार्ड जैसे डिजिटल भुगतान संसाधित करने के लिए अपने बैंक या भुगतान सेवा प्रदाता (PSP) को देता है।",
@@ -1195,8 +1308,6 @@
             "<strong>₹2,000 से कम का नियम:</strong> व्यापारी को किए गए ₹2,000 या उससे कम के किसी भी भुगतान पर, श्रेणी चाहे जो भी हो, शून्य MDR रहता है।",
           "about-li4":
             "<strong>वाणिज्यिक श्रेणियां:</strong> ₹2,000 से अधिक के लेन-देन पर श्रेणी के अनुसार MDR लागू होता है (जैसे मानक 0.4%, आवश्यक सेवाओं पर फ्लैट ₹5)।",
-          footer:
-            "यह आधिकारिक NPCI/बैंक टूल नहीं है। 15 अक्टूबर से पहले या बाद में नियम बदल सकते हैं। सटीक जानकारी के लिए अपने PSP से संपर्क करें।",
           "disclaimer-link": "डिस्क्लेमर नाय",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -1232,25 +1343,36 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI दे 15 सितंबर, 2026 दे सर्कुलर उप्पर आधारत, जेह् 15 अक्तूबर, 2026 थमां लागू होग। एह् सिर्फ अनुमान न। हमेशा अपने बैंक/PSP कन्नै तसदीक करो।",
-          "tab-calc": "हर-भुगतान कैलकुलेटर",
-          "tab-elig": "छोटे व्यापारी दी जांच",
+          "tab-calc": "कैलकुलेटर",
+          "tab-elig": "छोटे व्यापारी",
           "tab-about": "MDR क्या ऐ?",
           "label-amount": "लेन-देन दी राशि (₹)",
           "label-ptype": "भुगतान दी किस्म",
-          "opt-p2p": "निजी (P2P) (दोस्त/परिवार)",
-          "opt-standard": "स्टैंडर्ड व्यापारी (दुकान, रेस्टोरेंट, ई-कॉमर्स)",
-          "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-इनपुट",
-          "opt-capital": "म्यूचुअल फंड / प्रतिभूतियां / ब्रोकर",
+          "req-amount-headline": "⚠️ लेन-देन दी रकम जरूरी ऐ",
+          "req-amount-detail": "MDR गिनने आस्तै उप्पर लेन-देन दी रकम (₹) भरो।",
+          "opt-p2p": "निजी (P2P)",
+          "opt-p2p-sub": "दोस्त, परिवार",
+          "opt-standard": "स्टैंडर्ड व्यापारी",
+          "opt-standard-sub": "दुकान, रेस्टोरेंट, ई-कॉमर्स",
+          "opt-essential": "जरूरी सेवाएं",
+          "opt-essential-sub": "रेलवे, टेलीकॉम, बीमा, ईंधन, कृषि-इनपुट",
+          "opt-capital": "निवेश",
+          "opt-capital-sub": "म्यूचुअल फंड, प्रतिभूतियां, ब्रोकर",
           "label-monthly":
             "इस म्हीने हुण तगर इस व्यापारी दी कुल UPI QR प्राप्तियां (₹)",
+          optional: "वैकल्पिक",
+          "monthly-hint":
+            "सिर्फ छोटे व्यापारी छूट (₹1,00,000/म्हीना तगर) दी जांच आस्तै।",
           "btn-calc": "MDR जांचो",
           "calc-note":
             "ग्राहक कदी बी सीधे MDR नेईं दिंदे। एह् व्यापारी दे बैंक ते भुगतान प्रणाली बिच तय होंदा ऐ। जेकर कोई व्यापारी इस करी तुंदे कोला बद्धू भुगतान मंगे, तां एह् RBI/NPCI दे नियमें दा उल्लंघन ऐ।",
+          "calc-note-summary": "ग्राहक कदें बी MDR नेईं दिंदे",
           "label-qrtotal": "इस कैलेंडर म्हीने च UPI QR राहें मिली कुल राशि (₹)",
-          "label-days": "अज्ज म्हीने दा कुन दिन ऐ (छेती गति जांच आस्तै)",
+          "label-days": "अज्ज दी तरीक",
           "btn-elig": "पात्रता जांचो",
           "elig-note":
             "छोटे व्यापारियें दी कुल UPI QR प्राप्तियां म्हीने च ₹1,00,000 तगर रौंदे होर हर लेन-देन उप्पर शून्य MDR रौंदा ऐ। सीमा पार होने बाद, ₹2,000 थमां बद्धू दे लेन-देन उप्पर MDR लागू होंदा ऐ।",
+          "elig-note-summary": "₹1,00,000 दी सीमा कियां कम्म करदी ऐ",
           "about-h1": "MDR क्या ऐ?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> उ लेन-देन शुल्क ऐ जेह् कोई व्यापारी UPI, डेबिट कार्ड जां क्रेडिट कार्ड जनेह् डिजिटल भुगतान प्रोसेस करने आस्तै अपने बैंक जां भुगतान सेवा प्रदाता (PSP) गी दिंदा ऐ।",
@@ -1266,8 +1388,6 @@
             "<strong>₹2,000 थमां घट्ट दा नियम:</strong> व्यापारी गी कीते गे ₹2,000 जां उंदे थमां घट्ट दे कुसै बी भुगतान उप्पर, श्रेणी कोई बी होऐ, शून्य MDR रौंदा ऐ।",
           "about-li4":
             "<strong>व्यापारिक श्रेणियां:</strong> ₹2,000 थमां बद्धू दे लेन-देन उप्पर श्रेणी दे मताबक MDR लागू होंदा ऐ (जि॒यां स्टैंडर्ड 0.4%, जरूरी सेवां उप्पर फ्लैट ₹5)।",
-          footer:
-            "एह् सरकारी NPCI/बैंक टूल नेईं ऐ। 15 अक्तूबर थमां पैह्ले जां बाद नियम बदली सकदे न। सटीक जानकारी आस्तै अपने PSP कन्नै संपर्क करो।",
           "disclaimer-link": "डिस्क्लेमर",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -1302,26 +1422,38 @@
           "app-title": "🧾 ಯುಪಿಐ ಎಂಡಿಆರ್ ಚೆಕರ್",
           subtitle:
             "NPCI ಯ ಸೆಪ್ಟೆಂಬರ್ 15, 2026 ರ ಸುತ್ತೋಲೆಯ ಆಧಾರದ ಮೇಲೆ, ಇದು ಅಕ್ಟೋಬರ್ 15, 2026 ರಿಂದ ಜಾರಿಗೆ ಬರುತ್ತದೆ. ಇವು ಕೇವಲ ಅಂದಾಜುಗಳು. ಯಾವಾಗಲೂ ನಿಮ್ಮ ಬ್ಯಾಂಕ್/PSP ಜೊತೆ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.",
-          "tab-calc": "ಪ್ರತಿ-ಪಾವತಿ ಕ್ಯಾಲ್ಕುಲೇಟರ್",
-          "tab-elig": "ಸಣ್ಣ ವ್ಯಾಪಾರಿ ತನಿಖೆ",
+          "tab-calc": "ಕ್ಯಾಲ್ಕುಲೇಟರ್",
+          "tab-elig": "ಸಣ್ಣ ವ್ಯಾಪಾರಿ",
           "tab-about": "MDR ಎಂದರೇನು?",
           "label-amount": "ವಹಿವಾಟಿನ ಮೊತ್ತ (₹)",
           "label-ptype": "ಪಾವತಿಯ ಪ್ರಕಾರ",
-          "opt-p2p": "ವ್ಯಕ್ತಿಯಿಂದ ವ್ಯಕ್ತಿಗೆ (ಸ್ನೇಹಿತ/ಕುಟುಂಬ)",
-          "opt-standard": "ಸಾಮಾನ್ಯ ವ್ಯಾಪಾರಿ (ಅಂಗಡಿ, ರೆಸ್ಟೋರೆಂಟ್, ಇ-ಕಾಮರ್ಸ್)",
-          "opt-essential": "ರೈಲ್ವೆ / ಟೆಲಿಕಾಂ / ವಿಮೆ / ಇಂಧನ / ಕೃಷಿ-ಪರಿಕರ",
-          "opt-capital": "ಮ್ಯೂಚುಯಲ್ ಫಂಡ್‌ಗಳು / ಸೆಕ್ಯುರಿಟೀಸ್ / ಬ್ರೋಕರ್",
+          "req-amount-headline": "⚠️ ವಹಿವಾಟಿನ ಮೊತ್ತ ಅಗತ್ಯವಿದೆ",
+          "req-amount-detail":
+            "MDR ಲೆಕ್ಕಹಾಕಲು ಮೇಲೆ ವಹಿವಾಟಿನ ಮೊತ್ತ (₹) ನಮೂದಿಸಿ.",
+          "opt-p2p": "ವ್ಯಕ್ತಿಯಿಂದ ವ್ಯಕ್ತಿಗೆ",
+          "opt-p2p-sub": "ಸ್ನೇಹಿತ, ಕುಟುಂಬ",
+          "opt-standard": "ಸಾಮಾನ್ಯ ವ್ಯಾಪಾರಿ",
+          "opt-standard-sub": "ಅಂಗಡಿ, ರೆಸ್ಟೋರೆಂಟ್, ಇ-ಕಾಮರ್ಸ್",
+          "opt-essential": "ಅಗತ್ಯ ಸೇವೆಗಳು",
+          "opt-essential-sub": "ರೈಲ್ವೆ, ಟೆಲಿಕಾಂ, ವಿಮೆ, ಇಂಧನ, ಕೃಷಿ-ಪರಿಕರ",
+          "opt-capital": "ಹೂಡಿಕೆಗಳು",
+          "opt-capital-sub": "ಮ್ಯೂಚುಯಲ್ ಫಂಡ್‌ಗಳು, ಸೆಕ್ಯುರಿಟೀಸ್, ಬ್ರೋಕರ್",
           "label-monthly":
             "ಈ ತಿಂಗಳು ಇಲ್ಲಿಯವರೆಗೆ ಈ ವ್ಯಾಪಾರಿಯ ಒಟ್ಟು UPI QR ಆದಾಯ (₹)",
+          optional: "ಐಚ್ಛಿಕ",
+          "monthly-hint":
+            "ಸಣ್ಣ ವ್ಯಾಪಾರಿ ವಿನಾಯಿತಿ (ತಿಂಗಳಿಗೆ ₹1,00,000 ವರೆಗೆ) ಪರಿಶೀಲಿಸಲು ಮಾತ್ರ.",
           "btn-calc": "MDR ಪರಿಶೀಲಿಸಿ",
           "calc-note":
             "ಗ್ರಾಹಕರು ಎಂದಿಗೂ ನೇರವಾಗಿ MDR ಪಾವತಿಸುವುದಿಲ್ಲ. ಇದನ್ನು ವ್ಯಾಪಾರಿಯ ಬ್ಯಾಂಕ್ ಮತ್ತು ಪಾವತಿ ವ್ಯವಸ್ಥೆಯ ನಡುವೆ ಇತ್ಯರ್ಥಗೊಳಿಸಲಾಗುತ್ತದೆ. ಇದಕ್ಕಾಗಿ ಯಾವುದೇ ವ್ಯಾಪಾರಿ ನಿಮ್ಮಿಂದ ಹೆಚ್ಚುವರಿ ಪಾವತಿ ಕೇಳಿದರೆ, ಅದು RBI/NPCI ನಿಯಮಗಳ ಉಲ್ಲಂಘನೆಯಾಗಿದೆ.",
+          "calc-note-summary": "ಗ್ರಾಹಕರು ಎಂದಿಗೂ MDR ಪಾವತಿಸುವುದಿಲ್ಲ",
           "label-qrtotal":
             "ಈ ಕ್ಯಾಲೆಂಡರ್ ತಿಂಗಳಲ್ಲಿ UPI QR ಮೂಲಕ ಪಡೆದ ಒಟ್ಟು ಮೊತ್ತ (₹)",
-          "label-days": "ಇಂದು ತಿಂಗಳ ಎಷ್ಟನೇ ದಿನ (ತ್ವರಿತ ವೇಗ ಪರಿಶೀಲನೆಗಾಗಿ)",
+          "label-days": "ಇಂದಿನ ದಿನಾಂಕ",
           "btn-elig": "ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ",
           "elig-note":
             "ಸಣ್ಣ ವ್ಯಾಪಾರಿಗಳ ಒಟ್ಟು UPI QR ಆದಾಯ ತಿಂಗಳಲ್ಲಿ ₹1,00,000 ಒಳಗೆ ಇದ್ದರೆ, ಪ್ರತಿ ವಹಿವಾಟಿನ ಮೇಲೆ ಶೂನ್ಯ MDR ಇರುತ್ತದೆ. ಮಿತಿ ಮೀರಿದ ನಂತರ, ₹2,000 ಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ವಹಿವಾಟುಗಳ ಮೇಲೆ MDR ಅನ್ವಯಿಸುತ್ತದೆ.",
+          "elig-note-summary": "₹1,00,000 ಮಿತಿ ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",
           "about-h1": "MDR ಎಂದರೇನು?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> ಎಂದರೆ UPI, ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಅಥವಾ ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್‌ನಂತಹ ಡಿಜಿಟಲ್ ಪಾವತಿಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ವ್ಯಾಪಾರಿ ತಮ್ಮ ಬ್ಯಾಂಕ್ ಅಥವಾ ಪೇಮೆಂಟ್ ಸರ್ವಿಸ್ ಪ್ರೊವೈಡರ್ (PSP) ಗೆ ಪಾವತಿಸುವ ವಹಿವಾಟು ಶುಲ್ಕ.",
@@ -1337,8 +1469,6 @@
             "<strong>₹2,000 ಕ್ಕಿಂತ ಕಡಿಮೆ ನಿಯಮ:</strong> ವ್ಯಾಪಾರಿಗೆ ಮಾಡಿದ ₹2,000 ಅಥವಾ ಅದಕ್ಕಿಂತ ಕಡಿಮೆ ಯಾವುದೇ ಪಾವತಿಗೆ, ವಿಭಾಗ ಯಾವುದೇ ಇರಲಿ, ಶೂನ್ಯ MDR ಇರುತ್ತದೆ.",
           "about-li4":
             "<strong>ವಾಣಿಜ್ಯ ವಿಭಾಗಗಳು:</strong> ₹2,000 ಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ವಹಿವಾಟುಗಳಿಗೆ ವಿಭಾಗದ ಪ್ರಕಾರ MDR ಅನ್ವಯಿಸುತ್ತದೆ (ಉದಾ: ಸಾಮಾನ್ಯ 0.4%, ಅಗತ್ಯ ಸೇವೆಗಳಿಗೆ ಫ್ಲ್ಯಾಟ್ ₹5).",
-          footer:
-            "ಇದು ಅಧಿಕೃತ NPCI/ಬ್ಯಾಂಕ್ ಟೂಲ್ ಅಲ್ಲ. ಅಕ್ಟೋಬರ್ 15 ಕ್ಕಿಂತ ಮೊದಲು ಅಥವಾ ನಂತರ ನಿಯಮಗಳು ಬದಲಾಗಬಹುದು. ನಿಖರ ವಿವರಗಳಿಗಾಗಿ ನಿಮ್ಮ PSP ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.",
           "disclaimer-link": "ಹಕ್ಕುತ್ಯಾಗ",
           "disclaimer-title": "ಹಕ್ಕುತ್ಯಾಗ",
           "disclaimer-body":
@@ -1374,26 +1504,38 @@
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
           subtitle:
             "این پی سی آئی دی 15 ستمبر 2026 دی سرکلر پر مبنی، جو 15 اکتوبر 2026 سے نافذ ہوگی۔ یہ صرف اندازے ہیں۔ ہمیشہ اپنے بینک/PSP سے تصدیق کریں۔",
-          "tab-calc": "ہر ادائیگی کیلکولیٹر",
-          "tab-elig": "چھوٹے تاجر کی جانچ",
+          "tab-calc": "کیلکولیٹر",
+          "tab-elig": "چھوٹا تاجر",
           "tab-about": "MDR کیا ہے؟",
           "label-amount": "لین دین کی رقم (₹)",
           "label-ptype": "ادائیگی کی قسم",
-          "opt-p2p": "ذاتی (P2P) (دوست/خاندان)",
-          "opt-standard": "عام تاجر (دکان، ریستوران، ای کامرس)",
-          "opt-essential": "ریلوے / ٹیلی کام / بیمہ / ایندھن / زرعی سامان",
-          "opt-capital": "میوچل فنڈ / سیکیورٹیز / بروکر",
+          "req-amount-headline": "⚠️ لین دین کی رقم ضروری ہے",
+          "req-amount-detail":
+            "MDR کا حساب لگانے کے لیے اوپر لین دین کی رقم (₹) درج کریں۔",
+          "opt-p2p": "ذاتی (P2P)",
+          "opt-p2p-sub": "دوست, خاندان",
+          "opt-standard": "عام تاجر",
+          "opt-standard-sub": "دکان، ریستوران، ای کامرس",
+          "opt-essential": "ضروری خدمات",
+          "opt-essential-sub": "ریلوے, ٹیلی کام, بیمہ, ایندھن, زرعی سامان",
+          "opt-capital": "سرمایہ کاری",
+          "opt-capital-sub": "میوچل فنڈ, سیکیورٹیز, بروکر",
           "label-monthly":
             "اس مہینے اب تک اس تاجر کی کل یو پی آئی کیو آر وصولیاں (₹)",
+          optional: "اختیاری",
+          "monthly-hint":
+            "صرف چھوٹے تاجر کی چھوٹ (ماہانہ ₹1,00,000 تک) جانچنے کے لیے۔",
           "btn-calc": "MDR چیک کریں",
           "calc-note":
             "گاہک کبھی بھی براہ راست MDR ادا نہیں کرتے۔ یہ تاجر کے بینک اور ادائیگی کے نظام کے درمیان طے ہوتا ہے۔ اگر کوئی تاجر اس وجہ سے آپ سے اضافی ادائیگی مانگے، تو یہ RBI/NPCI کے قوانین کی خلاف ورزی ہے۔",
+          "calc-note-summary": "گاہک کبھی MDR ادا نہیں کرتے",
           "label-qrtotal":
             "اس کیلنڈر مہینے میں یو پی آئی کیو آر کے ذریعے موصول کل رقم (₹)",
-          "label-days": "آج مہینے کا کونسا دن ہے (فوری رفتار جانچ کے لیے)",
+          "label-days": "آج کی تاریخ",
           "btn-elig": "اہلیت چیک کریں",
           "elig-note":
             "چھوٹے تاجروں کی کل یو پی آئی کیو آر وصولیاں مہینے میں ₹1,00,000 تک رہنے پر ہر لین دین پر صفر MDR رہتا ہے۔ حد پار ہونے کے بعد، ₹2,000 سے زیادہ کے لین دین پر MDR لاگو ہوتا ہے۔",
+          "elig-note-summary": "₹1,00,000 کی حد کیسے کام کرتی ہے",
           "about-h1": "MDR کیا ہے؟",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> وہ لین دین فیس ہے جو تاجر یو پی آئی، ڈیبٹ کارڈ یا کریڈٹ کارڈ جیسی ڈیجیٹل ادائیگیوں کی پروسیسنگ کے لیے اپنے بینک یا پیمنٹ سروس پرووائیڈر (PSP) کو دیتا ہے۔",
@@ -1409,8 +1551,6 @@
             "<strong>₹2,000 سے کم کا قانون:</strong> تاجر کو کی گئی ₹2,000 یا اس سے کم کسی بھی ادائیگی پر، زمرہ کوئی بھی ہو، صفر MDR رہتا ہے۔",
           "about-li4":
             "<strong>تجارتی زمرے:</strong> ₹2,000 سے زیادہ کے لین دین پر زمرے کے مطابق MDR لاگو ہوتا ہے (مثلاً عام 0.4%، ضروری خدمات پر فلیٹ ₹5)۔",
-          footer:
-            "یہ سرکاری NPCI/بینک ٹول نہیں ہے۔ 15 اکتوبر سے پہلے یا بعد میں قوانین بدل سکتے ہیں۔ درست تفصیلات کے لیے اپنے PSP سے رابطہ کریں۔",
           "disclaimer-link": "ڈس کلیمر",
           "disclaimer-title": "ڈس کلیمر",
           "disclaimer-body":
@@ -1445,26 +1585,37 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI च्या 15 सप्टेंबर 2026 च्या सर्कुलराचेर आदारीत, जें 15 अक्टोबर 2026 सावन लागू जातलें. हे फकत अंदाज. सदांच तुमच्या बँके/PSP कडेन खात्री करात.",
-          "tab-calc": "दर-पेमेंट कॅल्क्युलेटर",
-          "tab-elig": "ल्हान वेपारी पात्रताय",
+          "tab-calc": "कॅल्क्युलेटर",
+          "tab-elig": "ल्हान वेपारी",
           "tab-about": "MDR म्हणल्यार कितें?",
           "label-amount": "व्यवहाराची रक्कम (₹)",
           "label-ptype": "पेमेंटाचो प्रकार",
-          "opt-p2p": "वैयक्तिक (P2P) (इश्ट/कुटुंब)",
-          "opt-standard": "सादारण वेपारी (दुकान, रेस्टारन्ट, ई-कॉमर्स)",
-          "opt-essential": "रेल्वे / टेलिकॉम / विमो / फ्युएल / शेतकी-सामान",
-          "opt-capital": "म्युच्युअल फंड / सेक्युरिटीज / ब्रोकर",
+          "req-amount-headline": "⚠️ वेव्हाराची रक्कम गरजेची",
+          "req-amount-detail": "MDR मेजपाक वयर वेव्हाराची रक्कम (₹) घालात.",
+          "opt-p2p": "वैयक्तिक (P2P)",
+          "opt-p2p-sub": "इश्ट, कुटुंब",
+          "opt-standard": "सादारण वेपारी",
+          "opt-standard-sub": "दुकान, रेस्टारन्ट, ई-कॉमर्स",
+          "opt-essential": "गरजेच्यो सेवा",
+          "opt-essential-sub": "रेल्वे, टेलिकॉम, विमो, फ्युएल, शेतकी-सामान",
+          "opt-capital": "गुंतवणूक",
+          "opt-capital-sub": "म्युच्युअल फंड, सेक्युरिटीज, ब्रोकर",
           "label-monthly":
             "ह्या म्हयन्यांत आतां मेरेन ह्या वेपाऱ्याची एकूण UPI QR प्राप्ती (₹)",
+          optional: "पर्यायी",
+          "monthly-hint":
+            "फकत ल्हान वेपारी सुटावळ (म्हयन्याक ₹1,00,000 मेरेन) तपासपा खातीर.",
           "btn-calc": "MDR तपासात",
           "calc-note":
             "ग्राहक केन्नाच थेट MDR भरनात. हें वेपाऱ्याची बँक आनी पेमेंट सिस्टम मदीं थारावतात. जर कोणूय वेपारी ह्या कारणान तुमच्याकडल्यान चड पेमेंट मागता, तर तें RBI/NPCI च्या नेमांविरुद्ध.",
+          "calc-note-summary": "गिरायक केन्नाच MDR दिनात",
           "label-qrtotal":
             "ह्या कॅलेंडर म्हयन्यांत UPI QR वरवीं मेळिल्ली एकूण रक्कम (₹)",
-          "label-days": "आयज म्हयन्याचो कितलो दीस (त्वरीत गती तपासणे खातीर)",
+          "label-days": "आयची तारीख",
           "btn-elig": "पात्रताय तपासात",
           "elig-note":
             "ल्हान वेपाऱ्यांची एकूण UPI QR प्राप्ती म्हयन्यांत ₹1,00,000 भितर आसल्यार, दर व्यवहारार शून्य MDR आसता. मर्यादा वतरल्या उपरांत, ₹2,000 परस चड व्यवहारांचेर MDR लागू जाता.",
+          "elig-note-summary": "₹1,00,000 मर्यादा कशी काम करता",
           "about-h1": "MDR म्हणल्यार कितें?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> म्हळ्यार तो व्यवहार शुल्क जो वेपारी UPI, डेबिट कार्ड वा क्रेडिट कार्ड सारक्या डिजिटल पेमेंटां प्रोसेस करपाखातीर आपल्या बँके वा पेमेंट सर्व्हिस प्रोव्हायडर (PSP) क दितात.",
@@ -1480,8 +1631,6 @@
             "<strong>₹2,000 परस उणें नेम:</strong> वेपाऱ्याक केल्ल्या ₹2,000 वा ताच्याकीत उणें खंयच्याय पेमेंटार, वर्ग खंयचोय आसूं, शून्य MDR आसता.",
           "about-li4":
             "<strong>वेपारी वर्ग:</strong> ₹2,000 परस चड व्यवहारांचेर वर्गा प्रमाण MDR लागू जाता (देखीक सादारण 0.4%, गरजेच्या सेवांचेर फ्लॅट ₹5).",
-          footer:
-            "हें सरकारी NPCI/बँक साधन न्हय. 15 अक्टोबर पयलीं वा उपरांत नेम बदलूं शकतात. सारक्या म्हायती खातीर तुमच्या PSP कडेन संपर्क करात.",
           "disclaimer-link": "डिसक्लेमर",
           "disclaimer-title": "डिसक्लेमर",
           "disclaimer-body":
@@ -1516,26 +1665,37 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI के 15 सितंबर 2026 के सर्कुलर पर आधारित, जे 15 अक्टूबर 2026 सं लागू होएत। ई सिर्फ अनुमान अछि। सदिखन अपन बैंक/PSP सं पुष्टि करू।",
-          "tab-calc": "प्रति-भुगतान कैलकुलेटर",
-          "tab-elig": "छोट व्यापारी जांच",
+          "tab-calc": "कैलकुलेटर",
+          "tab-elig": "छोट व्यापारी",
           "tab-about": "MDR की अछि?",
           "label-amount": "लेन-देन के राशि (₹)",
           "label-ptype": "भुगतान के प्रकार",
-          "opt-p2p": "व्यक्तिगत (P2P) (मित्र/परिवार)",
-          "opt-standard": "साधारण व्यापारी (दोकान, रेस्टोरेंट, ई-कॉमर्स)",
-          "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-सामग्री",
-          "opt-capital": "म्यूचुअल फंड / प्रतिभूति / ब्रोकर",
+          "req-amount-headline": "⚠️ लेन-देनक राशि आवश्यक",
+          "req-amount-detail": "MDR गणना लेल ऊपर लेन-देनक राशि (₹) दर्ज करू।",
+          "opt-p2p": "व्यक्तिगत (P2P)",
+          "opt-p2p-sub": "मित्र, परिवार",
+          "opt-standard": "साधारण व्यापारी",
+          "opt-standard-sub": "दोकान, रेस्टोरेंट, ई-कॉमर्स",
+          "opt-essential": "आवश्यक सेवा",
+          "opt-essential-sub": "रेलवे, टेलीकॉम, बीमा, ईंधन, कृषि-सामग्री",
+          "opt-capital": "निवेश",
+          "opt-capital-sub": "म्यूचुअल फंड, प्रतिभूति, ब्रोकर",
           "label-monthly":
             "ई महिना अखन धरि एहि व्यापारीक कुल UPI QR प्राप्ति (₹)",
+          optional: "वैकल्पिक",
+          "monthly-hint":
+            "केवल छोट व्यापारी छूट (₹1,00,000/महिना धरि) जांच लेल।",
           "btn-calc": "MDR जांचू",
           "calc-note":
             "ग्राहक कहियो सीधे MDR नहि दैत छथि। ई व्यापारीक बैंक आ भुगतान प्रणाली के बीच तय होइत अछि। जँ कोनो व्यापारी एहि कारण अहाँ सं अतिरिक्त भुगतान मांगय, तँ ई RBI/NPCI के नियमक विरुद्ध अछि।",
+          "calc-note-summary": "ग्राहक कहियो MDR नहि दैत छथि",
           "label-qrtotal":
             "एहि कैलेंडर महिना में UPI QR के माध्यम सं प्राप्त कुल राशि (₹)",
-          "label-days": "आइ महिनाक कोन दिन अछि (त्वरित गति जांच लेल)",
+          "label-days": "आजुक तारीख",
           "btn-elig": "पात्रता जांचू",
           "elig-note":
             "छोट व्यापारीक कुल UPI QR प्राप्ति महिना में ₹1,00,000 तक रहला पर हर लेन-देन पर शून्य MDR रहैत अछि। सीमा पार भेला के बाद, ₹2,000 सं बेसी लेन-देन पर MDR लागू होइत अछि।",
+          "elig-note-summary": "₹1,00,000 क सीमा कोना काज करैत अछि",
           "about-h1": "MDR की अछि?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> ओ लेन-देन शुल्क अछि जे कोनो व्यापारी UPI, डेबिट कार्ड वा क्रेडिट कार्ड जेहन डिजिटल भुगतान संसाधित करबाक लेल अपन बैंक वा भुगतान सेवा प्रदाता (PSP) के दैत अछि।",
@@ -1551,8 +1711,6 @@
             "<strong>₹2,000 सं कम के नियम:</strong> व्यापारी के कएल गेल ₹2,000 वा ओहि सं कम कोनो भुगतान पर, श्रेणी जे किछु होउ, शून्य MDR रहैत अछि।",
           "about-li4":
             "<strong>वाणिज्यिक श्रेणी:</strong> ₹2,000 सं बेसी लेन-देन पर श्रेणी के अनुसार MDR लागू होइत अछि (जेना साधारण 0.4%, आवश्यक सेवा पर फ्लैट ₹5)।",
-          footer:
-            "ई सरकारी NPCI/बैंक टूल नहि अछि। 15 अक्टूबर सं पहिने वा बाद में नियम बदलि सकैत अछि। सटीक जानकारी लेल अपन PSP सं संपर्क करू।",
           "disclaimer-link": "डिस्क्लेमर",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -1588,25 +1746,36 @@
           "app-title": "🧾 യുപിഐ എംഡിആർ ചെക്കർ",
           subtitle:
             "NPCI യുടെ 2026 സെപ്റ്റംബർ 15 ലെ സർക്കുലർ പ്രകാരം, ഇത് 2026 ഒക്ടോബർ 15 മുതൽ പ്രാബല്യത്തിൽ വരും. ഇവ കേവലം ഏകദേശ കണക്കുകൾ മാത്രമാണ്. എപ്പോഴും നിങ്ങളുടെ ബാങ്ക്/PSP യുമായി ഉറപ്പാക്കുക.",
-          "tab-calc": "ഓരോ പേയ്‌മെന്റിനുമുള്ള കാൽക്കുലേറ്റർ",
-          "tab-elig": "ചെറുകിട വ്യാപാരി പരിശോധന",
+          "tab-calc": "കാൽക്കുലേറ്റർ",
+          "tab-elig": "ചെറുകിട വ്യാപാരി",
           "tab-about": "എന്താണ് MDR?",
           "label-amount": "ഇടപാട് തുക (₹)",
           "label-ptype": "പേയ്‌മെന്റ് തരം",
-          "opt-p2p": "വ്യക്തിയിൽ നിന്ന് വ്യക്തിയിലേക്ക് (സുഹൃത്ത്/കുടുംബം)",
-          "opt-standard": "സാധാരണ వ్యాപാരി",
-          "opt-essential":
-            "റെയിൽവേ / ടെലികോം / ഇൻഷുറൻസ് / ഇന്ധനം / കാർഷിക ഉപകരണങ്ങൾ",
-          "opt-capital": "മ്യൂച്വൽ ഫണ്ട് / സെക്യൂരിറ്റികൾ / ബ്രോക്കർ",
+          "req-amount-headline": "⚠️ ഇടപാട് തുക ആവശ്യമാണ്",
+          "req-amount-detail": "MDR കണക്കാക്കാൻ മുകളിൽ ഇടപാട് തുക (₹) നൽകുക.",
+          "opt-p2p": "വ്യക്തിയിൽ നിന്ന് വ്യക്തിയിലേക്ക്",
+          "opt-p2p-sub": "സുഹൃത്ത്, കുടുംബം",
+          "opt-standard": "സാധാരണ വ്യാപാരി",
+          "opt-standard-sub": "കട, റെസ്റ്റോറന്റ്, ഇ-കൊമേഴ്സ്",
+          "opt-essential": "അവശ്യ സേവനങ്ങൾ",
+          "opt-essential-sub":
+            "റെയിൽവേ, ടെലികോം, ഇൻഷുറൻസ്, ഇന്ധനം, കാർഷിക ഉപകരണങ്ങൾ",
+          "opt-capital": "നിക്ഷേപങ്ങൾ",
+          "opt-capital-sub": "മ്യൂച്വൽ ഫണ്ട്, സെക്യൂരിറ്റികൾ, ബ്രോക്കർ",
           "label-monthly":
             "ഈ മാസം ഇതുവരെ ഈ വ്യാപാരിക്ക് ലഭിച്ച മൊത്തം UPI QR വരുമാനം (₹)",
+          optional: "ഓപ്ഷണൽ",
+          "monthly-hint":
+            "ചെറുകിട വ്യാപാരി ഇളവ് (മാസം ₹1,00,000 വരെ) പരിശോധിക്കാൻ മാത്രം.",
           "btn-calc": "MDR പരിശോധിക്കുക",
           "calc-note": "ഉപഭോക്താക്കൾ നേരിട്ട് MDR നൽകേണ്ടതില്ല.",
+          "calc-note-summary": "ഉപഭോക്താക്കൾ ഒരിക്കലും MDR നൽകേണ്ടതില്ല",
           "label-qrtotal": "ആകെ വരുമാനം (₹)",
-          "label-days": "തീയതി",
+          "label-days": "ഇന്നത്തെ തീയതി",
           "btn-elig": "അർഹത പരിശോധിക്കുക",
           "elig-note":
             "ചെറുകിട വ്യാപാരികളുടെ മൊത്തം UPI QR വരുമാനം മാസത്തിൽ ₹1,00,000-ൽ താഴെയാണെങ്കിൽ, ഓരോ ഇടപാടിനും പൂജ്യം MDR ആയിരിക്കും. പരിധി കടന്നാൽ, ₹2,000-ൽ കൂടുതലുള്ള ഇടപാടുകൾക്ക് MDR ബാധകമാകും.",
+          "elig-note-summary": "₹1,00,000 പരിധി എങ്ങനെ പ്രവർത്തിക്കുന്നു",
           "about-h1": "എന്താണ് MDR?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> എന്നത് UPI, ഡെബിറ്റ് കാർഡ് അല്ലെങ്കിൽ ക്രെഡിറ്റ് കാർഡ് പോലുള്ള ഡിജിറ്റൽ പേയ്‌മെന്റുകൾ പ്രോസസ് ചെയ്യുന്നതിന് ഒരു വ്യാപാരി അവരുടെ ബാങ്കിനോ പേയ്‌മെന്റ് സർവീസ് പ്രൊവൈഡർക്കോ (PSP) നൽകുന്ന ഇടപാട് ഫീസാണ്.",
@@ -1623,8 +1792,6 @@
             "<strong>₹2,000-ൽ താഴെയുള്ള നിയമം:</strong> ഒരു വ്യാപാരിക്ക് നൽകുന്ന ₹2,000 അല്ലെങ്കിൽ അതിൽ കുറവുള്ള ഏത് പേയ്‌മെന്റിനും, വിഭാഗം എന്തായാലും, പൂജ്യം MDR ആയിരിക്കും.",
           "about-li4":
             "<strong>വാണിജ്യ വിഭാഗങ്ങൾ:</strong> ₹2,000-ൽ കൂടുതലുള്ള ഇടപാടുകൾക്ക് വിഭാഗം അനുസരിച്ച് MDR ബാധകമാകും (ഉദാ: സാധാരണ 0.4%, അവശ്യ സേവനങ്ങൾക്ക് ഫ്ലാറ്റ് ₹5).",
-          footer:
-            "ഇത് ഔദ്യോഗിക NPCI/ബാങ്ക് ഉപകരണമല്ല. ഒക്ടോബർ 15-ന് മുൻപോ ശേഷമോ നിയമങ്ങൾ മാറാം. കൃത്യമായ വിവരങ്ങൾക്ക് നിങ്ങളുടെ PSP-യുമായി ബന്ധപ്പെടുക.",
           "disclaimer-link": "വിവരങ്ങൾക്ക്",
           "disclaimer-title": "നിരാകരണം",
           "disclaimer-body":
@@ -1660,26 +1827,38 @@
           "app-title": "🧾 ইউপিআই এমডিআর চেকার",
           subtitle:
             "মসিবু NPCI-গী 2026গী সেপ্টেম্বর 15গী সার্কুলারগী মতুং ইন্না শেম্লিবনি, মসি 2026গী অক্টোবর 15দগী হৌনা চালগনি। মসিসিং অসি অনুমান খক্তনি। মতম পুম্নমক্তা নহাক্কী ব্যাংক/PSP গা কনফার্ম তৌবিয়ু।",
-          "tab-calc": "পেমেন্ট খুদিংগী কেলকুলেটর",
-          "tab-elig": "অপীকপা কম্পানীগী পরীক্ষা",
+          "tab-calc": "কেলকুলেটর",
+          "tab-elig": "অপীকপা কম্পানী",
           "tab-about": "এমডিআর হায়বদি করিগিনো?",
           "label-amount": "লেনদেনগী শেনফম (₹)",
           "label-ptype": "পেমেন্টকী মখল",
-          "opt-p2p": "মিওইদগী মিওইদা (মরূপ/ইমুং)",
-          "opt-standard": "পাউন্দবা কম্পানী (দোকান, রেস্তোরাঁ, ই-কমার্স)",
-          "opt-essential": "রেলওয়ে / টেলিকম / বীমা / ফুয়েল / লৌমী পোৎলম",
-          "opt-capital": "মিউচুয়েল ফাণ্ড / সিকিউরিটিজ / ব্রোকার",
+          "req-amount-headline": "⚠️ ট্রানজেকশনগী শেনফম মথৌ তাই",
+          "req-amount-detail":
+            "MDR হিসাব তৌনবা মথক্তা ট্রানজেকশনগী শেনফম (₹) হাপচিনবিয়ু।",
+          "opt-p2p": "মিওইদগী মিওইদা",
+          "opt-p2p-sub": "মরূপ, ইমুং",
+          "opt-standard": "পাউন্দবা কম্পানী",
+          "opt-standard-sub": "দোকান, রেস্তোরাঁ, ই-কমার্স",
+          "opt-essential": "মরু ওইবা সেৱাশিং",
+          "opt-essential-sub": "রেলওয়ে, টেলিকম, বীমা, ফুয়েল, লৌমী পোৎলম",
+          "opt-capital": "ইনভেস্টমেন্ট",
+          "opt-capital-sub": "মিউচুয়েল ফাণ্ড, সিকিউরিটিজ, ব্রোকার",
           "label-monthly":
             "থা অসিদা হৌজিক ফাওবা মসি কম্পানীনা ফংখিবা অপুনবা UPI QR শেনফম (₹)",
+          optional: "ঐচ্ছিক",
+          "monthly-hint":
+            "অপীকপা কম্পানীগী থাদোকপা (থা অমদা ₹1,00,000 ফাওবা) পরীক্ষা তৌনবগীদমক খক্তা।",
           "btn-calc": "এমডিআর য়েংউ",
           "calc-note":
             "কাস্টমারনা করিকখাক্তা ডাইরেক্টনা এমডিআর পীদে। মসিদি কম্পানীগী ব্যাংক অমসুং পেমেন্ট সিস্টেমগী মরক্তা তৌবা ওই। মসিগীদমক কম্পানী কনানা নহাক্কীদগী হেন্না লৌবা হায়রবদি, মসি RBI/NPCI-গী য়াথংশিংগা তংনগনি।",
+          "calc-note-summary": "খরীদ তৌবশিংনা MDR কদাইদসু পীদে",
           "label-qrtotal":
             "কেলেন্দর থা অসিদা UPI QR-না ফংখিবা অপুনবা শেনফম (₹)",
-          "label-days": "ঙসি থাগী নুমিৎ করমদুনো (থুনা পরীক্ষাগীদমক)",
+          "label-days": "ঙসিগী তারিখ",
           "btn-elig": "যোগ্যতা য়েংউ",
           "elig-note":
             "অপীকপা কম্পানীশিংগী অপুনবা UPI QR শেনফম থাদা ₹1,00,000 মমাংদা লৈরবদি, লেনদেন খুদিংমক্তা চার্জ লৈতে। লিমিট ওভর ওইরবদি, ₹2,000দগী হেন্না লৈবা লেনদেনশিংদা এমডিআর চালগনি।",
+          "elig-note-summary": "₹1,00,000গী লিমিট করম্না থবক তৌবগে",
           "about-h1": "এমডিআর করিগিনো?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> হায়বসি UPI, ডেবিট কার্ড নত্রগা ক্রেডিট কার্ড অসিগুম্বা ডিজিটেল পেমেন্টশিং প্রোসেস তৌনবগীদমক কম্পানী অমনা মখোয়গী ব্যাংক নত্রগা পেমেন্ট সার্ভিস প্রোভাইডার (PSP)দা পীবা লেনদেনগী চার্জনি।",
@@ -1695,8 +1874,6 @@
             "<strong>₹2,000দগী হন্থরবা য়াথং:</strong> কম্পানী অমাদা পীরিবা ₹2,000 নত্রগা মদুদগী হন্থরবা পেমেন্ট খুদিংমক্তা, মখল করিগুম্বসু ওইরগা, চার্জ লৈতে।",
           "about-li4":
             "<strong>বিজনেস মখলশিং:</strong> ₹2,000দগী হেন্না লৈবা লেনদেনশিংদা মখলগী মতুং ইন্না এমডিআর চালগনি (খুদম ওইনা পাউন্দবা 0.4%, মথৌ তাবা সর্ভিসশিংগীদমক ফ্লেট ₹5)।",
-          footer:
-            "মসি অফিসিয়েল NPCI/ব্যাংক টুল নত্তে। অক্টোবর 15গী মমাং নত্রগা মতুংদা য়াথংশিং হোংলগনি। তসেংবা ৱারোল অমগীদমক নহাক্কী PSPগা কনট্যাক্ট তৌবিয়ু।",
           "disclaimer-link": "ডিসক্লেমার",
           "disclaimer-title": "ডিসক্লেমার",
           "disclaimer-body":
@@ -1732,26 +1909,37 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI च्या 15 सप्टेंबर 2026 च्या परिपत्रकावर आधारित, जे 15 ऑक्टोबर 2026 पासून लागू होईल. हे केवळ अंदाज आहेत. नेहमी तुमच्या बँकेशी/PSP शी खात्री करा.",
-          "tab-calc": "प्रति-पेमेंट कॅल्क्युलेटर",
-          "tab-elig": "लघु व्यापारी पात्रता",
+          "tab-calc": "कॅल्क्युलेटर",
+          "tab-elig": "लघु व्यापारी",
           "tab-about": "MDR म्हणजे काय?",
           "label-amount": "व्यवहाराची रक्कम (₹)",
           "label-ptype": "पेमेंटचा प्रकार",
-          "opt-p2p": "व्यक्ती-ते-व्यक्ती (मित्र/कुटुंब)",
-          "opt-standard": "मानक व्यापारी (दुकान, रेस्टॉरंट, ई-कॉमर्स)",
-          "opt-essential": "रेल्वे / टेलिकॉम / विमा / इंधन / कृषी-निविष्ठा",
-          "opt-capital": "म्युच्युअल फंड / सिक्युरिटीज / ब्रोकर",
+          "req-amount-headline": "⚠️ व्यवहाराची रक्कम आवश्यक",
+          "req-amount-detail": "MDR मोजण्यासाठी वर व्यवहाराची रक्कम (₹) टाका.",
+          "opt-p2p": "व्यक्ती-ते-व्यक्ती",
+          "opt-p2p-sub": "मित्र, कुटुंब",
+          "opt-standard": "मानक व्यापारी",
+          "opt-standard-sub": "दुकान, रेस्टॉरंट, ई-कॉमर्स",
+          "opt-essential": "अत्यावश्यक सेवा",
+          "opt-essential-sub": "रेल्वे, टेलिकॉम, विमा, इंधन, कृषी-निविष्ठा",
+          "opt-capital": "गुंतवणूक",
+          "opt-capital-sub": "म्युच्युअल फंड, सिक्युरिटीज, ब्रोकर",
           "label-monthly":
             "या महिन्यात आतापर्यंत या व्यापाऱ्याची एकूण UPI QR प्राप्ती (₹)",
+          optional: "पर्यायी",
+          "monthly-hint":
+            "फक्त लघु व्यापारी सवलत (महिन्याला ₹1,00,000 पर्यंत) तपासण्यासाठी.",
           "btn-calc": "MDR तपासा",
           "calc-note":
             "ग्राहक कधीही थेट MDR भरत नाहीत. हे व्यापाऱ्याची बँक आणि पेमेंट सिस्टम यांच्यामध्ये ठरवले जाते. जर एखादा व्यापारी यामुळे तुमच्याकडून जास्त पैसे मागत असेल, तर ते RBI/NPCI च्या नियमांविरुद्ध आहे.",
+          "calc-note-summary": "ग्राहक कधीही MDR भरत नाहीत",
           "label-qrtotal":
             "या कॅलेंडर महिन्यात UPI QR द्वारे मिळालेली एकूण रक्कम (₹)",
-          "label-days": "आज महिन्याचा कितवा दिवस आहे (जलद गती तपासणीसाठी)",
+          "label-days": "आजची तारीख",
           "btn-elig": "पात्रता तपासा",
           "elig-note":
             "लघु व्यापाऱ्यांची एकूण UPI QR प्राप्ती महिन्यात ₹1,00,000 पर्यंत राहिल्यास, प्रत्येक व्यवहारावर शून्य MDR राहतो. मर्यादा ओलांडल्यानंतर, ₹2,000 पेक्षा जास्त व्यवहारांवर MDR लागू होतो.",
+          "elig-note-summary": "₹1,00,000 ची मर्यादा कशी काम करते",
           "about-h1": "MDR म्हणजे काय?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> हे तो व्यवहार शुल्क आहे जे एखादा व्यापारी UPI, डेबिट कार्ड किंवा क्रेडिट कार्डसारखे डिजिटल पेमेंट प्रक्रिया करण्यासाठी त्यांच्या बँकेला किंवा पेमेंट सर्व्हिस प्रोव्हायडर (PSP) ला देतो.",
@@ -1767,8 +1955,6 @@
             "<strong>₹2,000 पेक्षा कमीचा नियम:</strong> व्यापाऱ्याला केलेल्या ₹2,000 किंवा त्यापेक्षा कमी कोणत्याही पेमेंटवर, श्रेणी कोणतीही असो, शून्य MDR राहतो.",
           "about-li4":
             "<strong>व्यापारी श्रेणी:</strong> ₹2,000 पेक्षा जास्त व्यवहारांवर श्रेणीनुसार MDR लागू होतो (उदा. मानक 0.4%, आवश्यक सेवांवर सपाट ₹5).",
-          footer:
-            "हे अधिकृत NPCI/बँक साधन नाही. 15 ऑक्टोबरपूर्वी किंवा नंतर नियम बदलू शकतात. अचूक माहितीसाठी तुमच्या PSP शी संपर्क साधा.",
           "disclaimer-link": "डिस्क्लेमर पहा",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -1803,26 +1989,38 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI को 15 सेप्टेम्बर 2026 को सर्कुलरमा आधारित, जुन 15 अक्टोबर 2026 देखि लागू हुनेछ। यी केवल अनुमान हुन्। सधैं तपाईंको बैंक/PSP सँग पुष्टि गर्नुहोस्।",
-          "tab-calc": "प्रति-भुक्तानी क्याल्कुलेटर",
-          "tab-elig": "साना व्यापारी जाँच",
+          "tab-calc": "क्याल्कुलेटर",
+          "tab-elig": "साना व्यापारी",
           "tab-about": "MDR के हो?",
           "label-amount": "कारोबार रकम (₹)",
           "label-ptype": "भुक्तानीको प्रकार",
-          "opt-p2p": "व्यक्ति-देखि-व्यक्ति (साथी/परिवार)",
-          "opt-standard": "साधारण व्यापारी (पसल, रेस्टुरेन्ट, ई-कमर्स)",
-          "opt-essential": "रेलवे / टेलिकम / बीमा / इन्धन / कृषि-सामग्री",
-          "opt-capital": "म्युचुअल फन्ड / धितोपत्र / ब्रोकर",
+          "req-amount-headline": "⚠️ कारोबार रकम आवश्यक",
+          "req-amount-detail":
+            "MDR गणना गर्न माथि कारोबार रकम (₹) प्रविष्ट गर्नुहोस्।",
+          "opt-p2p": "व्यक्ति-देखि-व्यक्ति",
+          "opt-p2p-sub": "साथी, परिवार",
+          "opt-standard": "साधारण व्यापारी",
+          "opt-standard-sub": "पसल, रेस्टुरेन्ट, ई-कमर्स",
+          "opt-essential": "आवश्यक सेवाहरू",
+          "opt-essential-sub": "रेलवे, टेलिकम, बीमा, इन्धन, कृषि-सामग्री",
+          "opt-capital": "लगानी",
+          "opt-capital-sub": "म्युचुअल फन्ड, धितोपत्र, ब्रोकर",
           "label-monthly":
             "यो महिना अहिलेसम्म यस व्यापारीको कुल UPI QR प्राप्ति (₹)",
+          optional: "ऐच्छिक",
+          "monthly-hint":
+            "साना व्यापारी छुट (मासिक ₹1,00,000 सम्म) जाँच गर्न मात्र।",
           "btn-calc": "MDR जाँच गर्नुहोस्",
           "calc-note":
             "ग्राहकहरूले कहिल्यै सिधै MDR तिर्दैनन्। यो व्यापारीको बैंक र भुक्तानी प्रणालीबीच मिलाइन्छ। यदि कुनै व्यापारीले यसका कारण तपाईंसँग थप भुक्तानी माग्छ भने, त्यो RBI/NPCI का नियमहरू विरुद्ध हो।",
+          "calc-note-summary": "ग्राहकले कहिल्यै MDR तिर्दैनन्",
           "label-qrtotal":
             "यो पात्रो महिनामा UPI QR मार्फत प्राप्त कुल रकम (₹)",
-          "label-days": "आज महिनाको कुन दिन हो (छिटो गति जाँचका लागि)",
+          "label-days": "आजको मिति",
           "btn-elig": "योग्यता जाँच गर्नुहोस्",
           "elig-note":
             "साना व्यापारीहरूको कुल UPI QR प्राप्ति महिनामा ₹1,00,000 सम्म रहेमा, हरेक कारोबारमा शून्य MDR रहन्छ। सीमा नाघेपछि, ₹2,000 भन्दा बढीका कारोबारमा MDR लागू हुन्छ।",
+          "elig-note-summary": "₹1,00,000 को सीमा कसरी काम गर्छ",
           "about-h1": "MDR के हो?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> त्यो कारोबार शुल्क हो जुन कुनै व्यापारीले UPI, डेबिट कार्ड वा क्रेडिट कार्ड जस्ता डिजिटल भुक्तानी प्रशोधन गर्न आफ्नो बैंक वा भुक्तानी सेवा प्रदायक (PSP) लाई तिर्छ।",
@@ -1838,8 +2036,6 @@
             "<strong>₹2,000 भन्दा कमको नियम:</strong> व्यापारीलाई गरिएको ₹2,000 वा त्यो भन्दा कम कुनै पनि भुक्तानीमा, वर्ग जेसुकै भए पनि, शून्य MDR रहन्छ।",
           "about-li4":
             "<strong>व्यापारिक वर्गहरू:</strong> ₹2,000 भन्दा बढीका कारोबारमा वर्ग अनुसार MDR लागू हुन्छ (जस्तै साधारण 0.4%, आवश्यक सेवाहरूमा फ्ल्याट ₹5)।",
-          footer:
-            "यो आधिकारिक NPCI/बैंक उपकरण होइन। 15 अक्टोबर अघि वा पछि नियमहरू परिवर्तन हुन सक्छन्। सही जानकारीका लागि आफ्नो PSP सँग सम्पर्क गर्नुहोस्।",
           "disclaimer-link": "डिस्क्लेमर",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -1874,26 +2070,37 @@
           "app-title": "🧾 ୟୁପିଆଇ ଏମଡିଆର ଚେକର୍",
           subtitle:
             "NPCIର 2026 ସେପ୍ଟେମ୍ବର 15ର ସର୍କୁଲାର ଆଧାରରେ, ଯାହା 2026 ଅକ୍ଟୋବର 15ଠାରୁ ଲାଗୁ ହେବ। ଏଗୁଡ଼ିକ କେବଳ ଆକଳନ। ସର୍ବଦା ଆପଣଙ୍କ ବ୍ୟାଙ୍କ/PSP ସହିତ ନିଶ୍ଚିତ କରନ୍ତୁ।",
-          "tab-calc": "ପ୍ରତି-ପେମେଣ୍ଟ କାଲକୁଲେଟର",
-          "tab-elig": "କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀ ଯାଞ୍ଚ",
+          "tab-calc": "କାଲକୁଲେଟର",
+          "tab-elig": "କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀ",
           "tab-about": "MDR କ’ଣ?",
           "label-amount": "କାରବାର ପରିମାଣ (₹)",
           "label-ptype": "ପେମେଣ୍ଟ ପ୍ରକାର",
-          "opt-p2p": "ବ୍ୟକ୍ତିଠାରୁ ବ୍ୟକ୍ତି (ବନ୍ଧୁ/ପରିବାର)",
-          "opt-standard": "ସାଧାରଣ ବ୍ୟବସାୟୀ (ଦୋକାନ, ରେଷ୍ଟୁରାଣ୍ଟ, ଇ-କମର୍ସ)",
-          "opt-essential": "ରେଳବାଇ / ଟେଲିକମ୍ / ବୀମା / ଇନ୍ଧନ / କୃଷି-ସାମଗ୍ରୀ",
-          "opt-capital": "ମ୍ୟୁଚୁଆଲ ଫଣ୍ଡ / ସିକ୍ୟୁରିଟିଜ୍ / ବ୍ରୋକର",
+          "req-amount-headline": "⚠️ କାରବାର ରାଶି ଆବଶ୍ୟକ",
+          "req-amount-detail": "MDR ହିସାବ ପାଇଁ ଉପରେ କାରବାର ରାଶି (₹) ଦିଅନ୍ତୁ।",
+          "opt-p2p": "ବ୍ୟକ୍ତିଠାରୁ ବ୍ୟକ୍ତି",
+          "opt-p2p-sub": "ବନ୍ଧୁ, ପରିବାର",
+          "opt-standard": "ସାଧାରଣ ବ୍ୟବସାୟୀ",
+          "opt-standard-sub": "ଦୋକାନ, ରେଷ୍ଟୁରାଣ୍ଟ, ଇ-କମର୍ସ",
+          "opt-essential": "ଜରୁରୀ ସେବା",
+          "opt-essential-sub": "ରେଳବାଇ, ଟେଲିକମ୍, ବୀମା, ଇନ୍ଧନ, କୃଷି-ସାମଗ୍ରୀ",
+          "opt-capital": "ନିବେଶ",
+          "opt-capital-sub": "ମ୍ୟୁଚୁଆଲ ଫଣ୍ଡ, ସିକ୍ୟୁରିଟିଜ୍, ବ୍ରୋକର",
           "label-monthly":
             "ଏହି ମାସରେ ଏବେ ପର୍ଯ୍ୟନ୍ତ ଏହି ବ୍ୟବସାୟୀଙ୍କ ମୋଟ UPI QR ଆଦାୟ (₹)",
+          optional: "ଐଚ୍ଛିକ",
+          "monthly-hint":
+            "କେବଳ କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀ ଛାଡ଼ (ମାସିକ ₹1,00,000 ପର୍ଯ୍ୟନ୍ତ) ଯାଞ୍ଚ ପାଇଁ।",
           "btn-calc": "MDR ଯାଞ୍ଚ କରନ୍ତୁ",
           "calc-note":
             "ଗ୍ରାହକ କେବେ ବି ସିଧାସଳଖ MDR ଦିଅନ୍ତି ନାହିଁ। ଏହା ବ୍ୟବସାୟୀଙ୍କ ବ୍ୟାଙ୍କ ଏବଂ ପେମେଣ୍ଟ ସିଷ୍ଟମ ମଧ୍ୟରେ ମେଣ୍ଟାଯାଏ। ଯଦି କୌଣସି ବ୍ୟବସାୟୀ ଏଥିପାଇଁ ଆପଣଙ୍କଠାରୁ ଅତିରିକ୍ତ ଦେୟ ମାଗନ୍ତି, ତେବେ ତାହା RBI/NPCI ନିୟମ ବିରୁଦ୍ଧ।",
+          "calc-note-summary": "ଗ୍ରାହକ କେବେ ବି MDR ଦିଅନ୍ତି ନାହିଁ",
           "label-qrtotal":
             "ଏହି କ୍ୟାଲେଣ୍ଡର ମାସରେ UPI QR ମାଧ୍ୟମରେ ପ୍ରାପ୍ତ ମୋଟ ପରିମାଣ (₹)",
-          "label-days": "ଆଜି ମାସର କେତେ ତାରିଖ (ଶୀଘ୍ର ଗତି ଯାଞ୍ଚ ପାଇଁ)",
+          "label-days": "ଆଜିର ତାରିଖ",
           "btn-elig": "ଯୋଗ୍ୟତା ଯାଞ୍ଚ କରନ୍ତୁ",
           "elig-note":
             "କ୍ଷୁଦ୍ର ବ୍ୟବସାୟୀଙ୍କ ମୋଟ UPI QR ଆଦାୟ ମାସରେ ₹1,00,000 ମଧ୍ୟରେ ରହିଲେ, ପ୍ରତ୍ୟେକ କାରବାରରେ ଶୂନ୍ୟ MDR ରହେ। ସୀମା ଅତିକ୍ରମ ହେଲାପରେ, ₹2,000ରୁ ଅଧିକ କାରବାରରେ MDR ଲାଗୁ ହୁଏ।",
+          "elig-note-summary": "₹1,00,000 ସୀମା କିପରି କାମ କରେ",
           "about-h1": "MDR କ’ଣ?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> ହେଉଛି ସେହି କାରବାର ଶୁଳ୍କ ଯାହା ଏକ ବ୍ୟବସାୟୀ UPI, ଡେବିଟ୍ କାର୍ଡ କିମ୍ବା କ୍ରେଡିଟ୍ କାର୍ଡ ପରି ଡିଜିଟାଲ ପେମେଣ୍ଟ ପ୍ରକ୍ରିୟା କରିବା ପାଇଁ ସେମାନଙ୍କ ବ୍ୟାଙ୍କ କିମ୍ବା ପେମେଣ୍ଟ ସର୍ଭିସ ପ୍ରୋଭାଇଡର (PSP) କୁ ଦିଅନ୍ତି।",
@@ -1909,8 +2116,6 @@
             "<strong>₹2,000ରୁ କମ ନିୟମ:</strong> ବ୍ୟବସାୟୀଙ୍କୁ କରାଯାଇଥିବା ₹2,000 କିମ୍ବା ତାହାଠାରୁ କମ କୌଣସି ପେମେଣ୍ଟରେ, ବର୍ଗ ଯାହା ବି ହେଉ, ଶୂନ୍ୟ MDR ରହେ।",
           "about-li4":
             "<strong>ବାଣିଜ୍ୟିକ ବର୍ଗ:</strong> ₹2,000ରୁ ଅଧିକ କାରବାରରେ ବର୍ଗ ଅନୁସାରେ MDR ଲାଗୁ ହୁଏ (ଯଥା ସାଧାରଣ 0.4%, ଆବଶ୍ୟକ ସେବାରେ ଫ୍ଲାଟ ₹5)।",
-          footer:
-            "ଏହା ସରକାରୀ NPCI/ବ୍ୟାଙ୍କ ଉପକରଣ ନୁହେଁ। ଅକ୍ଟୋବର 15 ପୂର୍ବରୁ କିମ୍ବା ପରେ ନିୟମ ବଦଳିପାରେ। ସଠିକ ସୂଚନା ପାଇଁ ଆପଣଙ୍କ PSP ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।",
           "disclaimer-link": "ଡିସକ୍ଲେମର",
           "disclaimer-title": "ଡିସକ୍ଲେମର",
           "disclaimer-body":
@@ -1945,26 +2150,37 @@
           "app-title": "🧾 ਯੂਪੀਆਈ ਐਮਡੀਆਰ ਚੈਕਰ",
           subtitle:
             "NPCI ਦੇ 15 ਸਤੰਬਰ 2026 ਦੇ ਸਰਕੂਲਰ ਦੇ ਆਧਾਰ ਤੇ, ਜੋ 15 ਅਕਤੂਬਰ 2026 ਤੋਂ ਲਾਗੂ ਹੋਵੇਗਾ। ਇਹ ਸਿਰਫ਼ ਅੰਦਾਜ਼ੇ ਹਨ। ਹਮੇਸ਼ਾ ਆਪਣੇ ਬੈਂਕ/PSP ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ।",
-          "tab-calc": "ਪ੍ਰਤੀ-ਭੁਗਤਾਨ ਕੈਲਕੁਲੇਟਰ",
-          "tab-elig": "ਛੋਟੇ ਵਪਾਰੀ ਦੀ ਜਾਂਚ",
+          "tab-calc": "ਕੈਲਕੁਲੇਟਰ",
+          "tab-elig": "ਛੋਟੇ ਵਪਾਰੀ",
           "tab-about": "MDR ਕੀ ਹੈ?",
           "label-amount": "ਲੈਣ-ਦੇਣ ਦੀ ਰਕਮ (₹)",
           "label-ptype": "ਭੁਗਤਾਨ ਦੀ ਕਿਸਮ",
-          "opt-p2p": "ਵਿਅਕਤੀ-ਤੋਂ-ਵਿਅਕਤੀ (ਦੋਸਤ/ਪਰਿਵਾਰ)",
-          "opt-standard": "ਆਮ ਵਪਾਰੀ (ਦੁਕਾਨ, ਰੈਸਟੋਰੈਂਟ, ਈ-ਕਾਮਰਸ)",
-          "opt-essential": "ਰੇਲਵੇ / ਟੈਲੀਕਾਮ / ਬੀਮਾ / ਬਾਲਣ / ਖੇਤੀ-ਸਮੱਗਰੀ",
-          "opt-capital": "ਮਿਊਚੁਅਲ ਫੰਡ / ਸਕਿਓਰਿਟੀਜ਼ / ਬ੍ਰੋਕਰ",
+          "req-amount-headline": "⚠️ ਲੈਣ-ਦੇਣ ਦੀ ਰਕਮ ਲੋੜੀਂਦੀ ਹੈ",
+          "req-amount-detail": "MDR ਗਿਣਨ ਲਈ ਉੱਪਰ ਲੈਣ-ਦੇਣ ਦੀ ਰਕਮ (₹) ਭਰੋ।",
+          "opt-p2p": "ਵਿਅਕਤੀ-ਤੋਂ-ਵਿਅਕਤੀ",
+          "opt-p2p-sub": "ਦੋਸਤ, ਪਰਿਵਾਰ",
+          "opt-standard": "ਆਮ ਵਪਾਰੀ",
+          "opt-standard-sub": "ਦੁਕਾਨ, ਰੈਸਟੋਰੈਂਟ, ਈ-ਕਾਮਰਸ",
+          "opt-essential": "ਜ਼ਰੂਰੀ ਸੇਵਾਵਾਂ",
+          "opt-essential-sub": "ਰੇਲਵੇ, ਟੈਲੀਕਾਮ, ਬੀਮਾ, ਬਾਲਣ, ਖੇਤੀ-ਸਮੱਗਰੀ",
+          "opt-capital": "ਨਿਵੇਸ਼",
+          "opt-capital-sub": "ਮਿਊਚੁਅਲ ਫੰਡ, ਸਕਿਓਰਿਟੀਜ਼, ਬ੍ਰੋਕਰ",
           "label-monthly":
             "ਇਸ ਮਹੀਨੇ ਹੁਣ ਤੱਕ ਇਸ ਵਪਾਰੀ ਦੀ ਕੁੱਲ UPI QR ਪ੍ਰਾਪਤੀ (₹)",
+          optional: "ਵਿਕਲਪਿਕ",
+          "monthly-hint":
+            "ਸਿਰਫ਼ ਛੋਟੇ ਵਪਾਰੀ ਛੋਟ (ਮਹੀਨੇ ਵਿੱਚ ₹1,00,000 ਤੱਕ) ਦੀ ਜਾਂਚ ਲਈ।",
           "btn-calc": "MDR ਚੈੱਕ ਕਰੋ",
           "calc-note":
             "ਗਾਹਕ ਕਦੇ ਵੀ ਸਿੱਧਾ MDR ਨਹੀਂ ਦਿੰਦੇ। ਇਹ ਵਪਾਰੀ ਦੇ ਬੈਂਕ ਅਤੇ ਭੁਗਤਾਨ ਸਿਸਟਮ ਵਿਚਕਾਰ ਤੈਅ ਹੁੰਦਾ ਹੈ। ਜੇ ਕੋਈ ਵਪਾਰੀ ਇਸ ਕਾਰਨ ਤੁਹਾਡੇ ਤੋਂ ਵਾਧੂ ਭੁਗਤਾਨ ਮੰਗੇ, ਤਾਂ ਇਹ RBI/NPCI ਦੇ ਨਿਯਮਾਂ ਦੇ ਖ਼ਿਲਾਫ਼ ਹੈ।",
+          "calc-note-summary": "ਗਾਹਕ ਕਦੇ ਵੀ MDR ਨਹੀਂ ਦਿੰਦੇ",
           "label-qrtotal":
             "ਇਸ ਕੈਲੰਡਰ ਮਹੀਨੇ ਵਿੱਚ UPI QR ਰਾਹੀਂ ਪ੍ਰਾਪਤ ਕੁੱਲ ਰਕਮ (₹)",
-          "label-days": "ਅੱਜ ਮਹੀਨੇ ਦਾ ਕਿਹੜਾ ਦਿਨ ਹੈ (ਤੇਜ਼ ਗਤੀ ਜਾਂਚ ਲਈ)",
+          "label-days": "ਅੱਜ ਦੀ ਤਾਰੀਖ",
           "btn-elig": "ਯੋਗਤਾ ਚੈੱਕ ਕਰੋ",
           "elig-note":
             "ਛੋਟੇ ਵਪਾਰੀਆਂ ਦੀ ਕੁੱਲ UPI QR ਪ੍ਰਾਪਤੀ ਮਹੀਨੇ ਵਿੱਚ ₹1,00,000 ਤੱਕ ਰਹਿਣ ਤੇ, ਹਰ ਲੈਣ-ਦੇਣ ਤੇ ਜ਼ੀਰੋ MDR ਰਹਿੰਦਾ ਹੈ। ਸੀਮਾ ਪਾਰ ਹੋਣ ਤੋਂ ਬਾਅਦ, ₹2,000 ਤੋਂ ਵੱਧ ਦੇ ਲੈਣ-ਦੇਣ ਤੇ MDR ਲਾਗੂ ਹੁੰਦਾ ਹੈ।",
+          "elig-note-summary": "₹1,00,000 ਦੀ ਸੀਮਾ ਕਿਵੇਂ ਕੰਮ ਕਰਦੀ ਹੈ",
           "about-h1": "MDR ਕੀ ਹੈ?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> ਉਹ ਲੈਣ-ਦੇਣ ਫੀਸ ਹੈ ਜੋ ਕੋਈ ਵਪਾਰੀ UPI, ਡੈਬਿਟ ਕਾਰਡ ਜਾਂ ਕ੍ਰੈਡਿਟ ਕਾਰਡ ਵਰਗੀਆਂ ਡਿਜੀਟਲ ਭੁਗਤਾਨ ਪ੍ਰਕਿਰਿਆਵਾਂ ਲਈ ਆਪਣੇ ਬੈਂਕ ਜਾਂ ਭੁਗਤਾਨ ਸੇਵਾ ਪ੍ਰਦਾਤਾ (PSP) ਨੂੰ ਦਿੰਦਾ ਹੈ।",
@@ -1980,8 +2196,6 @@
             "<strong>₹2,000 ਤੋਂ ਘੱਟ ਦਾ ਨਿਯਮ:</strong> ਵਪਾਰੀ ਨੂੰ ਕੀਤੇ ਗਏ ₹2,000 ਜਾਂ ਇਸ ਤੋਂ ਘੱਟ ਦੇ ਕਿਸੇ ਵੀ ਭੁਗਤਾਨ ਤੇ, ਸ਼੍ਰੇਣੀ ਭਾਵੇਂ ਕੋਈ ਵੀ ਹੋਵੇ, ਜ਼ੀਰੋ MDR ਰਹਿੰਦਾ ਹੈ।",
           "about-li4":
             "<strong>ਵਪਾਰਕ ਸ਼੍ਰੇਣੀਆਂ:</strong> ₹2,000 ਤੋਂ ਵੱਧ ਦੇ ਲੈਣ-ਦੇਣ ਤੇ ਸ਼੍ਰੇਣੀ ਅਨੁਸਾਰ MDR ਲਾਗੂ ਹੁੰਦਾ ਹੈ (ਜਿਵੇਂ ਆਮ 0.4%, ਜ਼ਰੂਰੀ ਸੇਵਾਵਾਂ ਤੇ ਫਲੈਟ ₹5)।",
-          footer:
-            "ਇਹ ਸਰਕਾਰੀ NPCI/ਬੈਂਕ ਟੂਲ ਨਹੀਂ ਹੈ। 15 ਅਕਤੂਬਰ ਤੋਂ ਪਹਿਲਾਂ ਜਾਂ ਬਾਅਦ ਵਿੱਚ ਨਿਯਮ ਬਦਲ ਸਕਦੇ ਹਨ। ਸਹੀ ਜਾਣਕਾਰੀ ਲਈ ਆਪਣੇ PSP ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
           "disclaimer-link": "ਡਿਸਕਲੇਮਰ",
           "disclaimer-title": "ਡਿਸਕਲੇਮਰ",
           "disclaimer-body":
@@ -2017,27 +2231,38 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI इत्यस्य 2026 तमे वर्षे सप्टेम्बर-मासस्य पञ्चदशदिनाङ्कितस्य परिपत्रस्य आधारेण, यत् 2026 तमे वर्षे अक्टोबर-मासस्य पञ्चदशदिनाङ्कात् आरभ्य लागू भविष्यति। एतानि केवलम् अनुमानानि सन्ति। सर्वदा स्वबैंकेन/PSP-इत्यनेन सह पुष्टिं कुर्वन्तु।",
-          "tab-calc": "प्रति-भुगतान गणकयंत्रम्",
-          "tab-elig": "लघु-व्यापारि परीक्षा",
+          "tab-calc": "गणकयंत्रम्",
+          "tab-elig": "लघु-व्यापारी",
           "tab-about": "MDR किम्?",
           "label-amount": "व्यवहारस्य धनराशिः (₹)",
           "label-ptype": "भुगतानस्य प्रकारः",
-          "opt-p2p": "व्यक्तेः व्यक्तिं प्रति (मित्रम्/परिवारः)",
-          "opt-standard": "सामान्यः व्यापारी (आपणः, भोजनालयः, ई-वाणिज्यम्)",
-          "opt-essential":
-            "रेलमार्गः / दूरसंचारः / बीमा / इन्धनम् / कृषि-सामग्री",
-          "opt-capital": "म्युचुअल-फण्ड् / प्रतिभूतयः / दलालः",
+          "req-amount-headline": "⚠️ व्यवहार-राशिः आवश्यकी",
+          "req-amount-detail": "MDR गणनार्थम् उपरि व्यवहार-राशिं (₹) लिखतु।",
+          "opt-p2p": "व्यक्तेः व्यक्तिं प्रति",
+          "opt-p2p-sub": "मित्रम्, परिवारः",
+          "opt-standard": "सामान्यः व्यापारी",
+          "opt-standard-sub": "आपणः, भोजनालयः, ई-वाणिज्यम्",
+          "opt-essential": "आवश्यकसेवाः",
+          "opt-essential-sub":
+            "रेलमार्गः, दूरसंचारः, बीमा, इन्धनम्, कृषि-सामग्री",
+          "opt-capital": "निवेशः",
+          "opt-capital-sub": "म्युचुअल-फण्ड्, प्रतिभूतयः, दलालः",
           "label-monthly":
             "अस्मिन् मासे अद्यावधि अस्य व्यापारिणः सर्वं UPI QR प्राप्तिः (₹)",
+          optional: "वैकल्पिकम्",
+          "monthly-hint":
+            "केवलं लघु-व्यापारि-छूटस्य (मासे ₹1,00,000 पर्यन्तम्) परीक्षार्थम्।",
           "btn-calc": "MDR पश्यतु",
           "calc-note":
             "ग्राहकाः कदापि प्रत्यक्षतया MDR न यच्छन्ति। एतत् व्यापारिणः बैंकस्य भुगतान-व्यवस्थायाः च मध्ये निर्णीयते। यदि कोऽपि व्यापारी अनेन कारणेन भवतः अधिकं धनं याचते, तर्हि तत् RBI/NPCI नियमानां विरुद्धम् अस्ति।",
+          "calc-note-summary": "ग्राहकाः कदापि MDR न ददति",
           "label-qrtotal":
             "अस्मिन् पात्रमासे UPI QR द्वारा प्राप्तं सर्वं धनम् (₹)",
-          "label-days": "अद्य मासस्य कतमः दिवसः अस्ति (शीघ्र-गति-परीक्षार्थम्)",
+          "label-days": "अद्यतन-दिनाङ्कः",
           "btn-elig": "योग्यतां पश्यतु",
           "elig-note":
             "लघु-व्यापारिणां सर्वा UPI QR प्राप्तिः मासे ₹1,00,000 पर्यन्तं भवति चेत्, प्रत्येकस्मिन् व्यवहारे शून्यं MDR भवति। सीमायाः अतिक्रमणानन्तरं, ₹2,000 अधिकेषु व्यवहारेषु MDR लागू भवति।",
+          "elig-note-summary": "₹1,00,000 सीमा कथं कार्यं करोति",
           "about-h1": "MDR किम्?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> इति सः व्यवहार-शुल्कः यं व्यापारी UPI, डेबिट-कार्ड वा क्रेडिट-कार्ड इव डिजिटल-भुगतानानि सम्पादयितुं स्वबैंकाय वा भुगतान-सेवा-प्रदातुः (PSP) प्रति यच्छति।",
@@ -2053,8 +2278,6 @@
             "<strong>₹2,000 न्यूनस्य नियमः:</strong> व्यापारिणे कृतस्य ₹2,000 वा ततः न्यूनस्य कस्यापि भुगतानस्य कृते, श्रेणी काऽपि भवतु, शून्यं MDR भवति।",
           "about-li4":
             "<strong>वाणिज्यिक-श्रेण्यः:</strong> ₹2,000 अधिकेषु व्यवहारेषु श्रेण्यनुसारं MDR लागू भवति (यथा सामान्यः 0.4%, आवश्यक-सेवासु सम-₹5)।",
-          footer:
-            "एतत् सरकारी NPCI/बैंक-साधनं न भवति। अक्टोबर-मासस्य पञ्चदशदिनाङ्कात् पूर्वं वा पश्चात् नियमाः परिवर्तेरन्। सम्यक्-सूचनार्थं स्वकीयं PSP सम्पर्कयतु।",
           "disclaimer-link": "सूचना",
           "disclaimer-title": "सूचना",
           "disclaimer-body":
@@ -2089,26 +2312,38 @@
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
           subtitle:
             "NPCI के 15 सितंबर, 2026 के सर्कुलर पर आधारित, जो 15 अक्टूबर, 2026 से प्रभावी होगा। ये केवल अनुमान हैं। हमेशा अपने बैंक/PSP से पुष्टि करें।",
-          "tab-calc": "प्रति-भुगतान कैलकुलेटर",
-          "tab-elig": "व्यापारी जांच",
+          "tab-calc": "कैलकुलेटर",
+          "tab-elig": "लघु व्यापारी",
           "tab-about": "MDR क्या है?",
           "label-amount": "लेन-देन की राशि (₹)",
           "label-ptype": "भुगतान का प्रकार",
-          "opt-p2p": "व्यक्तिगत (P2P) (दोस्त/परिवार)",
-          "opt-standard": "मानक व्यापारी (दुकान, रेस्तरां, ई-कॉमर्स)",
-          "opt-essential": "रेलवे / टेलीकॉम / बीमा / ईंधन / कृषि-इनपुट",
-          "opt-capital": "म्यूचुअल फंड / प्रतिभूतियां / ब्रोकर",
+          "req-amount-headline": "⚠️ लेनदेन राशि आवश्यक",
+          "req-amount-detail":
+            "MDR की गणना के लिए ऊपर लेनदेन राशि (₹) दर्ज करें।",
+          "opt-p2p": "व्यक्तिगत (P2P)",
+          "opt-p2p-sub": "दोस्त, परिवार",
+          "opt-standard": "मानक व्यापारी",
+          "opt-standard-sub": "दुकान, रेस्तरां, ई-कॉमर्स",
+          "opt-essential": "आवश्यक सेवाएं",
+          "opt-essential-sub": "रेलवे, टेलीकॉम, बीमा, ईंधन, कृषि-इनपुट",
+          "opt-capital": "निवेश",
+          "opt-capital-sub": "म्यूचुअल फंड, प्रतिभूतियां, ब्रोकर",
           "label-monthly":
             "इस महीने अब तक इस व्यापारी की कुल UPI QR प्राप्तियां (₹)",
+          optional: "वैकल्पिक",
+          "monthly-hint":
+            "केवल लघु-व्यापारी छूट (₹1,00,000/माह तक) की जांच के लिए।",
           "btn-calc": "MDR जांचें",
           "calc-note":
             "ग्राहक कभी भी सीधे MDR का भुगतान नहीं करते। यह व्यापारी के बैंक और भुगतान प्रणाली के बीच तय होता है। अगर कोई व्यापारी इस वजह से आपसे अतिरिक्त भुगतान मांगे, तो यह RBI/NPCI के नियमों का उल्लंघन है।",
+          "calc-note-summary": "ग्राहक कभी MDR नहीं देते",
           "label-qrtotal":
             "इस कैलेंडर महीने में UPI QR के माध्यम से प्राप्त कुल राशि (₹)",
-          "label-days": "आज महीने का कौन सा दिन है (त्वरित गति जांच के लिए)",
+          "label-days": "आज की तारीख",
           "btn-elig": "पात्रता जांचें",
           "elig-note":
             "छोटे व्यापारियों की कुल UPI QR प्राप्तियां महीने में ₹1,00,000 तक रहने पर हर लेन-देन पर शून्य MDR रहता है। सीमा पार होने के बाद, ₹2,000 से अधिक के लेन-देन पर MDR लागू होता है।",
+          "elig-note-summary": "₹1,00,000 की सीमा कैसे काम करती है",
           "about-h1": "MDR क्या है?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> वह लेन-देन शुल्क है जो कोई व्यापारी UPI, डेबिट कार्ड या क्रेडिट कार्ड जैसे डिजिटल भुगतान संसाधित करने के लिए अपने बैंक या भुगतान सेवा प्रदाता (PSP) को देता है।",
@@ -2124,8 +2359,6 @@
             "<strong>₹2,000 से कम का नियम:</strong> व्यापारी को किए गए ₹2,000 या उससे कम के किसी भी भुगतान पर, श्रेणी चाहे जो भी हो, शून्य MDR रहता है।",
           "about-li4":
             "<strong>वाणिज्यिक श्रेणियां:</strong> ₹2,000 से अधिक के लेन-देन पर श्रेणी के अनुसार MDR लागू होता है (जैसे मानक 0.4%, आवश्यक सेवाओं पर फ्लैट ₹5)।",
-          footer:
-            "यह आधिकारिक NPCI/बैंक टूल नहीं है। 15 अक्टूबर से पहले या बाद में नियम बदल सकते हैं। सटीक जानकारी के लिए अपने PSP से संपर्क करें।",
           "disclaimer-link": "डिस्क्लेमर",
           "disclaimer-title": "डिस्क्लेमर",
           "disclaimer-body":
@@ -2161,25 +2394,36 @@
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
           subtitle:
             "NPCI جي 15 سيپٽمبر 2026 واري سرڪلر تي ٻڌل، جيڪا 15 آڪٽوبر 2026 کان لاڳو ٿيندي۔ اهي فقط اندازا آهن۔ هميشه پنهنجي بئنڪ/PSP سان تصديق ڪريو۔",
-          "tab-calc": "هر ادائيگي ڪيلڪوليٽر",
-          "tab-elig": "ننڍي واپاري جي جانچ",
+          "tab-calc": "ڪيلڪوليٽر",
+          "tab-elig": "ننڍو واپاري",
           "tab-about": "MDR ڇا آهي؟",
           "label-amount": "لهه ڏيهه جي رقم (₹)",
           "label-ptype": "ادائيگي جو قسم",
-          "opt-p2p": "ذاتي (P2P) (دوست/خاندان)",
-          "opt-standard": "عام واپاري (دڪان، ريسٽورنٽ، اي-ڪامرس)",
-          "opt-essential": "ريلوي / ٽيليڪام / بيمو / تيل / زرعي سامان",
-          "opt-capital": "ميوچل فنڊ / سيڪيورٽيز / بروڪر",
+          "req-amount-headline": "⚠️ لين دين جي رقم ضروري آهي",
+          "req-amount-detail": "MDR ڳڻڻ لاءِ مٿي لين دين جي رقم (₹) داخل ڪريو۔",
+          "opt-p2p": "ذاتي (P2P)",
+          "opt-p2p-sub": "دوست, خاندان",
+          "opt-standard": "عام واپاري",
+          "opt-standard-sub": "دڪان، ريسٽورنٽ، اي-ڪامرس",
+          "opt-essential": "ضروري خدمتون",
+          "opt-essential-sub": "ريلوي, ٽيليڪام, بيمو, تيل, زرعي سامان",
+          "opt-capital": "سيڙپڪاري",
+          "opt-capital-sub": "ميوچل فنڊ, سيڪيورٽيز, بروڪر",
           "label-monthly":
             "هن مهيني ھاڻي تائين هن واپاري جي مڙني UPI QR وصولين (₹)",
+          optional: "اختياري",
+          "monthly-hint":
+            "صرف ننڍي واپاري جي رعايت (مهيني ۾ ₹1,00,000 تائين) جانچڻ لاءِ۔",
           "btn-calc": "MDR چيڪ ڪريو",
           "calc-note":
             "گراهڪ ڪڏهن به سڌو سنئون MDR ادا نٿا ڪن۔ اهو واپاري جي بئنڪ ۽ ادائيگي واري نظام جي وچ ۾ طئي ٿيندو آهي۔ جيڪڏهن ڪو واپاري ان سبب توهان کان وڌيڪ ادائيگي گهري، ته اهو RBI/NPCI جي قاعدن جي خلاف آهي۔",
+          "calc-note-summary": "گراهڪ ڪڏهن به MDR ادا نٿا ڪن",
           "label-qrtotal": "هن ڪئلينڊر مهيني ۾ UPI QR ذريعي مليل مڙني رقم (₹)",
-          "label-days": "اڄ مهيني جو ڪهڙو ڏينهن آهي (تڪڙي رفتار جي جانچ لاءِ)",
+          "label-days": "اڄ جي تاريخ",
           "btn-elig": "اهلیت چيڪ ڪريو",
           "elig-note":
             "ننڍن واپارين جي مڙني UPI QR وصولين مهيني ۾ ₹1,00,000 تائين رهجي، هر لهه ڏيهه تي صفر MDR رهندو آهي۔ حد پار ٿيڻ کان پوءِ، ₹2,000 کان وڌيڪ لهه ڏيهه تي MDR لاڳو ٿيندو آهي۔",
+          "elig-note-summary": "₹1,00,000 جي حد ڪيئن ڪم ڪري ٿي",
           "about-h1": "MDR ڇا آهي؟",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> اهو لهه ڏيهه فيس آهي جيڪو ڪو واپاري UPI، ڊيبٽ ڪارڊ يا ڪريڊٽ ڪارڊ جهڙي ڊجيٽل ادائيگين جي پروسيسنگ لاءِ پنهنجي بئنڪ يا پيمينٽ سروس پرووائيڊر (PSP) کي ڏيندو آهي۔",
@@ -2195,8 +2439,6 @@
             "<strong>₹2,000 کان گهٽ جو قاعدو:</strong> واپاري کي ڪيل ₹2,000 يا ان کان گهٽ ڪنهن به ادائيگي تي، درجو ڪجهه به هجي، صفر MDR رهندو آهي۔",
           "about-li4":
             "<strong>واپاري درجا:</strong> ₹2,000 کان وڌيڪ لهه ڏيهه تي درجي مطابق MDR لاڳو ٿيندو آهي (مثال طور عام 0.4%، ضروري خدمتن تي فليٽ ₹5)۔",
-          footer:
-            "اها سرڪاري NPCI/بئنڪ اوزار ناهي۔ 15 آڪٽوبر کان اڳ يا پوءِ قاعدا مٽجي سگهن ٿا۔ صحيح ڄاڻ لاءِ پنهنجي PSP سان رابطو ڪريو۔",
           "disclaimer-link": "ڊسڪليمر",
           "disclaimer-title": "ڊسڪليمر",
           "disclaimer-body":
@@ -2231,28 +2473,40 @@
           "app-title": "🧾 யுபிஐ எம்டிஆர் செக்கர்",
           subtitle:
             "NPCIயின் 2026 செப்டம்பர் 15 அறிவிப்பின் அடிப்படையில், இது 2026 அக்டோபர் 15 முதல் அமலுக்கு வரும். இவை தோராயமான மதிப்பீடுகள் மட்டுமே. எப்போதும் உங்கள் வங்கி/PSP உடன் உறுதிப்படுத்திக் கொள்ளுங்கள்.",
-          "tab-calc": "ஒவ்வொரு பணம் செலுத்துதலுக்கான கணிப்பான்",
-          "tab-elig": "சிறு வணிகர் சரிபார்ப்பு",
+          "tab-calc": "கணிப்பான்",
+          "tab-elig": "சிறு வணிகர்",
           "tab-about": "MDR என்றால் என்ன?",
           "label-amount": "பரிவர்த்தனை தொகை (₹)",
           "label-ptype": "பணம் செலுத்தும் வகை",
-          "opt-p2p": "நபரிடமிருந்து நபருக்கு (நண்பர்/குடும்பம்)",
-          "opt-standard": "சாதாரண வணிகர் (கடை, உணவகம், இ-காமர்ஸ்)",
-          "opt-essential":
-            "ரயில்வே / தொலைத்தொடர்பு / காப்பீடு / எரிபொருள் / விவசாய பொருட்கள்",
-          "opt-capital": "மியூச்சுவல் ஃபண்ட் / பத்திரங்கள் / தரகர்",
+          "req-amount-headline": "⚠️ பரிவர்த்தனை தொகை தேவை",
+          "req-amount-detail":
+            "MDR கணக்கிட மேலே பரிவர்த்தனை தொகையை (₹) உள்ளிடவும்.",
+          "opt-p2p": "நபரிடமிருந்து நபருக்கு",
+          "opt-p2p-sub": "நண்பர், குடும்பம்",
+          "opt-standard": "சாதாரண வணிகர்",
+          "opt-standard-sub": "கடை, உணவகம், இ-காமர்ஸ்",
+          "opt-essential": "அத்தியாவசிய சேவைகள்",
+          "opt-essential-sub":
+            "ரயில்வே, தொலைத்தொடர்பு, காப்பீடு, எரிபொருள், விவசாய பொருட்கள்",
+          "opt-capital": "முதலீடுகள்",
+          "opt-capital-sub": "மியூச்சுவல் ஃபண்ட், பத்திரங்கள், தரகர்",
           "label-monthly":
             "இந்த மாதம் இதுவரை இந்த வணிகருக்கு கிடைத்த மொத்த UPI QR வருமானம் (₹)",
+          optional: "விருப்பத்தேர்வு",
+          "monthly-hint":
+            "சிறு வணிகர் விலக்கைச் (மாதம் ₹1,00,000 வரை) சரிபார்க்க மட்டும்.",
           "btn-calc": "MDR சரிபார்க்கவும்",
           "calc-note":
             "வாடிக்கையாளர்கள் ஒருபோதும் நேரடியாக MDR செலுத்துவதில்லை. இது வணிகரின் வங்கிக்கும் கட்டண அமைப்புக்கும் இடையே தீர்மானிக்கப்படுகிறது. இதன் காரணமாக ஏதேனும் வணிகர் உங்களிடம் கூடுதல் தொகை கேட்டால், அது RBI/NPCI விதிகளுக்கு எதிரானது.",
+          "calc-note-summary":
+            "வாடிக்கையாளர்கள் ஒருபோதும் MDR செலுத்த மாட்டார்கள்",
           "label-qrtotal":
             "இந்த காலண்டர் மாதத்தில் UPI QR மூலம் பெறப்பட்ட மொத்த தொகை (₹)",
-          "label-days":
-            "இன்று மாதத்தின் எத்தனையாவது நாள் (விரைவு வேக சரிபார்ப்புக்கு)",
+          "label-days": "இன்றைய தேதி",
           "btn-elig": "தகுதி சரிபார்க்கவும்",
           "elig-note":
             "சிறு வணிகர்களின் மொத்த UPI QR வருமானம் மாதத்தில் ₹1,00,000 வரை இருந்தால், ஒவ்வொரு பரிவர்த்தனையிலும் பூஜ்ஜிய MDR இருக்கும். வரம்பு தாண்டிய பிறகு, ₹2,000-க்கு மேற்பட்ட பரிவர்த்தனைகளுக்கு MDR பொருந்தும்.",
+          "elig-note-summary": "₹1,00,000 வரம்பு எப்படி செயல்படுகிறது",
           "about-h1": "MDR என்றால் என்ன?",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> என்பது UPI, டெபிட் கார்டு அல்லது கிரெடிட் கார்டு போன்ற டிஜிட்டல் பணம் செலுத்துதல்களைச் செயலாக்குவதற்காக ஒரு வணிகர் தனது வங்கிக்கு அல்லது பேமெண்ட் சர்வீஸ் ப்ரொவைடருக்கு (PSP) செலுத்தும் பரிவர்த்தனை கட்டணமாகும்.",
@@ -2268,8 +2522,6 @@
             "<strong>₹2,000-க்கும் குறைவான விதி:</strong> ஒரு வணிகருக்குச் செலுத்தப்படும் ₹2,000 அல்லது அதற்குக் குறைவான எந்த பணம் செலுத்துதலுக்கும், பிரிவு எதுவாக இருந்தாலும், பூஜ்ஜிய MDR இருக்கும்.",
           "about-li4":
             "<strong>வணிக பிரிவுகள்:</strong> ₹2,000-க்கும் அதிகமான பரிவர்த்தனைகளுக்கு பிரிவின்படி MDR பொருந்தும் (எ.கா. சாதாரணம் 0.4%, அத்தியாவசிய சேவைகளுக்கு நிலையான ₹5).",
-          footer:
-            "இது அதிகாரப்பூர்வ NPCI/வங்கி கருவி அல்ல. அக்டோபர் 15-க்கு முன் அல்லது பின் விதிகள் மாறலாம். துல்லியமான விவரங்களுக்கு உங்கள் PSP-ஐ தொடர்பு கொள்ளுங்கள்.",
           "disclaimer-link": "அறிவிப்பு",
           "disclaimer-title": "பொறுப்புத் துறப்பு",
           "disclaimer-body":
@@ -2305,26 +2557,38 @@
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
           subtitle:
             "این پی سی آئی کے 15 ستمبر 2026 کے سرکلر کی بنیاد پر، جو 15 اکتوبر 2026 سے نافذ ہوگا۔ یہ صرف اندازے ہیں۔ ہمیشہ اپنے بینک/PSP سے تصدیق کریں۔",
-          "tab-calc": "ہر ادائیگی کیلکولیٹر",
-          "tab-elig": "چھوٹے تاجر کی جانچ",
+          "tab-calc": "کیلکولیٹر",
+          "tab-elig": "چھوٹا تاجر",
           "tab-about": "MDR کیا ہے؟",
           "label-amount": "لین دین کی رقم (₹)",
           "label-ptype": "ادائیگی کی قسم",
-          "opt-p2p": "ذاتی (P2P) (دوست/خاندان)",
-          "opt-standard": "عام تاجر (دکان، ریستوران، ای کامرس)",
-          "opt-essential": "ریلوے / ٹیلی کام / بیمہ / ایندھن / زرعی سامان",
-          "opt-capital": "میوچل فنڈ / سیکیورٹیز / بروکر",
+          "req-amount-headline": "⚠️ لین دین کی رقم ضروری ہے",
+          "req-amount-detail":
+            "MDR کا حساب لگانے کے لیے اوپر لین دین کی رقم (₹) درج کریں۔",
+          "opt-p2p": "ذاتی (P2P)",
+          "opt-p2p-sub": "دوست, خاندان",
+          "opt-standard": "عام تاجر",
+          "opt-standard-sub": "دکان، ریستوران، ای کامرس",
+          "opt-essential": "ضروری خدمات",
+          "opt-essential-sub": "ریلوے, ٹیلی کام, بیمہ, ایندھن, زرعی سامان",
+          "opt-capital": "سرمایہ کاری",
+          "opt-capital-sub": "میوچل فنڈ, سیکیورٹیز, بروکر",
           "label-monthly":
             "اس مہینے اب تک اس تاجر کی کل یو پی آئی کیو آر وصولیاں (₹)",
+          optional: "اختیاری",
+          "monthly-hint":
+            "صرف چھوٹے تاجر کی چھوٹ (ماہانہ ₹1,00,000 تک) جانچنے کے لیے۔",
           "btn-calc": "MDR چیک کریں",
           "calc-note":
             "گاہک کبھی بھی براہ راست MDR ادا نہیں کرتے۔ یہ تاجر کے بینک اور ادائیگی کے نظام کے درمیان طے ہوتا ہے۔ اگر کوئی تاجر اس وجہ سے آپ سے اضافی ادائیگی مانگے، تو یہ RBI/NPCI کے قوانین کی خلاف ورزی ہے۔",
+          "calc-note-summary": "گاہک کبھی MDR ادا نہیں کرتے",
           "label-qrtotal":
             "اس کیلنڈر مہینے میں یو پی آئی کیو آر کے ذریعے موصول کل رقم (₹)",
-          "label-days": "آج مہینے کا کونسا دن ہے (فوری رفتار جانچ کے لیے)",
+          "label-days": "آج کی تاریخ",
           "btn-elig": "اہلیت چیک کریں",
           "elig-note":
             "چھوٹے تاجروں کی کل یو پی آئی کیو آر وصولیاں مہینے میں ₹1,00,000 تک رہنے پر ہر لین دین پر صفر MDR رہتا ہے۔ حد پار ہونے کے بعد، ₹2,000 سے زیادہ کے لین دین پر MDR لاگو ہوتا ہے۔",
+          "elig-note-summary": "₹1,00,000 کی حد کیسے کام کرتی ہے",
           "about-h1": "MDR کیا ہے؟",
           "about-p1":
             "<strong>Merchant Discount Rate (MDR)</strong> وہ لین دین فیس ہے جو تاجر یو پی آئی، ڈیبٹ کارڈ یا کریڈٹ کارڈ جیسی ڈیجیٹل ادائیگیوں کی پروسیسنگ کے لیے اپنے بینک یا پیمنٹ سروس پرووائیڈر (PSP) کو دیتا ہے۔",
@@ -2340,8 +2604,6 @@
             "<strong>₹2,000 سے کم کا قانون:</strong> تاجر کو کی گئی ₹2,000 یا اس سے کم کسی بھی ادائیگی پر، زمرہ کوئی بھی ہو، صفر MDR رہتا ہے۔",
           "about-li4":
             "<strong>تجارتی زمرے:</strong> ₹2,000 سے زیادہ کے لین دین پر زمرے کے مطابق MDR لاگو ہوتا ہے (مثلاً عام 0.4%، ضروری خدمات پر فلیٹ ₹5)۔",
-          footer:
-            "یہ سرکاری NPCI/بینک ٹول نہیں ہے۔ 15 اکتوبر سے پہلے یا بعد میں قوانین بدل سکتے ہیں۔ درست تفصیلات کے لیے اپنے PSP سے رابطہ کریں۔",
           "disclaimer-link": "ڈس کلیمر",
           "disclaimer-title": "ڈس کلیمر",
           "disclaimer-body":
@@ -2496,6 +2758,7 @@
         bindIndianNumberInput("amount", () => calcMDR(false));
         bindIndianNumberInput("monthlyRecv", () => calcMDR(false));
         bindIndianNumberInput("qrTotal", () => checkEligibility());
+        document.getElementById("daysIn").value = new Date().getDate();
         document
           .getElementById("daysIn")
           .addEventListener("input", checkEligibility);
