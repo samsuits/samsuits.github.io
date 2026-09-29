@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#B0152F">
+  <title>Blood Group Guide</title>
+  <meta name="description" content="Offline blood group compatibility guide — check who can give to and receive from whom, for blood and plasma. No data collected or shared.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-product="rbc">
+  <header class="top">
+    <h1 data-i18n="app_title">Blood Group Guide</h1>
+    <div class="top-controls">
+      <select id="lang-select" class="lang-select" data-i18n-aria-label="lang_select_aria" aria-label="Language">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="te">తెలుగు</option>
+      </select>
+      <div class="seg" role="radiogroup" data-i18n-aria-label="product_group_aria" aria-label="Blood product">
+        <button type="button" role="radio" data-product="rbc" aria-checked="true" data-i18n="product_blood">Blood</button>
+        <button type="button" role="radio" data-product="plasma" aria-checked="false" data-i18n="product_plasma">Plasma</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- CHECK -->
+    <section id="tab-check" class="tab" aria-labelledby="nav-check">
+      <p class="lead" data-i18n="check_lead">Pick a blood group to see who it can give to and get from.</p>
+      <div class="groups" id="check-picker"></div>
+
+      <article class="label" id="check-card" aria-live="polite"></article>
+
+      <div class="diagram" id="check-diagram" aria-hidden="false"></div>
+
+      <h2 data-i18n="test_donor_patient_heading">Test a donor and patient</h2>
+      <div class="pair">
+        <label><span data-i18n="donor_label">Donor</span>
+          <select id="pair-donor"></select>
+        </label>
+        <label><span data-i18n="patient_label">Patient</span>
+          <select id="pair-patient"></select>
+        </label>
+      </div>
+      <p class="verdict" id="pair-verdict" aria-live="polite"></p>
+    </section>
+
+    <!-- CHART -->
+    <section id="tab-chart" class="tab" hidden aria-labelledby="nav-chart">
+      <p class="lead" id="chart-lead"></p>
+      <div class="table-wrap">
+        <table class="chart" id="chart"></table>
+      </div>
+      <p class="small" data-i18n="chart_note">Rows are donors, columns are patients. A drop means compatible.</p>
+    </section>
+
+    <!-- LEARN -->
+    <section id="tab-learn" class="tab" hidden aria-labelledby="nav-learn">
+      <details open>
+        <summary data-i18n="learn_s1_summary">What decides your blood group</summary>
+        <p data-i18n="learn_s1_p1">Your red cells may carry an A antigen, a B antigen, both (AB) or neither (O). A separate antigen called RhD decides plus or minus: if you have it you are positive, if not you are negative.</p>
+        <p data-i18n="learn_s1_p2">Your plasma naturally carries antibodies against the A or B antigens you do not have. That is why a wrong transfusion can be dangerous.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s2_summary">Red cells and plasma work in opposite ways</summary>
+        <p data-i18n="learn_s2_p1">For red cells, the donor's cells must not carry an antigen the patient lacks. So O negative can give red cells to everyone, and AB positive can receive red cells from everyone.</p>
+        <p data-i18n="learn_s2_p2">For plasma it flips. The donor's plasma must not carry antibodies against the patient's cells. So AB plasma suits every ABO group, and group O patients can receive plasma from any ABO group. RhD does not matter for plasma.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s3_summary">Rh negative blood</summary>
+        <p data-i18n="learn_s3_p1">Only a small share of people in India, roughly 5 in 100, are Rh negative. Rh negative patients should normally get Rh negative red cells. This matters most for girls and women who may become pregnant, because exposure to RhD can affect future pregnancies.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s4_summary">Bombay blood group</summary>
+        <p data-i18n="learn_s4_p1">A rare type first described in Mumbai in 1952. These people lack the H antigen and often test as group O on routine checks. They can only receive blood from other Bombay group donors. It is estimated at around 1 in 10,000 people in India, and is much rarer elsewhere.</p>
+        <p data-i18n="learn_s4_p2">If you have been told you are Bombay group, note it on your Me page and keep your donor card with you.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s5_summary">Whole blood and platelets</summary>
+        <p data-i18n="learn_s5_p1">Whole blood is usually given as the same ABO and RhD group. For platelets, the same ABO group is preferred, but hospitals decide case by case. This app covers red cells and plasma only.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s6_summary">Who can donate in India</summary>
+        <p data-i18n="learn_s6_p1">Under the national blood donor guidelines (NBTC, 2017), a donor should generally be 18 to 65 years old (first-time donors up to 60), weigh at least 45 kg, have haemoglobin of at least 12.5 g/dL, and be in good health on the day.</p>
+        <p data-i18n="learn_s6_p2">The gap between two whole blood donations is at least 90 days for men and 120 days for women. The blood bank checks all of this before you donate.</p>
+      </details>
+      <details>
+        <summary data-i18n="learn_s7_summary">Before you rely on this</summary>
+        <p data-i18n="learn_s7_p1">Every transfusion is cross-matched in a lab before it is given. Use this app to learn and to plan donations, not to make medical decisions.</p>
+      </details>
+    </section>
+
+    <!-- ME -->
+    <section id="tab-me" class="tab" hidden aria-labelledby="nav-me">
+      <article class="label" id="me-card"></article>
+
+      <form id="me-form" class="form" autocomplete="off">
+        <label><span data-i18n="me_name_label">Name (optional)</span>
+          <input id="me-name" type="text" maxlength="60">
+        </label>
+
+        <fieldset>
+          <legend data-i18n="me_group_legend">Your blood group</legend>
+          <div class="groups" id="me-picker"></div>
+        </fieldset>
+
+        <label><span data-i18n="me_sex_label">Sex (used for the donation gap)</span>
+          <select id="me-sex">
+            <option value="" data-i18n="me_sex_prefer_not">Prefer not to say</option>
+            <option value="m" data-i18n="me_sex_male">Male</option>
+            <option value="f" data-i18n="me_sex_female">Female</option>
+          </select>
+        </label>
+
+        <label><span data-i18n="me_last_label">Last whole blood donation (optional)</span>
+          <input id="me-last" type="date">
+        </label>
+
+        <label><span data-i18n="me_notes_label">Notes (optional)</span>
+          <textarea id="me-notes" rows="3" maxlength="300" data-i18n-placeholder="me_notes_placeholder" placeholder="For example: Bombay group, donor card number"></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="primary" data-i18n="me_save_btn">Save details</button>
+          <button type="button" class="ghost" id="me-delete" data-i18n="me_delete_btn">Delete my details</button>
+        </div>
+        <p class="status" id="me-status" role="status"></p>
+      </form>
+
+      <p class="privacy" data-i18n="me_privacy">Your details are saved only on this phone. The app has no internet access, so nothing is collected or shared.</p>
+    </section>
+  </main>
+
+  <nav class="bottom" role="tablist" data-i18n-aria-label="nav_sections_aria" aria-label="Sections">
+    <button type="button" role="tab" id="nav-check" data-tab="check" aria-selected="true" data-i18n="nav_check">Check</button>
+    <button type="button" role="tab" id="nav-chart" data-tab="chart" aria-selected="false" data-i18n="nav_chart">Chart</button>
+    <button type="button" role="tab" id="nav-learn" data-tab="learn" aria-selected="false" data-i18n="nav_learn">Learn</button>
+    <button type="button" role="tab" id="nav-me" data-tab="me" aria-selected="false" data-i18n="nav_me">Me</button>
+  </nav>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
