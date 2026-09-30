@@ -316,6 +316,15 @@ function fillForm() {
   $('me-notes').value = p.notes || '';
   state.draftGroup = p.group || null;
   $('me-last').max = new Date().toISOString().slice(0, 10);
+  renderDateDisplay();
+}
+
+// Shows the stored yyyy-mm-dd value as dd/mm/yyyy over the native date input.
+function renderDateDisplay() {
+  const v = $('me-last').value;
+  const display = $('me-last-display');
+  display.textContent = v ? v.split('-').reverse().join('/') : 'dd/mm/yyyy';
+  display.classList.toggle('empty', !v);
 }
 
 function escapeHtml(s) {
@@ -413,6 +422,12 @@ async function init() {
 
   $('me-form').addEventListener('submit', saveProfile);
   $('me-delete').addEventListener('click', deleteProfile);
+  $('me-last').addEventListener('input', renderDateDisplay);
+  $('me-last').addEventListener('change', renderDateDisplay);
+  $('me-last').addEventListener('click', e => {
+    // Desktop browsers only open the picker from the (now invisible) icon.
+    try { e.target.showPicker(); } catch (err) { /* unsupported; native tap still works */ }
+  });
 
   fillForm();
   setTab('check');

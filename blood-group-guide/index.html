@@ -11,17 +11,15 @@
 <body data-product="rbc">
   <header class="top">
     <h1 data-i18n="app_title">Blood Group Guide</h1>
-    <div class="top-controls">
-      <select id="lang-select" class="lang-select" data-i18n-aria-label="lang_select_aria" aria-label="Language">
-        <option value="en">English</option>
-        <option value="hi">हिंदी</option>
-        <option value="gu">ગુજરાતી</option>
-        <option value="te">తెలుగు</option>
-      </select>
-      <div class="seg" role="radiogroup" data-i18n-aria-label="product_group_aria" aria-label="Blood product">
-        <button type="button" role="radio" data-product="rbc" aria-checked="true" data-i18n="product_blood">Blood</button>
-        <button type="button" role="radio" data-product="plasma" aria-checked="false" data-i18n="product_plasma">Plasma</button>
-      </div>
+    <select id="lang-select" class="lang-select" data-i18n-aria-label="lang_select_aria" aria-label="Language">
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="gu">ગુજરાતી</option>
+      <option value="te">తెలుగు</option>
+    </select>
+    <div class="seg" role="radiogroup" data-i18n-aria-label="product_group_aria" aria-label="Blood product">
+      <button type="button" role="radio" data-product="rbc" aria-checked="true" data-i18n="product_blood">Blood</button>
+      <button type="button" role="radio" data-product="plasma" aria-checked="false" data-i18n="product_plasma">Plasma</button>
     </div>
   </header>
 
@@ -115,7 +113,10 @@
         </label>
 
         <label><span data-i18n="me_last_label">Last whole blood donation (optional)</span>
-          <input id="me-last" type="date">
+          <span class="date-field">
+            <span id="me-last-display" class="date-display" aria-hidden="true"></span>
+            <input id="me-last" type="date">
+          </span>
         </label>
 
         <label><span data-i18n="me_notes_label">Notes (optional)</span>
