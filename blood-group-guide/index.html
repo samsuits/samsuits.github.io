@@ -26,6 +26,14 @@
   <main>
     <!-- CHECK -->
     <section id="tab-check" class="tab" aria-labelledby="nav-check">
+      <aside class="intro" id="intro" hidden aria-labelledby="intro-title">
+        <h2 id="intro-title" data-i18n="intro_title">Welcome to Blood Group Guide</h2>
+        <p data-i18n="intro_p1">This app shows which blood groups can give blood or plasma to which, and keeps your own blood group and next donation date on this phone.</p>
+        <p data-i18n="intro_p2">It is for blood donors, patients and their families, students, and volunteers who run donation camps. It works without internet and is for learning and planning only. A lab always cross-matches blood before a transfusion.</p>
+        <p class="small" data-i18n="intro_more">You can read this again any time under Learn, in “About this app”.</p>
+        <button type="button" class="primary" id="intro-dismiss" data-i18n="intro_dismiss">Got it</button>
+      </aside>
+
       <p class="lead" data-i18n="check_lead">Pick a blood group to see who it can give to and get from.</p>
       <div class="groups" id="check-picker"></div>
 
@@ -57,6 +65,13 @@
     <!-- LEARN -->
     <section id="tab-learn" class="tab" hidden aria-labelledby="nav-learn">
       <details open>
+        <summary data-i18n="learn_about_summary">About this app</summary>
+        <p data-i18n="learn_about_what">Blood Group Guide is a quick, offline reference for ABO and RhD blood group compatibility. It shows who can give red cells or plasma to whom, and lets you keep your own blood group and donation dates on your phone.</p>
+        <p data-i18n="learn_about_who">It is for blood donors who want to know who they can help, patients and families looking for a matching donor, students learning the basics, and volunteers running donation camps.</p>
+        <p data-i18n="learn_about_how">Check: pick a group to see who it can give to and get from. Chart: all eight groups at a glance. Learn: short explanations. Me: save your group and see when you can donate again. The Blood / Plasma switch at the top changes between red cells and plasma.</p>
+        <p data-i18n="learn_about_privacy">Nothing you enter leaves this phone. The app has no internet access, no accounts and no ads.</p>
+      </details>
+      <details>
         <summary data-i18n="learn_s1_summary">What decides your blood group</summary>
         <p data-i18n="learn_s1_p1">Your red cells may carry an A antigen, a B antigen, both (AB) or neither (O). A separate antigen called RhD decides plus or minus: if you have it you are positive, if not you are negative.</p>
         <p data-i18n="learn_s1_p2">Your plasma naturally carries antibodies against the A or B antigens you do not have. That is why a wrong transfusion can be dangerous.</p>

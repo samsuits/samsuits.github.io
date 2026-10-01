@@ -92,6 +92,30 @@ const LangStore = {
   }
 };
 
+/* ---------- First-run intro (stays on the phone) ---------- */
+
+const INTRO_KEY = 'intro.dismissed.v1';
+
+const IntroStore = {
+  get prefs() {
+    return Store.prefs;
+  },
+  async dismissed() {
+    try {
+      const raw = this.prefs
+        ? (await this.prefs.get({ key: INTRO_KEY })).value
+        : localStorage.getItem(INTRO_KEY);
+      return raw === '1';
+    } catch (e) {
+      return false;
+    }
+  },
+  async dismiss() {
+    if (this.prefs) await this.prefs.set({ key: INTRO_KEY, value: '1' });
+    else localStorage.setItem(INTRO_KEY, '1');
+  }
+};
+
 function applyStaticI18n() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = I18n.t(el.getAttribute('data-i18n'));
@@ -427,6 +451,12 @@ async function init() {
   $('me-last').addEventListener('click', e => {
     // Desktop browsers only open the picker from the (now invisible) icon.
     try { e.target.showPicker(); } catch (err) { /* unsupported; native tap still works */ }
+  });
+
+  $('intro').hidden = await IntroStore.dismissed();
+  $('intro-dismiss').addEventListener('click', async () => {
+    $('intro').hidden = true;
+    try { await IntroStore.dismiss(); } catch (e) { /* shows again next launch */ }
   });
 
   fillForm();
