@@ -73,7 +73,20 @@ button, input, select, textarea { font: inherit; color: inherit; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   font-size: 1.05rem; font-weight: 700; margin: 0;
 }
-.top .seg { grid-column: 1 / -1; justify-self: start; }
+.top .seg { grid-column: 1; justify-self: start; }
+.about-btn {
+  grid-column: 2;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 body[data-tab="learn"] .seg { visibility: hidden; }
 
 .lang-select {

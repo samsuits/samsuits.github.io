@@ -453,6 +453,11 @@ async function init() {
     try { e.target.showPicker(); } catch (err) { /* unsupported; native tap still works */ }
   });
 
+  $('about-btn').addEventListener('click', () => {
+    setTab('learn');
+    $('learn-about').open = true;
+  });
+
   $('intro').hidden = await IntroStore.dismissed();
   $('intro-dismiss').addEventListener('click', async () => {
     $('intro').hidden = true;
