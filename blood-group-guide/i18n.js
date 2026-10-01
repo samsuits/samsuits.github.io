@@ -9,6 +9,7 @@ const I18N = {
     product_plasma: "Plasma",
     product_group_aria: "Blood product",
     lang_select_aria: "Language",
+    lang_gate_note: "You can change this any time from the language menu at the top.",
     about_btn: "About",
 
     intro_title: "Welcome to Blood Group Guide",
@@ -110,6 +111,7 @@ const I18N = {
     product_plasma: "प्लाज़्मा",
     product_group_aria: "रक्त उत्पाद",
     lang_select_aria: "भाषा",
+    lang_gate_note: "आप इसे कभी भी ऊपर दिए गए भाषा मेनू से बदल सकते हैं।",
     about_btn: "परिचय",
 
     intro_title: "ब्लड ग्रुप गाइड में आपका स्वागत है",
@@ -211,6 +213,7 @@ const I18N = {
     product_plasma: "પ્લાઝ્મા",
     product_group_aria: "લોહીનું ઉત્પાદન",
     lang_select_aria: "ભાષા",
+    lang_gate_note: "તમે આ ગમે ત્યારે ઉપરના ભાષા મેનુમાંથી બદલી શકો છો.",
     about_btn: "પરિચય",
 
     intro_title: "બ્લડ ગ્રુપ ગાઇડમાં આપનું સ્વાગત છે",
@@ -312,6 +315,7 @@ const I18N = {
     product_plasma: "ప్లాస్మా",
     product_group_aria: "రక్త ఉత్పత్తి",
     lang_select_aria: "భాష",
+    lang_gate_note: "మీరు దీన్ని ఎప్పుడైనా పైన ఉన్న భాషా మెనూ నుండి మార్చవచ్చు.",
     about_btn: "పరిచయం",
 
     intro_title: "బ్లడ్ గ్రూప్ గైడ్‌కు స్వాగతం",

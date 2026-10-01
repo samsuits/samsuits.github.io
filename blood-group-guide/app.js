@@ -129,6 +129,7 @@ function applyStaticI18n() {
   document.title = I18n.t('app_title');
 }
 
+// Returns true when the language was chosen on an earlier launch.
 async function initLang() {
   const saved = await LangStore.get();
   let lang = saved;
@@ -139,6 +140,29 @@ async function initLang() {
   I18n.setLang(lang);
   $('lang-select').value = I18n.lang;
   applyStaticI18n();
+  return Boolean(saved);
+}
+
+async function changeLang(lang) {
+  I18n.setLang(lang);
+  $('lang-select').value = I18n.lang;
+  try { await LangStore.set(I18n.lang); } catch (e) { /* asked again next launch */ }
+  applyStaticI18n();
+  renderAll();
+}
+
+// Full-screen picker shown once, on the first launch after install.
+function showLangGate() {
+  const gate = $('lang-gate');
+  gate.hidden = false;
+  gate.querySelectorAll('button[data-lang]').forEach(b =>
+    b.addEventListener('click', async () => {
+      gate.hidden = true;
+      await changeLang(b.dataset.lang);
+    })
+  );
+  const current = gate.querySelector(`button[data-lang="${I18n.lang}"]`);
+  if (current) current.focus();
 }
 
 /* ---------- State ---------- */
@@ -420,7 +444,7 @@ function renderAll() {
 /* ---------- Start ---------- */
 
 async function init() {
-  await initLang();
+  const langChosen = await initLang();
 
   state.profile = await Store.get();
   if (state.profile && state.profile.group) state.checkGroup = state.profile.group;
@@ -437,12 +461,7 @@ async function init() {
     b.addEventListener('click', () => setProduct(b.dataset.product))
   );
 
-  $('lang-select').addEventListener('change', async e => {
-    I18n.setLang(e.target.value);
-    await LangStore.set(I18n.lang);
-    applyStaticI18n();
-    renderAll();
-  });
+  $('lang-select').addEventListener('change', e => changeLang(e.target.value));
 
   $('me-form').addEventListener('submit', saveProfile);
   $('me-delete').addEventListener('click', deleteProfile);
@@ -467,6 +486,7 @@ async function init() {
   fillForm();
   setTab('check');
   renderAll();
+  if (!langChosen) showLangGate();
 }
 
 document.addEventListener('DOMContentLoaded', init);

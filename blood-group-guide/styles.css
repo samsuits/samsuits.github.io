@@ -124,6 +124,42 @@ h2 { font-size: 1.1rem; margin: 28px 0 10px; }
 .small { font-size: 0.85rem; color: var(--muted); }
 .muted { color: var(--muted); }
 
+/* First-launch language picker */
+.lang-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--paper);
+  overflow-y: auto;
+}
+.lang-gate[hidden] { display: none; }
+body:has(.lang-gate:not([hidden])) { overflow: hidden; }
+.lang-gate > * { width: 100%; max-width: 420px; margin-inline: auto; }
+.lang-gate-title {
+  display: grid; gap: 2px; margin: 0;
+  font-size: 1.15rem; font-weight: 700;
+}
+.lang-gate-title span + span { font-size: 0.95rem; font-weight: 600; color: var(--muted); }
+.lang-gate-options { display: grid; gap: 10px; }
+.lang-gate-options button {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 18px;
+  border: 1.5px solid var(--line);
+  border-top: 4px solid var(--blood);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  font-size: 1.2rem; font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+.lang-gate-options .muted { font-size: 0.85rem; font-weight: 500; }
+.lang-gate .small { margin: 0; }
+
 /* First-run intro */
 .intro {
   background: var(--surface);
