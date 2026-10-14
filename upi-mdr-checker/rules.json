@@ -1,0 +1,16 @@
+{
+  "_help": "Read by the UPI MDR Checker app and web page at launch. To publish a change: edit rules, raise version by 1, optionally set message (per language code, en is the fallback), then run npm test in the upi-mdr-app repo before pushing. effectiveDate is null while postponed, otherwise YYYY-MM-DD. Rates are fractions (0.004 = 0.4%).",
+  "version": 1,
+  "updated": "2026-10-14",
+  "rules": {
+    "effectiveDate": null,
+    "freeUpTo": 2000,
+    "smallMerchantLimit": 100000,
+    "standardRate": 0.004,
+    "standardCap": 300,
+    "essentialFee": 5,
+    "capitalRate": 0.0002,
+    "capitalCap": 300
+  },
+  "message": {}
+}

@@ -485,6 +485,37 @@
       .status-banner.show {
         display: block;
       }
+      .rules-notice {
+        display: none;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+      .rules-notice.show {
+        display: block;
+      }
+      .rules-notice strong {
+        color: var(--accent);
+      }
+      .rules-notice p {
+        margin: 4px 0 8px;
+        color: var(--text);
+      }
+      .rules-notice button {
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        background: var(--accent);
+        color: var(--on-accent);
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -530,6 +561,17 @@
       <div class="subtitle" id="i18n-subtitle">
         Based on NPCI's Sept 15, 2026 circular. Estimates only. Always confirm
         with your acquiring bank or PSP.
+      </div>
+      <div class="rules-notice" id="rulesNotice">
+        <strong id="i18n-rules-updated-title">🔔 MDR rules updated</strong>
+        <p id="rulesNoticeBody"></p>
+        <button
+          type="button"
+          onclick="markRulesSeen()"
+          id="i18n-rules-updated-dismiss"
+        >
+          Got it
+        </button>
       </div>
       <div class="status-banner" id="statusBanner"></div>
 
@@ -880,8 +922,10 @@
       // MDR rules from NPCI's Sept 15, 2026 circular. Translations show these numbers through
       // placeholders ({stdRate}, {limit}, ...), so a rate change only needs editing here.
       // On Oct 13, 2026 NPCI postponed the rollout until after Diwali without a new date.
-      // Once a date is announced, set effectiveDate to it as 'YYYY-MM-DD'.
+      // These are the built-in rules. At launch the app replaces them with RULES_URL when that
+      // file has the same or a higher version, so changes reach users without a Play release.
       const MDR_RULES = {
+        version: 1,
         effectiveDate: null,
         freeUpTo: 2000,
         smallMerchantLimit: 100000,
@@ -891,6 +935,18 @@
         capitalRate: 0.0002,
         capitalCap: 300,
       };
+      const RULES_URL = "https://satishsamala.com/upi-mdr-checker/rules.json";
+      const RULE_FIELDS = [
+        "freeUpTo",
+        "smallMerchantLimit",
+        "standardRate",
+        "standardCap",
+        "essentialFee",
+        "capitalRate",
+        "capitalCap",
+      ];
+      let rulesMessage = {};
+      let isNewInstall = false;
       const RTL_LANGS = ["ur", "ks", "sd"];
 
       const translations = {
@@ -1004,6 +1060,10 @@
           "picker-body":
             "Select the language you'd like to use. You can change it anytime from the dropdown at the top.",
           "picker-continue": "Continue",
+          "rules-updated-title": "🔔 MDR rules updated",
+          "rules-updated-body":
+            "The app now uses the latest MDR rules. Check the notice and your results below.",
+          "rules-updated-dismiss": "Got it",
         },
         hi: {
           "app-title": "🧾 UPI MDR चेकर",
@@ -1117,6 +1177,10 @@
           "picker-body":
             "वह भाषा चुनें जिसमें आप ऐप इस्तेमाल करना चाहते हैं। आप इसे कभी भी ऊपर के ड्रॉपडाउन से बदल सकते हैं।",
           "picker-continue": "आगे बढ़ें",
+          "rules-updated-title": "🔔 MDR नियम अपडेट हुए",
+          "rules-updated-body":
+            "ऐप अब नवीनतम MDR नियमों का उपयोग करता है। नीचे की सूचना और अपने नतीजे देखें।",
+          "rules-updated-dismiss": "ठीक है",
         },
         te: {
           "app-title": "🧾 UPI MDR చెకర్",
@@ -1230,6 +1294,10 @@
           "picker-body":
             "మీరు ఉపయోగించాలనుకునే భాషను ఎంచుకోండి. పైన ఉన్న డ్రాప్‌డౌన్ నుండి దీన్ని ఎప్పుడైనా మార్చుకోవచ్చు.",
           "picker-continue": "కొనసాగించు",
+          "rules-updated-title": "🔔 MDR నిబంధనలు అప్‌డేట్ అయ్యాయి",
+          "rules-updated-body":
+            "యాప్ ఇప్పుడు తాజా MDR నిబంధనలను ఉపయోగిస్తోంది. కింది సమాచారం మరియు మీ ఫలితాలను చూడండి.",
+          "rules-updated-dismiss": "సరే",
         },
         gu: {
           "app-title": "🧾 UPI MDR ચેકર",
@@ -1341,6 +1409,10 @@
           "picker-body":
             "તમે જે ભાષા વાપરવા માંગો છો તે પસંદ કરો. તમે તેને ગમે ત્યારે ઉપરના ડ્રોપડાઉનમાંથી બદલી શકો છો.",
           "picker-continue": "આગળ વધો",
+          "rules-updated-title": "🔔 MDR નિયમો અપડેટ થયા",
+          "rules-updated-body":
+            "એપ હવે નવીનતમ MDR નિયમોનો ઉપયોગ કરે છે. નીચેની સૂચના અને તમારાં પરિણામો જુઓ.",
+          "rules-updated-dismiss": "બરાબર",
         },
         as: {
           "app-title": "🧾 ইউপিআই এমডিআৰ চেকাৰ",
@@ -1452,6 +1524,10 @@
           "picker-body":
             "আপুনি ব্যৱহাৰ কৰিব বিচৰা ভাষাটো বাছক। ওপৰৰ ড্ৰপডাউনৰ পৰা যিকোনো সময়তে ইয়াক সলনি কৰিব পাৰিব।",
           "picker-continue": "আগবাঢ়ক",
+          "rules-updated-title": "🔔 MDR নিয়ম আপডেট হৈছে",
+          "rules-updated-body":
+            "এপটোৱে এতিয়া শেহতীয়া MDR নিয়ম ব্যৱহাৰ কৰে। তলৰ জাননী আৰু আপোনাৰ ফলাফল চাওক।",
+          "rules-updated-dismiss": "বুজি পালোঁ",
         },
         bn: {
           "app-title": "🧾 ইউপিআই এমডিআর চেকার",
@@ -1564,6 +1640,10 @@
           "picker-body":
             "যে ভাষা ব্যবহার করতে চান সেটি বেছে নিন। উপরের ড্রপডাউন থেকে যেকোনো সময় এটি বদলাতে পারবেন।",
           "picker-continue": "চালিয়ে যান",
+          "rules-updated-title": "🔔 MDR নিয়ম আপডেট হয়েছে",
+          "rules-updated-body":
+            "অ্যাপটি এখন সর্বশেষ MDR নিয়ম ব্যবহার করে। নিচের নোটিশ এবং আপনার ফলাফল দেখুন।",
+          "rules-updated-dismiss": "ঠিক আছে",
         },
         brx: {
           "app-title": "🧾 यू पी आई एम डी आर चेकर",
@@ -1677,6 +1757,10 @@
           "picker-body":
             "वह भाषा चुनें जिसमें आप ऐप इस्तेमाल करना चाहते हैं। आप इसे कभी भी ऊपर के ड्रॉपडाउन से बदल सकते हैं।",
           "picker-continue": "आगे बढ़ें",
+          "rules-updated-title": "🔔 MDR नियम अपडेट हुए",
+          "rules-updated-body":
+            "ऐप अब नवीनतम MDR नियमों का उपयोग करता है। नीचे की सूचना और अपने नतीजे देखें।",
+          "rules-updated-dismiss": "ठीक है",
         },
         doi: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -1787,6 +1871,10 @@
           "picker-body":
             "ओह् भाशा चुनो जेह्ड़ी तुस बरतना चांह्दे ओ। तुस इसी कदें बी उप्परले ड्रॉपडाउन थमां बदली सकदे ओ।",
           "picker-continue": "अग्गें बधो",
+          "rules-updated-title": "🔔 MDR नियम अपडेट होए",
+          "rules-updated-body":
+            "ऐप हून नमें MDR नियम बरतदा ऐ। हेठली सूचना ते अपने नतीजे दिक्खो।",
+          "rules-updated-dismiss": "ठीक ऐ",
         },
         kn: {
           "app-title": "🧾 ಯುಪಿಐ ಎಂಡಿಆರ್ ಚೆಕರ್",
@@ -1900,6 +1988,10 @@
           "picker-body":
             "ನೀವು ಬಳಸಲು ಬಯಸುವ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಮೇಲಿನ ಡ್ರಾಪ್‌ಡೌನ್‌ನಿಂದ ಇದನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಬದಲಾಯಿಸಬಹುದು.",
           "picker-continue": "ಮುಂದುವರಿಸಿ",
+          "rules-updated-title": "🔔 MDR ನಿಯಮಗಳು ನವೀಕರಿಸಲಾಗಿದೆ",
+          "rules-updated-body":
+            "ಆ್ಯಪ್ ಈಗ ಇತ್ತೀಚಿನ MDR ನಿಯಮಗಳನ್ನು ಬಳಸುತ್ತದೆ. ಕೆಳಗಿನ ಸೂಚನೆ ಮತ್ತು ನಿಮ್ಮ ಫಲಿತಾಂಶಗಳನ್ನು ನೋಡಿ.",
+          "rules-updated-dismiss": "ಸರಿ",
         },
         ks: {
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
@@ -2012,6 +2104,10 @@
           "picker-body":
             "وہ زبان منتخب کریں جو آپ استعمال کرنا چاہتے ہیں۔ آپ اسے کبھی بھی اوپر والے ڈراپ ڈاؤن سے بدل سکتے ہیں۔",
           "picker-continue": "جاری رکھیں",
+          "rules-updated-title": "🔔 MDR قواعد اپ ڈیٹ ہو گئے",
+          "rules-updated-body":
+            "ایپ اب تازہ ترین MDR قواعد استعمال کرتی ہے۔ نیچے دی گئی اطلاع اور اپنے نتائج دیکھیں۔",
+          "rules-updated-dismiss": "ٹھیک ہے",
         },
         kok: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -2123,6 +2219,10 @@
           "picker-body":
             "तुमकां जी भास वापरपाची आसा ती वेंचात. वयल्या ड्रॉपडाउनांतल्यान तुमी ती केन्नाय बदलूं येता.",
           "picker-continue": "फुडें वचात",
+          "rules-updated-title": "🔔 MDR नेम अपडेट जाले",
+          "rules-updated-body":
+            "ॲप आतां नवे MDR नेम वापरता. सकयली सुचोवणी आनी तुमचे निकाल पळयात.",
+          "rules-updated-dismiss": "बरें",
         },
         mai: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -2234,6 +2334,10 @@
           "picker-body":
             "जाहि भाषामे ऐप चलाबए चाहैत छी से चुनू। ऊपरक ड्रॉपडाउनसँ एकरा कखनो बदलि सकैत छी।",
           "picker-continue": "आगाँ बढ़ू",
+          "rules-updated-title": "🔔 MDR नियम अपडेट भेल",
+          "rules-updated-body":
+            "ऐप आब नवीनतम MDR नियमक उपयोग करैत अछि। नीचाँक सूचना आ अपन परिणाम देखू।",
+          "rules-updated-dismiss": "ठीक अछि",
         },
         ml: {
           "app-title": "🧾 യുപിഐ എംഡിആർ ചെക്കർ",
@@ -2346,6 +2450,10 @@
           "picker-body":
             "നിങ്ങൾ ഉപയോഗിക്കാൻ ആഗ്രഹിക്കുന്ന ഭാഷ തിരഞ്ഞെടുക്കുക. മുകളിലെ ഡ്രോപ്പ്ഡൗണിൽ നിന്ന് ഇത് എപ്പോൾ വേണമെങ്കിലും മാറ്റാം.",
           "picker-continue": "തുടരുക",
+          "rules-updated-title": "🔔 MDR നിയമങ്ങൾ പുതുക്കി",
+          "rules-updated-body":
+            "ആപ്പ് ഇപ്പോൾ ഏറ്റവും പുതിയ MDR നിയമങ്ങൾ ഉപയോഗിക്കുന്നു. താഴെയുള്ള അറിയിപ്പും നിങ്ങളുടെ ഫലങ്ങളും കാണുക.",
+          "rules-updated-dismiss": "ശരി",
         },
         mni: {
           "app-title": "🧾 ইউপিআই এমডিআর চেকার",
@@ -2459,6 +2567,10 @@
           "picker-body":
             "নহাক্না শিজিন্নবা পাম্বা লোল খনবিয়ু। মথক্কী ড্রপডাউনদগী মতম খুদিংদা হোংদোকপা ঙম্মি।",
           "picker-continue": "মখা চত্থরু",
+          "rules-updated-title": "🔔 MDR নিয়মশিং অপডেট তৌরে",
+          "rules-updated-body":
+            "এপ অসিনা হৌজিক অনৌবা MDR নিয়মশিং শিজিন্নরি। মখাগী খংজিনবা অমসুং নহাক্কী রিজাল্টশিং য়েংবিয়ু।",
+          "rules-updated-dismiss": "য়াই",
         },
         mr: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -2570,6 +2682,10 @@
           "picker-body":
             "तुम्हाला वापरायची असलेली भाषा निवडा. वरच्या ड्रॉपडाउनमधून तुम्ही ती कधीही बदलू शकता.",
           "picker-continue": "पुढे जा",
+          "rules-updated-title": "🔔 MDR नियम अपडेट झाले",
+          "rules-updated-body":
+            "ॲप आता नवीनतम MDR नियम वापरते. खालील सूचना आणि तुमचे निकाल पहा.",
+          "rules-updated-dismiss": "ठीक आहे",
         },
         ne: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -2682,6 +2798,10 @@
           "picker-body":
             "तपाईंले प्रयोग गर्न चाहेको भाषा छान्नुहोस्। माथिको ड्रपडाउनबाट यसलाई जुनसुकै बेला बदल्न सक्नुहुन्छ।",
           "picker-continue": "अगाडि बढ्नुहोस्",
+          "rules-updated-title": "🔔 MDR नियम अपडेट भए",
+          "rules-updated-body":
+            "एपले अब नयाँ MDR नियम प्रयोग गर्छ। तलको सूचना र आफ्ना नतिजा हेर्नुहोस्।",
+          "rules-updated-dismiss": "ठिक छ",
         },
         or: {
           "app-title": "🧾 ୟୁପିଆଇ ଏମଡିଆର ଚେକର୍",
@@ -2793,6 +2913,10 @@
           "picker-body":
             "ଆପଣ ବ୍ୟବହାର କରିବାକୁ ଚାହୁଁଥିବା ଭାଷା ବାଛନ୍ତୁ। ଉପର ଡ୍ରପଡାଉନରୁ ଏହାକୁ ଯେକୌଣସି ସମୟରେ ବଦଳାଇ ପାରିବେ।",
           "picker-continue": "ଆଗକୁ ବଢ଼ନ୍ତୁ",
+          "rules-updated-title": "🔔 MDR ନିୟମ ଅପଡେଟ୍ ହୋଇଛି",
+          "rules-updated-body":
+            "ଆପ୍ ଏବେ ନୂତନ MDR ନିୟମ ବ୍ୟବହାର କରୁଛି। ତଳ ସୂଚନା ଏବଂ ଆପଣଙ୍କ ଫଳାଫଳ ଦେଖନ୍ତୁ।",
+          "rules-updated-dismiss": "ଠିକ୍ ଅଛି",
         },
         pa: {
           "app-title": "🧾 ਯੂਪੀਆਈ ਐਮਡੀਆਰ ਚੈਕਰ",
@@ -2905,6 +3029,10 @@
           "picker-body":
             "ਉਹ ਭਾਸ਼ਾ ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਵਰਤਣਾ ਚਾਹੁੰਦੇ ਹੋ। ਤੁਸੀਂ ਇਸਨੂੰ ਕਦੇ ਵੀ ਉੱਪਰਲੇ ਡ੍ਰੌਪਡਾਊਨ ਤੋਂ ਬਦਲ ਸਕਦੇ ਹੋ।",
           "picker-continue": "ਅੱਗੇ ਵਧੋ",
+          "rules-updated-title": "🔔 MDR ਨਿਯਮ ਅੱਪਡੇਟ ਹੋਏ",
+          "rules-updated-body":
+            "ਐਪ ਹੁਣ ਨਵੀਨਤਮ MDR ਨਿਯਮ ਵਰਤਦੀ ਹੈ। ਹੇਠਾਂ ਦੀ ਸੂਚਨਾ ਅਤੇ ਆਪਣੇ ਨਤੀਜੇ ਵੇਖੋ।",
+          "rules-updated-dismiss": "ਠੀਕ ਹੈ",
         },
         sa: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -3017,6 +3145,10 @@
           "picker-body":
             "यां भाषाम् उपयोक्तुम् इच्छथ तां चिनुत। उपरितनात् ड्रॉपडाउन-सूच्याः कदापि परिवर्तयितुं शक्नुथ।",
           "picker-continue": "अग्रे गच्छत",
+          "rules-updated-title": "🔔 MDR नियमाः अद्यतनाः",
+          "rules-updated-body":
+            "अनुप्रयोगः इदानीं नूतनान् MDR नियमान् उपयुङ्क्ते। अधस्तनां सूचनां स्वफलानि च पश्यत।",
+          "rules-updated-dismiss": "अस्तु",
         },
         sat: {
           "app-title": "🧾 यूपीआई एमडीआर चेकर",
@@ -3130,6 +3262,10 @@
           "picker-body":
             "वह भाषा चुनें जिसमें आप ऐप इस्तेमाल करना चाहते हैं। आप इसे कभी भी ऊपर के ड्रॉपडाउन से बदल सकते हैं।",
           "picker-continue": "आगे बढ़ें",
+          "rules-updated-title": "🔔 MDR नियम अपडेट हुए",
+          "rules-updated-body":
+            "ऐप अब नवीनतम MDR नियमों का उपयोग करता है। नीचे की सूचना और अपने नतीजे देखें।",
+          "rules-updated-dismiss": "ठीक है",
         },
         sd: {
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
@@ -3240,6 +3376,10 @@
           "picker-body":
             "اها ٻولي چونڊيو جيڪا توهان استعمال ڪرڻ چاهيو ٿا. توهان ان کي ڪڏهن به مٿين ڊراپ ڊائون مان بدلائي سگهو ٿا.",
           "picker-continue": "جاري رکو",
+          "rules-updated-title": "🔔 MDR ضابطا اپڊيٽ ٿيا",
+          "rules-updated-body":
+            "ايپ هاڻي تازا MDR ضابطا استعمال ڪري ٿي. هيٺيون اطلاع ۽ پنهنجا نتيجا ڏسو.",
+          "rules-updated-dismiss": "ٺيڪ آهي",
         },
         ta: {
           "app-title": "🧾 யுபிஐ எம்டிஆர் செக்கர்",
@@ -3355,6 +3495,10 @@
           "picker-body":
             "நீங்கள் பயன்படுத்த விரும்பும் மொழியைத் தேர்ந்தெடுக்கவும். மேலே உள்ள கீழ்தோன்றல் பட்டியலில் இருந்து எப்போது வேண்டுமானாலும் மாற்றலாம்.",
           "picker-continue": "தொடரவும்",
+          "rules-updated-title": "🔔 MDR விதிகள் புதுப்பிக்கப்பட்டன",
+          "rules-updated-body":
+            "செயலி இப்போது சமீபத்திய MDR விதிகளைப் பயன்படுத்துகிறது. கீழே உள்ள அறிவிப்பையும் உங்கள் முடிவுகளையும் பாருங்கள்.",
+          "rules-updated-dismiss": "சரி",
         },
         ur: {
           "app-title": "🧾 یو پی آئی ایم ڈی آر چیکر",
@@ -3467,6 +3611,10 @@
           "picker-body":
             "وہ زبان منتخب کریں جو آپ استعمال کرنا چاہتے ہیں۔ آپ اسے کبھی بھی اوپر والے ڈراپ ڈاؤن سے بدل سکتے ہیں۔",
           "picker-continue": "جاری رکھیں",
+          "rules-updated-title": "🔔 MDR قواعد اپ ڈیٹ ہو گئے",
+          "rules-updated-body":
+            "ایپ اب تازہ ترین MDR قواعد استعمال کرتی ہے۔ نیچے دی گئی اطلاع اور اپنے نتائج دیکھیں۔",
+          "rules-updated-dismiss": "ٹھیک ہے",
         },
       };
 
@@ -3492,6 +3640,7 @@
           );
         });
         renderStatusBanner();
+        renderRulesNotice();
         // Refresh results if shown
         if (document.getElementById("calcResult").classList.contains("show"))
           calcMDR();
@@ -3622,6 +3771,114 @@
         banner.classList.toggle("show", status !== "active");
       }
 
+      // Remote rules: returns {version, rules, message} if the file is safe to use, otherwise null
+      function validateRules(data) {
+        if (
+          !data ||
+          typeof data !== "object" ||
+          !Number.isInteger(data.version) ||
+          data.version < 1
+        )
+          return null;
+        const r = data.rules;
+        if (!r || typeof r !== "object") return null;
+        const rules = {};
+        for (const field of RULE_FIELDS) {
+          if (
+            typeof r[field] !== "number" ||
+            !Number.isFinite(r[field]) ||
+            r[field] < 0
+          )
+            return null;
+          rules[field] = r[field];
+        }
+        if (rules.standardRate > 0.05 || rules.capitalRate > 0.05) return null;
+        const date = r.effectiveDate;
+        if (
+          date !== null &&
+          !(
+            typeof date === "string" &&
+            /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+            !isNaN(Date.parse(date))
+          )
+        )
+          return null;
+        rules.effectiveDate = date;
+        const message = {};
+        if (data.message && typeof data.message === "object") {
+          for (const lang in data.message) {
+            if (typeof data.message[lang] === "string")
+              message[lang] = data.message[lang];
+          }
+        }
+        return { version: data.version, rules, message };
+      }
+      // Returns false when the app's built-in rules are newer than the file
+      function applyRules(data) {
+        if (data.version < MDR_RULES.version) return false;
+        Object.assign(MDR_RULES, data.rules, { version: data.version });
+        rulesMessage = data.message;
+        return true;
+      }
+      function loadCachedRules() {
+        try {
+          const data = validateRules(
+            JSON.parse(localStorage.getItem("upiMdrRules")),
+          );
+          if (data) applyRules(data);
+        } catch (e) {}
+      }
+      async function refreshRules() {
+        let data = null;
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 8000);
+          const res = await fetch(RULES_URL, {
+            cache: "no-store",
+            signal: controller.signal,
+          });
+          clearTimeout(timer);
+          if (res.ok) data = validateRules(await res.json());
+        } catch (e) {} // offline or a bad file: keep the current rules
+        if (!data || !applyRules(data)) return;
+        try {
+          localStorage.setItem("upiMdrRules", JSON.stringify(data));
+        } catch (e) {}
+        setLang(currentLang); // re-render text, banner and any shown results with the new rules
+        checkRulesNotice();
+      }
+
+      // "Rules updated" notice, shown until dismissed when the rules version goes up.
+      // New installs start from whatever is current and never see it.
+      function rulesSeenVersion() {
+        try {
+          return Number(localStorage.getItem("upiMdrRulesSeen")) || 0;
+        } catch (e) {
+          return 0;
+        }
+      }
+      function checkRulesNotice() {
+        if (isNewInstall) markRulesSeen();
+        else renderRulesNotice();
+      }
+      function markRulesSeen() {
+        try {
+          localStorage.setItem("upiMdrRulesSeen", String(MDR_RULES.version));
+        } catch (e) {}
+        renderRulesNotice();
+      }
+      function renderRulesNotice() {
+        const notice = document.getElementById("rulesNotice");
+        const show = MDR_RULES.version > rulesSeenVersion();
+        notice.classList.toggle("show", show);
+        if (show) {
+          document.getElementById("rulesNoticeBody").textContent =
+            rulesMessage[currentLang] ||
+            rulesMessage.en ||
+            t("rules-updated-body");
+        }
+      }
+
       function daysInMonth(date) {
         return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
       }
@@ -3682,6 +3939,11 @@
 
       // Initialize
       window.addEventListener("DOMContentLoaded", () => {
+        try {
+          isNewInstall = localStorage.getItem("upiMdrRulesSeen") === null;
+        } catch (e) {}
+        loadCachedRules();
+
         let saved = null;
         try {
           saved = localStorage.getItem("upiMdrLang");
@@ -3707,6 +3969,8 @@
           .getElementById("langPickerSelect")
           .addEventListener("change", (e) => setLang(e.target.value));
         setupBackButton();
+        checkRulesNotice();
+        refreshRules();
       });
 
       // Tabs
